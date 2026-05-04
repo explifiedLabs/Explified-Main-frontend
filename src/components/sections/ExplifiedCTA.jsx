@@ -60,12 +60,7 @@ const fadeUpVariants = {
             </motion.div>
 
             {/* Brand Tag */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] backdrop-blur-md mb-6">
-              <Sparkles size={10} className="text-[#23b5b5]" />
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-gray-400">
-                Powered by Explified AI
-              </span>
-            </div>
+       
 
             {/* Main Headline (Wider container to prevent wrapping, reducing height) */}
             <div className="max-w-4xl mx-auto">

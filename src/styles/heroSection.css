@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #030305;
+  --color-surface: #0E0E12;
+  
+  /* YOUR BRAND COLOR */
+  --color-brand: #23b5b5;
+  --color-brand-dark: #167a7a;
+  --color-brand-glow: rgba(35, 181, 181, 0.6);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+body {
+  @apply bg-background text-white antialiased overflow-x-hidden;
+  /* The "Vortasky" Top Spotlight Effect */
+  background: radial-gradient(circle at 50% -10%, rgba(35, 181, 181, 0.15) 0%, transparent 60%);
+}
+
+/* Glass Card Style matching the reference dashboard */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* The Glowing Button */
+.btn-glow {
+  background: linear-gradient(135deg, rgba(35, 181, 181, 0.8) 0%, rgba(23, 137, 137, 0.8) 100%);
+  box-shadow: 0 0 20px rgba(35, 181, 181, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+  border: 1px solid rgba(35, 181, 181, 0.5);
+}
+
+.text-glow {
+  text-shadow: 0 0 40px rgba(35, 181, 181, 0.5);
+}

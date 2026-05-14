@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   // Logout
   const logout = async () => {
     try {
-      await axiosInstance.get("/auth/logout");
+      await axiosInstance.post("/auth/logout");
 
       setUser(null);
     } catch (error) {

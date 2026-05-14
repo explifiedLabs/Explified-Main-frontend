@@ -14,16 +14,13 @@ export default function Home() {
     <>
       <Hero />
       <IndustriesPage/>
-     {/* <IntegrationScroller/> */}
       <div className="relative h-px w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[100px] bg-primary/20 blur-[60px]" />
       </div>
      <ProductShowcase/>
-      {/* <WhyChooseExplified />
-      <PerformanceSection />
-      <ExplifiedSection /> */}
-      <ExplifiedCTA />
       <ContentLabs/>
+      <ExplifiedCTA />
+      
     </>
   );
 }

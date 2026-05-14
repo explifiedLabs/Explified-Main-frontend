@@ -41,23 +41,6 @@ const fadeUpVariants = {
 
           {/* --- Content Content (Less Vertical Padding) --- */}
           <div className="relative z-20 flex flex-col items-center justify-center text-center px-6 py-16 md:py-20">
-            {/* Logo / Icon Area (Slightly smaller to save height) */}
-            <motion.div
-              animate={{
-                y: [0, -4, 0],
-                boxShadow: [
-                  "0 0 0px rgba(35,181,181,0)",
-                  "0 0 25px rgba(35,181,181,0.3)",
-                  "0 0 0px rgba(35,181,181,0)",
-                ],
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="w-16 h-16 mb-6 rounded-2xl bg-[#0A0A0A] border border-[#23b5b5]/30 flex items-center justify-center shadow-2xl relative"
-            >
-              {/* Inner Glow Dot */}
-              <div className="absolute inset-0 bg-[#23b5b5] opacity-10 blur-md rounded-2xl" />
-              <Command size={28} className="text-[#23b5b5] relative z-10" />
-            </motion.div>
 
             {/* Brand Tag */}
        
@@ -67,7 +50,7 @@ const fadeUpVariants = {
               <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6 drop-shadow-lg leading-tight">
                 To digitally transform{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
-                  your business visit our labs
+                  your business visit our lab
                 </span>
               </h2>
             </div>
@@ -78,9 +61,9 @@ const fadeUpVariants = {
               Visit our lab to know more.
             </p>
         <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-          <Link to="https://explified.com/labs">
+          <Link to="https://explified.com/lab">
             <button className="relative cursor-pointer overflow-hidden bg-brand text-black font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)]">
-               <span className="relative z-10">Explified Labs</span>
+               <span className="relative z-10">Explified Lab</span>
                <ArrowRight size={18} className="relative z-10" />
                <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
             </button>

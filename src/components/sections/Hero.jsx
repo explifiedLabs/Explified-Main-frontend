@@ -318,7 +318,7 @@ const Hero = () => {
         <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
           <Link to="https://explified.com/labs">
             <button className="relative cursor-pointer overflow-hidden bg-brand text-black font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)]">
-               <span className="relative z-10">Explified Labs</span>
+               <span className="relative z-10">Explified Lab</span>
                <ArrowRight size={18} className="relative z-10" />
                <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
             </button>

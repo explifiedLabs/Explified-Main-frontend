@@ -45,16 +45,32 @@ const Badge = ({ text }) => {
 const Navbar = () => {
   const { data } = useCMS();
   const headerData = data?.header || {};
+
+  // UPDATED LOGIC: Lab first, Products center, Explore end
   const headerKeys = Object.keys(headerData).sort((a, b) => {
-    const orderA = headerData[a]?.order;
-    const orderB = headerData[b]?.order;
-    if (orderA !== undefined && orderB !== undefined) return orderA - orderB;
-    if (orderA !== undefined) return -1;
-    if (orderB !== undefined) return 1;
-    const aHasContent = Object.entries(headerData[a] || {}).some(([k, v]) => k !== 'url' && v && typeof v === 'object' && !Array.isArray(v));
-    const bHasContent = Object.entries(headerData[b] || {}).some(([k, v]) => k !== 'url' && v && typeof v === 'object' && !Array.isArray(v));
-    if (aHasContent && !bHasContent) return -1;
-    if (!aHasContent && bHasContent) return 1;
+    const keyA = a.toLowerCase();
+    const keyB = b.toLowerCase();
+
+    // 1. Explicitly set order for the main three
+    const orderMap = { 'lab': 1, 'labs': 1, 'products': 2, 'product': 2, 'explore': 3 };
+    
+    if (orderMap[keyA] !== undefined && orderMap[keyB] !== undefined) {
+      return orderMap[keyA] - orderMap[keyB];
+    }
+
+    // 2. Logic for others: Dropdowns (items/content) stay in the middle, simple links on edges
+    const hasContent = (key) => {
+        const val = headerData[key];
+        if (!val || typeof val !== 'object') return false;
+        return Object.entries(val).some(([k, v]) => k !== 'url' && k !== 'openInNewTab' && v && typeof v === 'object' && !Array.isArray(v)) || Array.isArray(val.items);
+    };
+
+    const aHas = hasContent(a);
+    const bHas = hasContent(b);
+
+    if (aHas && !bHas) return 0; // Dropdown stays centered relative to simple links
+    if (!aHas && bHas) return -1; // Move simple links towards the left if not categorized
+
     return 0;
   });
 
@@ -68,7 +84,7 @@ const Navbar = () => {
     if (!menuObj || typeof menuObj !== 'object') return [];
     return Object.entries(menuObj)
       .filter(([key, val]) => {
-        if (key === 'url' || key === 'openInNewTab') return false; // Added openInNewTab to filter
+        if (key === 'url' || key === 'openInNewTab') return false; 
         if (!val || typeof val !== 'object' || Array.isArray(val)) return false;
         return val.title || Array.isArray(val.items) || val.imageUrl || val.iconUrl;
       })
@@ -97,7 +113,6 @@ const Navbar = () => {
     }
   }, [hoveredMenu, headerData]);
 
-  // ✅ UPDATED: Handle dynamic "Open in New Tab" for root menu categories
   const handleCategoryClick = (menuKey) => {
     const category = headerData[menuKey];
     const categoryUrl = category?.url;

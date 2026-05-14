@@ -1,11 +1,8 @@
-import React, { useRef, useMemo } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import React, { useMemo } from "react";
+import { motion } from "framer-motion";
 import * as Lucide from "lucide-react";
 import { useCMS } from "../../hooks/useCMS.jsx";
 
-// ==========================================
-// 1. DATA CONFIGURATION
-// ==========================================
 const CORE_PRODUCTS = {
   id: "core-products",
   title: "Core Products",
@@ -18,40 +15,42 @@ const CORE_PRODUCTS = {
       desc: "The AI-native engine that connects your tools and automates your entire stack.",
       icon: "Zap",
       theme: "yellow",
-      btnText: "Visit Lurph",
       link: "https://lurph.com",
+    },
+    {
+  title: "Slides",
+  desc: "Turn text to slides instantly with AI",
+  icon: "Monitor",        // clean screen/display icon
+  theme: "cyan",
+  link: "https://slides.explified.com",
+},
+    {
+      title: "Stream",
+      desc: "Stream turns any app into a live experience — with sub-second latency, built-in analytics, and a drop-in SDK. Private beta is opening soon.",
+      icon: "Tv2",                 // ← Netflix/streaming TV icon
+      theme: "cyan",
+      link: "https://stream.explified.com",
+    },
+    {
+      title: "Beacon",
+      desc: "Beacon is a modern browser designed for builders. Fast, minimal, and intelligent — it brings your tools, tabs, and workflows together so you can focus on what matters.",
+      icon: "Globe",               // ← browser/web icon
+      theme: "cyan",
+      link: "https://beacon.explified.com",
     }
   ],
 };
 
-const AI_TOOLS = {
-  id: "ai-tools",
-  title: "AI Content Tools",
-  subtitle: "Write, summarize, and structure content with AI",
-  label: "CONTENT",
-  icon: "BrainCircuit",
-  items: [
-    { title: "AI Subtitle Generator", desc: "Transcribe audio and generate precise subtitles for your videos.", icon: "PenLine", theme: "cyan", btnText: "Try now", link: "https://app.explified.com/ai-subtitler" },
-    { title: "AI Image Styler", desc: "Transform your photos into artistic masterpieces with style transfer.", icon: "FileText", theme: "purple", btnText: "Open App", link: "https://app.explified.com/login" },
-    { title: "Meme Generator", desc: "Turn text prompts into viral memes by automatically pairing images.", icon: "Layers", theme: "emerald", btnText: "Generate", link: "https://app.explified.com/text-to-meme" },
-    { title: "Video Creator", desc: "Create high-quality video content from simple text descriptions.", icon: "Circle", theme: "orange", btnText: "Create", link: "https://app.explified.com/text-to-video" },
-  ],
+const themeColors = {
+  cyan: "#23b5b5",
+  purple: "#a855f7",
+  yellow: "#eab308",
+  emerald: "#10b981",
+  orange: "#f97316"
 };
-
-// ==========================================
-// 2. SUB-COMPONENTS
-// ==========================================
 
 const EliteCard = ({ item, label, index }) => {
   const Icon = Lucide[item.icon] || Lucide.Zap;
-  
-  const themeColors = {
-    cyan: "#23b5b5",
-    purple: "#a855f7",
-    yellow: "#eab308",
-    emerald: "#10b981",
-    orange: "#f97316"
-  };
   const activeColor = themeColors[item.theme] || "#23b5b5";
 
   return (
@@ -60,13 +59,22 @@ const EliteCard = ({ item, label, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
-      className="flex-none w-[calc(25%-18px)] min-w-[280px] snap-start group relative flex flex-col bg-[#080B10]/80 backdrop-blur-md rounded-[2rem] h-[440px] border border-white/5 hover:border-[#23b5b5]/40 transition-all duration-500 overflow-hidden"
+      className="flex-none w-[calc(25%-18px)] min-w-[280px] snap-start group relative flex flex-col bg-white/[0.03] rounded-[2rem] h-[440px] border border-white/[0.06] hover:border-[#23b5b5]/30 transition-all duration-500 overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-[#23b5b5]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
-      <div className="relative h-44 w-full flex items-center justify-center border-b border-white/5">
-        <div className="w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
-          {item.icon && item.icon.startsWith('http') ? (
+      {/* Card hover glow */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at top, rgba(35,181,181,0.07), transparent 65%)' }}
+      />
+      {/* Bottom gradient line */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ background: 'linear-gradient(to right, transparent, #23b5b5, transparent)' }}
+      />
+
+      <div className="relative h-44 w-full flex items-center justify-center border-b border-white/[0.05]">
+        <div className="w-16 h-16 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          {item.icon && (item.icon.startsWith('http') || item.icon.startsWith('/')) ? (
             <img src={item.icon} alt={item.title} className="w-14 h-14 object-contain" />
           ) : (
             <Icon style={{ color: activeColor }} size={32} strokeWidth={1.5} />
@@ -79,16 +87,20 @@ const EliteCard = ({ item, label, index }) => {
           <span className="text-[9px] font-black tracking-[0.2em] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 uppercase text-[#23b5b5]">
             {label}
           </span>
-          <h3 className="text-xl font-bold text-white group-hover:text-[#23b5b5] transition-colors leading-tight">
+          <h3 className="text-xl font-bold text-white group-hover:text-[#23b5b5] transition-colors duration-300 leading-tight">
             {item.title}
           </h3>
           <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 font-medium">
             {item.desc || "Optimized automation tool by Explified Labs."}
           </p>
         </div>
-
         <div className="pt-6">
-          <a href={item.link} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-black/40 text-white border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-[#23b5b5] hover:text-black hover:border-[#23b5b5] transition-all duration-300">
+          
+           <a href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-black/30 text-white border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-[#23b5b5] hover:text-black hover:border-[#23b5b5] transition-all duration-300"
+          >
             Get Started <Lucide.ArrowRight size={14} />
           </a>
         </div>
@@ -97,45 +109,49 @@ const EliteCard = ({ item, label, index }) => {
   );
 };
 
-// ==========================================
-// 3. MAIN MARKETPLACE COMPONENT
-// ==========================================
-
 const Marketplace = () => {
   const { data } = useCMS();
   const products = data?.header?.products || {};
 
   const dynamicSections = useMemo(() => {
     const platforms = [
-      { key: "Chrome", title: "Chrome Extensions", label: "EXTENSION", icon: "Chrome", sub: "Supercharge your browser with AI overlays" },
+      { key: "Atlassian", title: "Atlassian Tools", label: "ATLASSIAN", icon: "Layout", sub: "Enterprise productivity and workflow solutions" },
       { key: "Shopify", title: "Shopify Apps", label: "SHOPIFY", icon: "ShoppingBag", sub: "Marketing and store automation utilities" },
-      { key: "Figma", title: "Figma Plugins", label: "FIGMA", icon: "Figma", sub: "Accelerate your creative design workflow" }
+      { key: "Chrome", title: "Chrome Extensions", label: "EXTENSION", icon: "Chrome", sub: "Supercharge your browser with AI overlays" },
+      { key: "Figma", title: "Figma Plugins", label: "FIGMA", icon: "Figma", sub: "Accelerate your creative design workflow" },
+      { key: "ClickUp", title: "ClickUp Apps", label: "CLICKUP", icon: "ClipboardCheck", sub: "Optimize your task management workflow" },
+      { key: "Bubble", title: "Bubble Plugins", label: "BUBBLE", icon: "Component", sub: "Visual programming power-ups" },
+      { key: "Odoo", title: "Odoo Modules", label: "ODOO", icon: "Settings", sub: "Business process automation" }
     ];
 
-    return platforms.map(p => ({
-      id: p.key.toLowerCase(),
-      ...p,
-      items: (products[p.key]?.items || []).map(item => ({
-        title: item.title, desc: item.desc, icon: item.iconUrl || item.icon, link: item.url, theme: "cyan"
-      }))
-    })).filter(s => s.items.length > 0);
+    return platforms.map(p => {
+      const platformData = products[p.key];
+      const items = (platformData?.items || []).map(item => ({
+        title: item.title,
+        desc: item.desc,
+        icon: item.iconUrl || item.icon,
+        link: item.url,
+        theme: "cyan"
+      }));
+      return { id: p.key.toLowerCase(), ...p, items };
+    }).filter(s => s.items.length > 0);
   }, [products]);
 
-  const ALL_SECTIONS = [CORE_PRODUCTS, ...dynamicSections, AI_TOOLS];
+  const ALL_SECTIONS = [ ...dynamicSections , CORE_PRODUCTS];
 
   return (
-    <div className="min-h-screen bg-[#05070A] py-32 px-6 lg:px-12 font-sans relative overflow-hidden">
-      
-      {/* --- ENHANCED BRAND BACKGROUND --- */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#23b5b5]/20 blur-[140px] rounded-full opacity-50" />
-        <div className="absolute top-[20%] -left-[10%] w-[600px] h-[600px] bg-[#23b5b5]/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[10%] -right-[10%] w-[500px] h-[500px] bg-[#23b5b5]/10 blur-[100px] rounded-full" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#05070A_100%)] opacity-70" />
-        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" 
-             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
-        </div>
-      </div>
+    <div
+      className="py-32 px-6 lg:px-12 font-sans relative overflow-hidden"
+      style={{ backgroundColor: '#050505', isolation: 'isolate' }}
+    >
+      {/* Contained section glow — does not bleed into neighbors */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at top, rgba(35,181,181,0.08), transparent 70%)',
+          filter: 'blur(60px)'
+        }}
+      />
 
       <style dangerouslySetInnerHTML={{ __html: `
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -143,45 +159,51 @@ const Marketplace = () => {
       `}} />
 
       <div className="max-w-[1440px] mx-auto relative z-10">
-        
-        {/* --- ADDED HEADER SECTION --- */}
+
         <header className="mb-32 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8 }}
           >
-           
             <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase">
               Product<span className="text-[#23b5b5]"> Studio</span>
             </h1>
+            {/* Gradient underline */}
+            <div
+              className="mx-auto mt-4 mb-6 h-[2px] w-32 rounded-full"
+              style={{ background: 'linear-gradient(to right, transparent, #23b5b5, transparent)' }}
+            />
             <p className="text-gray-400 max-w-2xl mx-auto mt-6 text-lg font-medium leading-relaxed">
               Discover our collection of high-performance tools and extensions designed to optimize your creative and technical workflow.
             </p>
           </motion.div>
         </header>
 
-        {/* --- MAIN SECTIONS --- */}
         <div className="space-y-40">
           {ALL_SECTIONS.map((section) => {
             const SectionIcon = Lucide[section.icon] || Lucide.LayoutGrid;
             return (
-              <section key={section.id} className="group/section">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 rounded-2xl bg-[#23b5b5]/10 border border-[#23b5b5]/20 flex items-center justify-center shadow-[0_0_20px_rgba(35,181,181,0.15)]">
-                      <SectionIcon className="text-[#23b5b5]" size={28} />
-                    </div>
-                    <div>
-                      <h2 className="text-4xl font-black text-white tracking-tighter uppercase">
-                          {section.title}<span className="text-[#23b5b5]">.</span>
-                      </h2>
-                      <p className="text-gray-400 text-base mt-1 font-medium">{section.subtitle || section.sub}</p>
-                    </div>
+              <section key={section.id}>
+                <div className="flex items-start gap-6 mb-12">
+                  <div
+                    className="w-14 h-14 rounded-2xl bg-[#23b5b5]/10 border border-[#23b5b5]/20 flex items-center justify-center"
+                    style={{ boxShadow: '0 0 24px rgba(35,181,181,0.10)' }}
+                  >
+                    <SectionIcon className="text-[#23b5b5]" size={28} />
                   </div>
-                  <button className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 hover:text-[#23b5b5] flex items-center gap-4 transition-all group/btn">
-                    View All <Lucide.MoveRight size={20} className="group-hover/btn:translate-x-2 transition-transform" />
-                  </button>
+                  <div>
+                    <h2 className="text-4xl font-black text-white tracking-tighter uppercase">
+                      {section.title}<span className="text-[#23b5b5]">.</span>
+                    </h2>
+                    {/* Section title underline */}
+                    <div
+                      className="mt-1 mb-2 h-[1px] w-16"
+                      style={{ background: 'linear-gradient(to right, #23b5b5, transparent)' }}
+                    />
+                    <p className="text-gray-400 text-base font-medium">{section.subtitle || section.sub}</p>
+                  </div>
                 </div>
 
                 <div className="no-scrollbar flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4">

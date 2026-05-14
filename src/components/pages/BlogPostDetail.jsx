@@ -447,13 +447,13 @@ export default function BlogPostDetail() {
             >
               {/* 1. HERO TEXT SECTION */}
               <div className="max-w-[800px] mx-auto px-6 text-center mb-12 relative z-10">
-                <Link
+                {/* <Link
                   to="/blog"
                   className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-[#23b5b5] mb-10 transition-colors group"
                 >
                   <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
                   Back to Articles
-                </Link>
+                </Link> */}
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}

@@ -3,6 +3,8 @@ import { Twitter, Linkedin, Instagram, ArrowRight, Youtube } from "lucide-react"
 import { Link } from "react-router"; 
 import { useCMS } from '../../hooks/useCMS.jsx';
 import logo from "../../assets/logo.png";
+// 1. Import the startup logo
+import startupLogo from "../images/startup-logo.png"; 
 
 // Helper for case-insensitive lookup
 const getMenu = (data, menuName) => {
@@ -30,7 +32,6 @@ const Footer = () => {
     { Icon: Linkedin, href: "https://linkedin.com/company/explified" },
   ];
 
-  // Helper to render links based on CMS data
   const renderCmsLink = (link, index) => {
     const label = link.label || link.name;
     const isNewTab = link.openInNewTab;
@@ -55,7 +56,6 @@ const Footer = () => {
   return (
     <footer className="relative w-full bg-[#000000] text-white pt-20 pb-28 md:pt-36 md:pb-52 overflow-hidden font-sans">
       
-      {/* Background Gradient */}
       <div
         className="absolute bottom-0 left-0 w-full h-[800px] opacity-40 pointer-events-none z-0"
         style={{
@@ -63,7 +63,6 @@ const Footer = () => {
         }}
       />
 
-      {/* Large Background Text */}
       <div className="absolute bottom-[-5%] left-0 w-full flex justify-center pointer-events-none select-none z-0">
         <span
           className="text-[20vw] font-bold tracking-tighter leading-none whitespace-nowrap"
@@ -78,8 +77,6 @@ const Footer = () => {
       </div>
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12">
-
-        {/* --- MAIN GRID --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
           
           {/* Newsletter + Socials Column */}
@@ -97,9 +94,8 @@ const Footer = () => {
               </button>
             </div>
 
-            {/* Socials - Hardcoded to always open in New Tab */}
             <h4 className="text-lg font-bold text-white mt-10 mb-5">Socials</h4>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-10"> {/* Added margin-bottom to separate from logo */}
               {socials.map((social, index) => (
                 <a 
                   key={index}
@@ -112,9 +108,17 @@ const Footer = () => {
                 </a>
               ))}
             </div>
+
+            {/* 2. Added Startup Logo Section */}
+<div className="mt-12 transition-opacity duration-300 hover:opacity-80">
+  <img 
+    src={startupLogo} 
+    alt="Startup Logo" 
+    className="w-48 md:w-56 h-auto object-contain brightness-200 contrast-125" 
+  />
+</div>
           </div>
 
-          {/* Platform Links */}
           <div className="lg:col-span-1">
             <h4 className="text-xl font-bold text-white mb-8">Platform</h4>
             <ul className="space-y-4">
@@ -124,7 +128,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Product Links */}
           <div className="lg:col-span-1">
             <h4 className="text-xl font-bold text-white mb-8">Products</h4>
             <ul className="space-y-4">
@@ -134,7 +137,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Resources Links */}
           <div className="lg:col-span-1">
             <h4 className="text-xl font-bold text-white mb-8">Resources</h4>
             <ul className="space-y-4">
@@ -144,7 +146,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Company Links */}
           <div className="lg:col-span-1">
             <h4 className="text-xl font-bold text-white mb-8">Company</h4>
             <ul className="space-y-4">
@@ -155,10 +156,6 @@ const Footer = () => {
           </div>
           
         </div>
-
-        {/* Footer Bottom Info */}
-
-
       </div>
     </footer>
   );

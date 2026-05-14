@@ -9,7 +9,7 @@ import Home from "./components/pages/Home";
 import { cmsRoutes } from "./components/routes";
 import { CMSProvider } from "./hooks/useCMS.jsx";
 import ExplifiedLabs from "./components/pages/LabsPage.jsx";
-import { AuthProvider } from "./hooks/AuthContext.jsx";
+
 
 // 2. LAZY LOAD EVERYTHING ELSE (Drastically reduces initial bundle size)
 const ExplifiedBlog = lazy(() => import("./components/pages/BlogPage"));
@@ -47,30 +47,29 @@ function App() {
                 <Route path="terms-of-service" element={<TermsOfService />} />
                 <Route path="privacy-policy" element={<PrivacyPolicy />} />
 
-                <Route path="labs" element={<ExplifiedLabs />} />
+               <Route path="labs" element={<ExplifiedLabs />} />
+              
+              {/* Magic Dynamic Catch-All Route */}
+              <Route path=":slug" element={<DynamicPage />} />
+            </Route>
 
-                {/* Magic Dynamic Catch-All Route */}
-                <Route path=":slug" element={<DynamicPage />} />
-              </Route>
-
-              {cmsRoutes}
-            </Routes>
-          </Suspense>
-
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            theme="dark"
-            toastStyle={{
-              backgroundColor: "#0f0f0f",
-              color: "#ffffff",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-            progressStyle={{ background: "#23b5b5" }}
-          />
-        </BrowserRouter>
-      </CMSProvider>
-    </AuthProvider>
+            {cmsRoutes}
+          </Routes>
+        </Suspense>
+        
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          theme="dark"
+          toastStyle={{
+            backgroundColor: "#0f0f0f",
+            color: "#ffffff",
+            border: "1px solid rgba(255,255,255,0.1)",
+          }}
+          progressStyle={{ background: "#23b5b5" }}
+        />
+      </BrowserRouter>
+    </CMSProvider>
   );
 }
 

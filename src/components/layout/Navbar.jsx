@@ -4,7 +4,6 @@ import * as LucideIcons from "lucide-react";
 import { useCMS } from "../../hooks/useCMS.jsx";
 import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/AuthContext.jsx";
-import axiosInstance from "../../lib/axios.js";
 
 const SCHEDULE_CALL_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSf3E-9_WpCdMKM38mh5FL0GQq7frinMK4lRJTucASeXTQ55dw/viewform";
@@ -697,6 +696,8 @@ const Navbar = () => {
       {/* AUTH MODAL */}
       <div
         className={`fixed inset-0 z-[200] flex items-center justify-center px-6 transition-all duration-300 pointer-events-auto ${
+          authLoading ? "cursor-not-allowed" : ""
+        } ${
           isAuthModalOpen
             ? "opacity-100 visible"
             : "opacity-0 invisible pointer-events-none"
@@ -780,7 +781,10 @@ const Navbar = () => {
                   console.log(error);
                 }
               }}
-              className="w-full h-14 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-[#23b5b5]/10 hover:border-[#23b5b5]/30 transition-all duration-300 flex items-center justify-center gap-4 text-white font-semibold text-base"
+              disabled={authLoading}
+              className={`w-full h-14 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-[#23b5b5]/10 hover:border-[#23b5b5]/30 transition-all duration-300 flex items-center justify-center gap-4 text-white font-semibold text-base ${
+                authLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+              }`}
             >
               <svg width="20" height="20" viewBox="0 0 48 48">
                 <path
@@ -878,7 +882,9 @@ const Navbar = () => {
             <button
               onClick={handleAuthSubmit}
               disabled={authLoading}
-              className="w-full h-14 rounded-2xl bg-[#23b5b5] hover:bg-[#1da0a0] disabled:opacity-50 text-black text-base font-black mt-7 transition-all duration-300 hover:shadow-[0_0_30px_rgba(35,181,181,0.35)]"
+              className={`w-full h-14 rounded-2xl bg-[#23b5b5] hover:bg-[#1da0a0] disabled:opacity-50 text-black text-base font-black mt-7 transition-all duration-300 hover:shadow-[0_0_30px_rgba(35,181,181,0.35)] ${
+                authLoading ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
               {authLoading
                 ? "Please wait..."

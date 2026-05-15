@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axiosInstance from "../lib/axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
       const idToken = await result.user.getIdToken();
       const { data } = await axiosInstance.post("/auth/google", { idToken });
       setUser(data.user);
+      toast.success(`Logged in successfully`);
 
       return data;
     } catch (error) {
@@ -49,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       });
 
       setUser(data.user);
-
+      toast.success(`Logged in successfully`);
       return data;
     } catch (error) {
       console.log(error);
@@ -66,6 +68,7 @@ export const AuthProvider = ({ children }) => {
       });
 
       setUser(data.user);
+      toast.success(`Account created successfully`);
 
       return data;
     } catch (error) {
@@ -80,6 +83,7 @@ export const AuthProvider = ({ children }) => {
       await axiosInstance.post("/auth/logout");
 
       setUser(null);
+      toast.success("Logged out successfully");
     } catch (error) {
       console.log(error);
     }

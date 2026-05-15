@@ -12,6 +12,7 @@ import ExplifiedLabs from "./components/pages/LabsPage.jsx";
 import Lurphfe from "./components/pages/LurphPage.jsx";
 import MarketplaceDashboard from "./components/pages/Dashboard.jsx";
 import { AuthProvider } from "./hooks/AuthContext.jsx";
+import ProtectedRoute from "./components/layout/ProtectedRoute.jsx";
 
 // 2. LAZY LOAD EVERYTHING ELSE (Drastically reduces initial bundle size)
 const ExplifiedBlog = lazy(() => import("./components/pages/BlogPage"));
@@ -54,7 +55,14 @@ function App() {
                 {/* Magic Dynamic Catch-All Route */}
                 <Route path=":slug" element={<DynamicPage />} />
               </Route>
-              <Route path="dashboard" element={<MarketplaceDashboard />} />
+              <Route
+                path="dashboard"
+                element={
+                  <ProtectedRoute>
+                    <MarketplaceDashboard />
+                  </ProtectedRoute>
+                }
+              />
               {cmsRoutes}
             </Routes>
           </Suspense>

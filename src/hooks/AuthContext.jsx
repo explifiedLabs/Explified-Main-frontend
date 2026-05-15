@@ -41,6 +41,39 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const login = async ({ email, password }) => {
+    try {
+      const { data } = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
+
+      setUser(data.user);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const register = async ({ name, email, password }) => {
+    try {
+      const { data } = await axiosInstance.post("/auth/register", {
+        name,
+        email,
+        password,
+      });
+
+      setUser(data.user);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   // Logout
   const logout = async () => {
     try {
@@ -58,6 +91,8 @@ export const AuthProvider = ({ children }) => {
         user,
         loading,
         loginWithGoogle,
+        login,
+        register,
         logout,
       }}
     >

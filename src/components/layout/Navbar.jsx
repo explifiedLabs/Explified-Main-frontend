@@ -125,7 +125,7 @@ const Badge = ({ text }) => {
 const Navbar = () => {
   const { data } = useCMS();
   const headerData = data?.header || {};
-  const { loginWithGoogle, user, logout } = useAuth();
+  const { loginWithGoogle, login, register, user, logout } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
@@ -156,21 +156,32 @@ const Navbar = () => {
           return alert("Passwords do not match");
         }
 
-        await axiosInstance.post("/auth/register", {
+        await register({
           name: authForm.name,
           email: authForm.email,
           password: authForm.password,
         });
       } else {
-        await axiosInstance.post("/auth/login", {
+        await login({
           email: authForm.email,
           password: authForm.password,
         });
       }
 
-      window.location.reload();
+      // Reset form
+      setAuthForm({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      // Close modal
+      setIsAuthModalOpen(false);
+      setIsUserMenuOpen(false);
     } catch (error) {
       console.log(error);
+
       alert(error?.response?.data?.message || "Authentication failed");
     } finally {
       setAuthLoading(false);
@@ -757,7 +768,18 @@ const Navbar = () => {
 
             {/* Google Button */}
             <button
-              onClick={loginWithGoogle}
+              onClick={async (e) => {
+                e.stopPropagation();
+
+                try {
+                  await loginWithGoogle();
+
+                  setIsAuthModalOpen(false);
+                  setIsUserMenuOpen(false);
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
               className="w-full h-14 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-[#23b5b5]/10 hover:border-[#23b5b5]/30 transition-all duration-300 flex items-center justify-center gap-4 text-white font-semibold text-base"
             >
               <svg width="20" height="20" viewBox="0 0 48 48">

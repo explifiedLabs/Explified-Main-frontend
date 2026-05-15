@@ -4,6 +4,7 @@ import * as LucideIcons from "lucide-react";
 import { useCMS } from "../../hooks/useCMS.jsx";
 import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/AuthContext.jsx";
+import axiosInstance from "../../lib/axios.js";
 
 const SCHEDULE_CALL_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSf3E-9_WpCdMKM38mh5FL0GQq7frinMK4lRJTucASeXTQ55dw/viewform";
@@ -126,6 +127,55 @@ const Navbar = () => {
   const headerData = data?.header || {};
   const { loginWithGoogle, user, logout } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const [authMode, setAuthMode] = useState("signin");
+
+  const [authForm, setAuthForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [authLoading, setAuthLoading] = useState(false);
+
+  const handleInputChange = (e) => {
+    setAuthForm({
+      ...authForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleAuthSubmit = async () => {
+    try {
+      setAuthLoading(true);
+
+      if (authMode === "signup") {
+        if (authForm.password !== authForm.confirmPassword) {
+          return alert("Passwords do not match");
+        }
+
+        await axiosInstance.post("/auth/register", {
+          name: authForm.name,
+          email: authForm.email,
+          password: authForm.password,
+        });
+      } else {
+        await axiosInstance.post("/auth/login", {
+          email: authForm.email,
+          password: authForm.password,
+        });
+      }
+
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      alert(error?.response?.data?.message || "Authentication failed");
+    } finally {
+      setAuthLoading(false);
+    }
+  };
 
   // UPDATED LOGIC: Lab first, Products center, Explore end
   const headerKeys = Object.keys(headerData).sort((a, b) => {
@@ -481,7 +531,7 @@ const Navbar = () => {
               </div>
             ) : (
               <button
-                onClick={loginWithGoogle}
+                onClick={() => setIsAuthModalOpen(true)}
                 className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#23b5b5]/40 bg-white/5 hover:bg-[#23b5b5]/10 text-[#23b5b5] text-sm font-bold tracking-wide transition-all duration-300 hover:border-[#23b5b5] hover:shadow-[0_0_20px_rgba(35,181,181,0.15)] active:scale-95 backdrop-blur-md"
               >
                 <LucideIcons.LogIn size={15} />
@@ -629,6 +679,222 @@ const Navbar = () => {
               <LucideIcons.CalendarDays size={15} />
               Schedule a Call
             </a>
+          </div>
+        </div>
+      </div>
+
+      {/* AUTH MODAL */}
+      <div
+        className={`fixed inset-0 z-[200] flex items-center justify-center px-6 transition-all duration-300 pointer-events-auto ${
+          isAuthModalOpen
+            ? "opacity-100 visible"
+            : "opacity-0 invisible pointer-events-none"
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          onClick={() => setIsAuthModalOpen(false)}
+          className="absolute inset-0 bg-black/70 backdrop-blur-md"
+        />
+
+        {/* Modal */}
+        <div
+          className={`relative w-full max-w-xl rounded-[32px] border border-white/10 bg-[#080B12]/95 backdrop-blur-3xl shadow-[0_0_80px_rgba(35,181,181,0.08)] overflow-hidden transition-all duration-300 ${
+            isAuthModalOpen
+              ? "scale-100 translate-y-0"
+              : "scale-95 translate-y-6"
+          }`}
+        >
+          {/* Glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(35,181,181,0.12),transparent_55%)] pointer-events-none" />
+
+          {/* Close */}
+          <button
+            onClick={() => setIsAuthModalOpen(false)}
+            className="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all"
+          >
+            <LucideIcons.X size={18} />
+          </button>
+
+          <div className="relative p-7 md:p-8">
+            {/* Tabs */}
+            <div className="flex items-center rounded-2xl border border-white/10 bg-white/[0.03] p-1 mb-8">
+              <button
+                onClick={() => setAuthMode("signin")}
+                className={`flex-1 h-11 rounded-xl text-xs font-black tracking-[0.15em] transition-all duration-300 ${
+                  authMode === "signin"
+                    ? "bg-[#23b5b5] text-black shadow-lg"
+                    : "text-gray-500 hover:text-white"
+                }`}
+              >
+                SIGN IN
+              </button>
+
+              <button
+                onClick={() => setAuthMode("signup")}
+                className={`flex-1 h-11 rounded-xl text-xs font-black tracking-[0.15em] transition-all duration-300 ${
+                  authMode === "signup"
+                    ? "bg-[#23b5b5] text-black shadow-lg"
+                    : "text-gray-500 hover:text-white"
+                }`}
+              >
+                SIGN UP
+              </button>
+            </div>
+
+            {/* Heading */}
+            <div className="mb-7">
+              <h2 className="text-3xl font-black text-white tracking-tight">
+                {authMode === "signin" ? "Welcome back" : "Create your account"}
+              </h2>
+
+              <p className="text-gray-500 mt-2 text-sm">
+                {authMode === "signin"
+                  ? "Sign in to your automation workspace"
+                  : "Start automating in minutes — it's free"}
+              </p>
+            </div>
+
+            {/* Google Button */}
+            <button
+              onClick={loginWithGoogle}
+              className="w-full h-14 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-[#23b5b5]/10 hover:border-[#23b5b5]/30 transition-all duration-300 flex items-center justify-center gap-4 text-white font-semibold text-base"
+            >
+              <svg width="20" height="20" viewBox="0 0 48 48">
+                <path
+                  fill="#FFC107"
+                  d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12S17.4 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"
+                />
+                <path
+                  fill="#FF3D00"
+                  d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4c-7.7 0-14.3 4.3-17.7 10.7z"
+                />
+                <path
+                  fill="#4CAF50"
+                  d="M24 44c5.2 0 10-2 13.5-5.3l-6.2-5.2C29.3 35 26.8 36 24 36c-5.2 0-9.6-3.3-11.2-7.9l-6.5 5C9.5 39.5 16.2 44 24 44z"
+                />
+                <path
+                  fill="#1976D2"
+                  d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.5-6.2 7.1l6.2 5.2C39.1 36.7 44 31 44 24c0-1.3-.1-2.3-.4-3.5z"
+                />
+              </svg>
+
+              {authMode === "signin"
+                ? "Continue with Google"
+                : "Sign up with Google"}
+            </button>
+
+            {/* Divider */}
+            <div className="flex items-center gap-4 my-7">
+              <div className="flex-1 h-px bg-white/10" />
+              <span className="text-[10px] font-bold tracking-[0.3em] text-gray-600">
+                OR
+              </span>
+              <div className="flex-1 h-px bg-white/10" />
+            </div>
+
+            {/* Inputs */}
+            <div className="space-y-3">
+              {authMode === "signup" && (
+                <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
+                  <LucideIcons.User size={17} className="text-gray-500" />
+
+                  <input
+                    type="text"
+                    name="name"
+                    value={authForm.name}
+                    onChange={handleInputChange}
+                    placeholder="Full name"
+                    className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                  />
+                </div>
+              )}
+
+              <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
+                <LucideIcons.Mail size={17} className="text-gray-500" />
+
+                <input
+                  type="email"
+                  name="email"
+                  value={authForm.email}
+                  onChange={handleInputChange}
+                  placeholder="you@company.com"
+                  className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                />
+              </div>
+
+              <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
+                <LucideIcons.Lock size={17} className="text-gray-500" />
+
+                <input
+                  type="password"
+                  name="password"
+                  value={authForm.password}
+                  onChange={handleInputChange}
+                  placeholder="Password"
+                  className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                />
+              </div>
+
+              {authMode === "signup" && (
+                <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
+                  <LucideIcons.Lock size={17} className="text-gray-500" />
+
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={authForm.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="Confirm password"
+                    className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Submit */}
+            <button
+              onClick={handleAuthSubmit}
+              disabled={authLoading}
+              className="w-full h-14 rounded-2xl bg-[#23b5b5] hover:bg-[#1da0a0] disabled:opacity-50 text-black text-base font-black mt-7 transition-all duration-300 hover:shadow-[0_0_30px_rgba(35,181,181,0.35)]"
+            >
+              {authLoading
+                ? "Please wait..."
+                : authMode === "signin"
+                  ? "Sign In — It's Free"
+                  : "Create Account →"}
+            </button>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between mt-6 text-xs">
+              {authMode === "signin" ? (
+                <>
+                  <div className="text-gray-500">
+                    No account?{" "}
+                    <button
+                      onClick={() => setAuthMode("signup")}
+                      className="text-[#23b5b5] font-bold hover:text-white transition-colors"
+                    >
+                      Create one →
+                    </button>
+                  </div>
+
+                  <button className="text-gray-600 hover:text-gray-400 transition-colors">
+                    Forgot?
+                  </button>
+                </>
+              ) : (
+                <div className="text-gray-500">
+                  Already have an account?{" "}
+                  <button
+                    onClick={() => setAuthMode("signin")}
+                    className="text-[#23b5b5] font-bold hover:text-white transition-colors"
+                  >
+                    Sign in →
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

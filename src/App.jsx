@@ -1,20 +1,24 @@
-import { BrowserRouter, Routes, Route } from "react-router"; // FIXED: Changed to react-router-dom
+import { BrowserRouter, Routes, Route } from "react-router"; 
 import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// 1. EAGERLY LOAD Home & Layout (These must load instantly)
+// --- REDUX IMPORTS ---
+import { Provider } from "react-redux";
+import store from "./redux/store.js"; // Make sure this path points to your Redux store!
+
+// 1. EAGERLY LOAD Home & Layout
 import LandingLayout from "./components/layout/LandingLayout";
 import Home from "./components/pages/Home";
-import { cmsRoutes } from "./components/routes";
+
 import { CMSProvider } from "./hooks/useCMS.jsx";
 import ExplifiedLabs from "./components/pages/LabsPage.jsx";
 import Lurphfe from "./components/pages/LurphPage.jsx";
 import MarketplaceDashboard from "./components/pages/Dashboard.jsx";
-import { AuthProvider } from "./hooks/AuthContext.jsx";
-import ProtectedRoute from "./components/layout/ProtectedRoute.jsx";
+import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 
-// 2. LAZY LOAD EVERYTHING ELSE (Drastically reduces initial bundle size)
+
+// 2. LAZY LOAD EVERYTHING ELSE
 const ExplifiedBlog = lazy(() => import("./components/pages/BlogPage"));
 const BlogPostDetail = lazy(() => import("./components/pages/BlogPostDetail"));
 const DynamicPage = lazy(() => import("./components/pages/DynamicPage"));
@@ -24,14 +28,12 @@ const Partners = lazy(() => import("./components/pages/Partners"));
 const TermsOfService = lazy(() => import("./components/pages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./components/pages/PrivacyPolicy"));
 
-// Simple lightweight loading spinner for route transitions
-// 🔥 Make the lazy-load fallback invisible!
-// We don't want a random spinner flashing before the Skeleton loads.
 const PageLoader = () => <div className="min-h-screen bg-transparent"></div>;
 
 function App() {
   return (
-    <AuthProvider>
+    // Replaced <AuthProvider> with Redux <Provider>
+    <Provider store={store}>
       <CMSProvider>
         <BrowserRouter>
           <Suspense fallback={<PageLoader />}>
@@ -39,11 +41,9 @@ function App() {
               <Route path="/" element={<LandingLayout />}>
                 <Route index element={<Home />} />
 
-                {/* Lazy-Loaded Blog Routes */}
                 <Route path="blog" element={<ExplifiedBlog />} />
                 <Route path="blog/:slug" element={<BlogPostDetail />} />
 
-                {/* Lazy-Loaded Hardcoded Pages */}
                 <Route path="about" element={<AboutUs />} />
                 <Route path="refund-terms" element={<RefundTerms />} />
                 <Route path="partners" element={<Partners />} />
@@ -52,9 +52,9 @@ function App() {
 
                 <Route path="labs" element={<ExplifiedLabs />} />
                 <Route path="/lurph" element={<Lurphfe />} />
-                {/* Magic Dynamic Catch-All Route */}
                 <Route path=":slug" element={<DynamicPage />} />
               </Route>
+              
               <Route
                 path="dashboard"
                 element={
@@ -63,7 +63,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {cmsRoutes}
             </Routes>
           </Suspense>
 
@@ -80,7 +79,7 @@ function App() {
           />
         </BrowserRouter>
       </CMSProvider>
-    </AuthProvider>
+    </Provider>
   );
 }
 

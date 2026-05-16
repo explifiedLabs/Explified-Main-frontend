@@ -2,9 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Figma, ShoppingBag, Chrome, Trello, PenTool, Database, Framer, Layers, Compass, Globe, MessageCircle,
-  Search, Plus, Bookmark, Users, Star, LayoutDashboard, Plug, Key, Settings, CreditCard, 
-  Copy, Eye, EyeOff, Play, ChevronDown, CheckCircle2, ChevronLeft, Trash2, FileText, Code
+  Search, Plus, Bookmark, Users, Star, Plug, Key, Settings, CreditCard, 
+  Copy, Eye, EyeOff, Play, ChevronDown, CheckCircle2, ChevronLeft, Trash2, FileText, Code, 
+  LogOut, Store, Activity, Zap, CreditCard as CardIcon, DownloadCloud, AlertCircle
 } from 'lucide-react';
+
+// --- REDUX IMPORTS INSTEAD OF CONTEXT ---
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../../redux/authSlice'; // Adjust path if your authSlice is somewhere else
 
 // --- PLATFORMS DATA ---
 const platforms = [
@@ -61,13 +66,19 @@ const itemVariants = {
 };
 
 export default function FullDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
+  // REDUX REPLACEMENT
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  // Default to 'integrations' initially as requested
+  const [activeTab, setActiveTab] = useState('integrations');
   const [selectedAppId, setSelectedAppId] = useState(null);
   const [apps, setApps] = useState(initialAppsData);
   const [visibleKeys, setVisibleKeys] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [appDetailTab, setAppDetailTab] = useState('information'); 
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   // Navigation Logic
   const handleNavClick = (id) => {
@@ -78,6 +89,11 @@ export default function FullDashboard() {
   const openAppDetails = (id) => {
     setSelectedAppId(id);
     setAppDetailTab('information');
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    setIsUserMenuOpen(false);
   };
 
   // Actions
@@ -116,10 +132,10 @@ export default function FullDashboard() {
   };
 
   const selectedApp = apps.find(a => a.id === selectedAppId);
+  const subscribedApps = useMemo(() => apps.filter(a => a.subscribed), [apps]);
 
   // --- SUB-COMPONENTS ---
 
-  // Sidebar Link with Framer Motion Smoothness
   const SidebarLink = ({ id, name, icon: Icon }) => {
     const isActive = activeTab === id && !selectedAppId;
     return (
@@ -134,7 +150,7 @@ export default function FullDashboard() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
         )}
-        <Icon size={16} className={`relative z-10 transition-colors ${isActive ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`} />
+        <Icon size={16} className={`relative z-10 transition-colors ${isActive ? 'text-[#23b5b5]' : 'text-zinc-400 group-hover:text-zinc-200'}`} />
         <span className={`relative z-10 transition-colors ${isActive ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
           {name}
         </span>
@@ -186,8 +202,6 @@ export default function FullDashboard() {
 
     return (
       <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-6xl mx-auto space-y-6 text-zinc-300 pb-20">
-        
-        {/* Header mimicking Apify App Detail */}
         <div className="flex flex-col md:flex-row gap-6 items-start">
            <motion.div 
              initial={{ scale: 0.8, opacity: 0 }}
@@ -220,7 +234,6 @@ export default function FullDashboard() {
               </motion.div>
            </div>
 
-           {/* Action Buttons */}
            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-3 w-full md:w-auto">
               <motion.button 
                 whileHover={{ scale: 1.02 }}
@@ -229,7 +242,7 @@ export default function FullDashboard() {
                 className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-semibold transition-colors ${
                   selectedApp.subscribed 
                   ? 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700' 
-                  : 'bg-green-600 text-white hover:bg-green-500'
+                  : 'bg-[#23b5b5] text-black hover:bg-[#1ca3a3]'
                 }`}
               >
                 {selectedApp.subscribed ? <><CheckCircle2 size={16}/> Subscribed</> : <><Play size={16} fill="currentColor" /> Subscribe & Start</>}
@@ -249,7 +262,6 @@ export default function FullDashboard() {
           {selectedApp.desc} Export data, run via API, schedule and monitor runs, or integrate with other tools directly from your workspace.
         </motion.p>
 
-        {/* Tabs */}
         <div className="flex gap-6 border-b border-zinc-800 mt-8 pt-4">
            <button 
              onClick={() => setAppDetailTab('information')}
@@ -265,7 +277,6 @@ export default function FullDashboard() {
            </button>
         </div>
 
-        {/* Tab Content */}
         <div className="pt-6">
           {appDetailTab === 'information' ? (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6 max-w-4xl">
@@ -294,7 +305,7 @@ export default function FullDashboard() {
                 <div className="text-center py-12 bg-zinc-900/50 rounded-lg border border-zinc-800 border-dashed">
                   <Key size={32} className="mx-auto text-zinc-600 mb-3"/>
                   <p className="text-zinc-400 font-medium mb-4">You must be subscribed to generate API keys.</p>
-                  <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => toggleSubscription(selectedApp.id)} className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                  <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => toggleSubscription(selectedApp.id)} className="bg-[#23b5b5] hover:bg-[#1ca3a3] text-black px-6 py-2 rounded-lg font-medium transition-colors">
                     Subscribe Now
                   </motion.button>
                 </div>
@@ -326,10 +337,9 @@ export default function FullDashboard() {
 
   const MarketplaceOverview = () => {
     return (
-      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-7xl mx-auto space-y-8">
+      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-7xl mx-auto space-y-8 pb-20">
         <h1 className="text-4xl font-extrabold text-white tracking-tight">Explified Store</h1>
         
-        {/* Search Bar matching Apify */}
         <div className="flex items-center gap-3 max-w-2xl">
           <div className="relative flex-1">
             <input 
@@ -345,7 +355,6 @@ export default function FullDashboard() {
           </motion.button>
         </div>
 
-        {/* Filter Pills */}
         <div className="flex flex-wrap gap-2">
           {platforms.map(platform => (
             <motion.button 
@@ -362,10 +371,8 @@ export default function FullDashboard() {
               {platform.name}
             </motion.button>
           ))}
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-3 py-1.5 text-[13px] border border-zinc-800/80 bg-[#18191E] text-zinc-400 rounded-md hover:bg-zinc-800">...</motion.button>
         </div>
 
-        {/* Grouped Apps Section */}
         <div className="space-y-12">
           {platforms.filter(p => p.id !== 'all').map(platform => {
             if (activeFilter !== 'all' && activeFilter !== platform.id) return null;
@@ -394,36 +401,217 @@ export default function FullDashboard() {
               </div>
             );
           })}
-
-          {/* Empty State Fallback */}
-          {platforms.filter(p => p.id !== 'all').every(platform => {
-            if (activeFilter !== 'all' && activeFilter !== platform.id) return true;
-            const platformApps = apps.filter(app => app.platformId === platform.id && (app.name.toLowerCase().includes(searchQuery.toLowerCase()) || app.desc.toLowerCase().includes(searchQuery.toLowerCase())));
-            return platformApps.length === 0;
-          }) && (
-             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center text-zinc-500">No actors found matching your criteria.</motion.div>
-          )}
         </div>
       </motion.div>
     );
   };
 
   const IntegrationsView = () => {
-    const subscribedApps = apps.filter(a => a.subscribed);
     return (
-      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">My Integrations</h1>
+      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-7xl mx-auto pb-20">
+        <h1 className="text-3xl font-bold text-white mb-2">My Integrations</h1>
+        <p className="text-zinc-400 mb-8">Manage, configure, and monitor your active Explified actors and apps.</p>
+
+        {subscribedApps.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <div className="bg-[#18191E] border border-zinc-800 rounded-xl p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-lg bg-[#23b5b5]/10 flex items-center justify-center text-[#23b5b5]">
+                <Plug size={24} />
+              </div>
+              <div>
+                <div className="text-sm text-zinc-400 font-medium">Active Actors</div>
+                <div className="text-2xl font-bold text-white">{subscribedApps.length}</div>
+              </div>
+            </div>
+            <div className="bg-[#18191E] border border-zinc-800 rounded-xl p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+                <Activity size={24} />
+              </div>
+              <div>
+                <div className="text-sm text-zinc-400 font-medium">Tasks Executed (30d)</div>
+                <div className="text-2xl font-bold text-white">12,450</div>
+              </div>
+            </div>
+            <div className="bg-[#18191E] border border-zinc-800 rounded-xl p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500">
+                <Zap size={24} />
+              </div>
+              <div>
+                <div className="text-sm text-zinc-400 font-medium">Compute Hours</div>
+                <div className="text-2xl font-bold text-white">34.2h</div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {subscribedApps.length === 0 ? (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="py-20 text-center border border-zinc-800 rounded-xl bg-[#18191E]">
             <Plug size={40} className="mx-auto text-zinc-600 mb-4" />
             <h3 className="text-xl font-bold text-white">No Integrations Active</h3>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setActiveTab('overview')} className="mt-4 text-sm font-semibold bg-white text-black px-6 py-2 rounded-lg">Browse Store</motion.button>
+            <p className="text-zinc-400 mt-2 text-sm max-w-sm mx-auto mb-6">You haven't subscribed to any actors or tools yet. Browse the store to power up your workspace.</p>
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => handleNavClick('overview')} className="text-sm font-semibold bg-[#23b5b5] text-black px-6 py-2.5 rounded-lg hover:bg-[#1ca3a3] transition-colors">Browse Store</motion.button>
           </motion.div>
         ) : (
-          <motion.div variants={containerVariants} initial="initial" animate="animate" className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <motion.div variants={containerVariants} initial="initial" animate="animate" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {subscribedApps.map(app => <ApifyAppCard key={app.id} app={app} />)}
           </motion.div>
         )}
+      </motion.div>
+    );
+  };
+
+  const BillingView = () => {
+    // Array of generic payment methods
+    const mockPaymentMethods = [
+      { id: 1, label: 'Primary Credit Card', isDefault: true },
+      { id: 2, label: 'PayPal Account', isDefault: false },
+    ];
+
+    return (
+      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-5xl mx-auto pb-20">
+        <h1 className="text-3xl font-bold text-white mb-2">Billing & Usage</h1>
+        <p className="text-zinc-400 mb-8">Manage your subscription, compute usage, and billing history.</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Plan Card */}
+          <div className="col-span-1 lg:col-span-2 bg-[#18191E] border border-zinc-800 rounded-xl p-6">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  Pro Plan <span className="text-[10px] uppercase bg-[#23b5b5] text-black px-2 py-0.5 rounded font-bold">Active</span>
+                </h2>
+                <p className="text-sm text-zinc-400 mt-1">Next billing date is October 15, 2024</p>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-white">$49.00</div>
+                <div className="text-xs text-zinc-500">per month</div>
+              </div>
+            </div>
+            
+            <div className="mb-6">
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-zinc-300 font-medium">Monthly API Runs</span>
+                <span className="text-zinc-400">45,120 / 100,000</span>
+              </div>
+              <div className="w-full bg-zinc-900 rounded-full h-2.5 overflow-hidden border border-zinc-800">
+                <motion.div initial={{ width: 0 }} animate={{ width: '45%' }} transition={{ duration: 1, ease: 'easeOut' }} className="bg-gradient-to-r from-[#23b5b5] to-[#167878] h-2.5 rounded-full" />
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-5 py-2.5 bg-white text-black font-semibold text-sm rounded-lg hover:bg-zinc-200 transition-colors">
+                Upgrade Plan
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-5 py-2.5 bg-zinc-900 border border-zinc-700 text-zinc-300 font-semibold text-sm rounded-lg hover:bg-zinc-800 transition-colors">
+                Manage Limits
+              </motion.button>
+            </div>
+          </div>
+
+          {/* Payment Methods Section */}
+          <div className="col-span-1 bg-[#18191E] border border-zinc-800 rounded-xl p-6 flex flex-col">
+            <h3 className="text-lg font-bold text-white mb-4">Payment Methods</h3>
+            <div className="flex-1 space-y-3">
+              {mockPaymentMethods.map(method => (
+                <div key={method.id} className="bg-zinc-950 border border-zinc-800 rounded-lg p-3 flex items-center justify-between group">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-7 bg-zinc-900 border border-zinc-700 rounded flex items-center justify-center text-zinc-300">
+                      <CardIcon size={16} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-zinc-200">{method.label}</p>
+                      {method.isDefault && <p className="text-[10px] text-[#23b5b5] uppercase tracking-wide font-bold">Default</p>}
+                    </div>
+                  </div>
+                  <button className="text-zinc-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
+                </div>
+              ))}
+            </div>
+            <button className="text-sm font-medium text-[#23b5b5] hover:text-white transition-colors self-start mt-5 flex items-center gap-2">
+              <Plus size={16} /> Add Payment Method
+            </button>
+          </div>
+        </div>
+
+        {/* Invoice History */}
+        <div className="bg-[#18191E] border border-zinc-800 rounded-xl overflow-hidden">
+          <div className="p-5 border-b border-zinc-800 bg-zinc-900/30">
+            <h3 className="text-lg font-bold text-white">Billing History</h3>
+          </div>
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-zinc-800/50 bg-zinc-900/20 text-xs text-zinc-400 uppercase">
+                <th className="p-4 font-semibold">Date</th>
+                <th className="p-4 font-semibold">Description</th>
+                <th className="p-4 font-semibold">Amount</th>
+                <th className="p-4 font-semibold text-right">Invoice</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { date: 'Sep 15, 2024', desc: 'Pro Plan - Monthly', amt: '$49.00' },
+                { date: 'Aug 15, 2024', desc: 'Pro Plan - Monthly', amt: '$49.00' },
+                { date: 'Jul 15, 2024', desc: 'Pro Plan - Monthly', amt: '$49.00' }
+              ].map((inv, idx) => (
+                <tr key={idx} className="border-b border-zinc-800/50 hover:bg-zinc-800/20 transition-colors">
+                  <td className="p-4 text-sm text-zinc-300">{inv.date}</td>
+                  <td className="p-4 text-sm text-zinc-300">{inv.desc}</td>
+                  <td className="p-4 text-sm text-zinc-300">{inv.amt}</td>
+                  <td className="p-4 text-right">
+                    <button className="text-zinc-500 hover:text-white transition-colors"><DownloadCloud size={18} /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
+    );
+  };
+
+  const SettingsView = () => {
+    return (
+      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-4xl mx-auto pb-20">
+        <h1 className="text-3xl font-bold text-white mb-2">Workspace Settings</h1>
+        <p className="text-zinc-400 mb-8">Manage your workspace preferences, profile, and team settings.</p>
+
+        <div className="space-y-6">
+          {/* Profile Section */}
+          <div className="bg-[#18191E] border border-zinc-800 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-white mb-6 border-b border-zinc-800/50 pb-3">General Information</h3>
+            <div className="grid gap-6 max-w-xl">
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Workspace Name</label>
+                <input 
+                  type="text" 
+                  defaultValue={user?.name ? `${user.name}'s Workspace` : 'My Workspace'} 
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#23b5b5] transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Admin Email</label>
+                <input 
+                  type="email" 
+                  disabled
+                  defaultValue={user?.email || 'user@example.com'} 
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-500 cursor-not-allowed"
+                />
+              </div>
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-5 py-2.5 bg-white text-black font-semibold text-sm rounded-lg hover:bg-zinc-200 transition-colors w-max mt-2">
+                Save Changes
+              </motion.button>
+            </div>
+          </div>
+
+          {/* Danger Zone */}
+          <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-red-400 mb-2 flex items-center gap-2"><AlertCircle size={20} /> Danger Zone</h3>
+            <p className="text-sm text-zinc-400 mb-6">Permanently delete your workspace and all associated data, including active API tokens and integrations. This action cannot be undone.</p>
+            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-5 py-2.5 bg-red-500/10 border border-red-500/30 text-red-400 font-semibold text-sm rounded-lg hover:bg-red-500 hover:text-white transition-colors">
+              Delete Workspace
+            </motion.button>
+          </div>
+        </div>
       </motion.div>
     );
   };
@@ -432,7 +620,7 @@ export default function FullDashboard() {
     const allKeys = useMemo(() => apps.filter(a => a.subscribed).flatMap(app => app.apiKeys.map(key => ({ ...key, appId: app.id, appName: app.name, path: app.path }))), [apps]);
 
     return (
-      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-6xl mx-auto">
+      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="max-w-6xl mx-auto pb-20">
         <h1 className="text-3xl font-bold text-white mb-2">Global API Keys</h1>
         <p className="text-zinc-400 mb-8">Centralized view of all your active access tokens.</p>
 
@@ -481,7 +669,11 @@ export default function FullDashboard() {
     if (selectedAppId) return <AppDetailView key="app-detail" />;
     if (activeTab === 'overview') return <MarketplaceOverview key="overview" />;
     if (activeTab === 'integrations') return <IntegrationsView key="integrations" />;
+    if (activeTab === 'billing') return <BillingView key="billing" />;
+    if (activeTab === 'settings') return <SettingsView key="settings" />;
     if (activeTab === 'api_keys') return <ApiKeysView key="api-keys" />;
+    
+    // Fallback logic
     return <motion.div key="coming-soon" variants={pageVariants} initial="initial" animate="animate" exit="exit" className="text-center py-20 text-zinc-500">Feature coming soon.</motion.div>;
   };
 
@@ -494,22 +686,79 @@ export default function FullDashboard() {
           <div className="w-6 h-6 rounded bg-gradient-to-br from-[#23b5b5] to-[#167878] mr-3 flex items-center justify-center text-black font-bold text-xs">E</div>
           <span className="font-bold text-lg text-white">Explified</span>
         </div>
+        
+        {/* Reorganized Sidebar Links */}
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8">
           <div>
             <p className="px-3 text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Dashboard</p>
             <div className="space-y-1">
-              <SidebarLink id="overview" name="Store" icon={LayoutDashboard} />
               <SidebarLink id="integrations" name="My Integrations" icon={Plug} />
+              <SidebarLink id="billing" name="Billing" icon={CreditCard} />
             </div>
           </div>
           <div>
             <p className="px-3 text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Settings</p>
             <div className="space-y-1">
               <SidebarLink id="api_keys" name="Global API Keys" icon={Key} />
-              <SidebarLink id="billing" name="Billing" icon={CreditCard} />
               <SidebarLink id="settings" name="Settings" icon={Settings} />
             </div>
           </div>
+        </div>
+
+        {/* User Profile Section with Popover */}
+        <div className="p-4 relative border-t border-zinc-800/50 mt-auto">
+          <AnimatePresence>
+            {isUserMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                className="absolute bottom-full left-4 right-4 mb-2 bg-[#16171D] border border-zinc-700/60 rounded-xl shadow-2xl overflow-hidden z-50"
+              >
+                <button
+                  onClick={() => {
+                    handleNavClick('overview'); // Sends user back to the store
+                    setIsUserMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-[14px] font-medium text-zinc-300 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  <Store size={16} className="text-zinc-400" />
+                  Store
+                </button>
+                <div className="h-px bg-zinc-800/50 w-full" />
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-[14px] font-medium text-[#FF4F4F] hover:bg-[#FF4F4F]/10 transition-colors"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* User Trigger Button */}
+          <button
+            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+            className="w-full flex items-center gap-3 p-2.5 rounded-2xl bg-[#18191E] border border-zinc-800/80 hover:border-zinc-600 transition-all text-left shadow-sm"
+          >
+            <div className="w-10 h-10 rounded-full bg-[#23b5b5] flex items-center justify-center text-black font-bold text-sm flex-shrink-0 shadow-inner overflow-hidden">
+               {user?.avatar ? (
+                  <img src={user.avatar} alt="User Avatar" className="w-full h-full object-cover" />
+               ) : (
+                  user?.name ? user.name.charAt(0).toUpperCase() : 'U'
+               )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[14px] font-bold text-white truncate leading-tight">
+                {user?.name || 'User Profile'}
+              </p>
+              <p className="text-[12px] text-zinc-500 truncate mt-0.5">
+                {user?.email || 'user@example.com'}
+              </p>
+            </div>
+          </button>
         </div>
       </div>
 
@@ -521,7 +770,9 @@ export default function FullDashboard() {
           <div className="flex items-center text-sm font-medium text-zinc-400">
             <span className="cursor-pointer hover:text-white transition-colors" onClick={() => handleNavClick('overview')}>Explified</span>
             <ChevronLeft size={14} className="mx-2 rotate-180 opacity-50" />
-            <span className="capitalize">{activeTab.replace('_', ' ')}</span>
+            <span className="capitalize text-white">
+              {activeTab === 'overview' ? 'Store' : activeTab.replace('_', ' ')}
+            </span>
             {selectedAppId && selectedApp && (
               <>
                 <ChevronLeft size={14} className="mx-2 rotate-180 opacity-50" />
@@ -529,7 +780,13 @@ export default function FullDashboard() {
               </>
             )}
           </div>
-          <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 cursor-pointer hover:border-zinc-500 transition-colors" />
+          <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 cursor-pointer hover:border-zinc-500 transition-colors flex items-center justify-center overflow-hidden">
+             {user?.avatar ? (
+                <img src={user.avatar} alt="User Avatar" className="w-full h-full object-cover" />
+             ) : (
+                <span className="text-xs text-white font-bold">{user?.name ? user.name.charAt(0).toUpperCase() : 'U'}</span>
+             )}
+          </div>
         </header>
 
         {/* Scrollable Main Area */}

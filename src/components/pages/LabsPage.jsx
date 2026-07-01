@@ -130,95 +130,6 @@ const HeroSection = () => {
 };
 
 // --- COMPONENT: PROCESS SECTION ---
-const ProcessSection = () => {
-  const steps = [
-    { num: '01', title: 'Idea', icon: Lightbulb, desc: 'A problem worth solving or an outcome you want to automate.' },
-    { num: '02', title: 'Tool', icon: Cpu, desc: 'AI models, APIs, and smart components selected for the job.' },
-    { num: '03', title: 'Workflow', icon: Workflow, desc: 'Sequences that connect every tool and trigger without manual effort.' },
-    { num: '04', title: 'Scalable Output', icon: BarChart3, desc: 'Results that compound — not a one-time win, but a system that grows.', highlight: true },
-  ];
-
-  return (
-    <section className="bg-black py-40 px-6 relative overflow-hidden">
-      <div className="max-w-5xl mx-auto text-center space-y-8 mb-32 relative z-10">
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#23b5b511] border border-[#23b5b533]">
-           <Globe size={12} className="text-[#23b5b5]" />
-           <span className="text-[#23b5b5] text-[10px] font-black uppercase tracking-[0.3em]">OUR ARCHITECTURE</span>
-        </motion.div>
-        
-        <motion.h2 initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} className="text-5xl md:text-7xl font-bold tracking-tight text-white">
-          More Than Tools. <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-[#23b5b5]">We Build Systems.</span>
-        </motion.h2>
-
-        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-gray-400 max-w-3xl mx-auto text-xl leading-relaxed">
-          Most teams collect tools. We build the connective tissue between them — AI models, automation workflows, and feedback loops that compound over time.
-        </motion.p>
-      </div>
-
-      {/* Steps Grid */}
-      <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 relative z-10">
-        {steps.map((step, idx) => (
-          <motion.div 
-            key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
-            className="group relative"
-          >
-            <div className={`h-full p-10 rounded-[2.5rem] border transition-all duration-700 relative overflow-hidden ${
-              step.highlight 
-                ? 'bg-gradient-to-br from-[#23b5b522] to-black border-[#23b5b577] shadow-[0_30px_60px_-15px_#23b5b533]' 
-                : 'bg-[#ffffff03] border-white/5 hover:border-[#23b5b544] hover:bg-[#ffffff05]'
-            }`}>
-              
-              <div className="absolute inset-0 bg-gradient-to-br from-[#23b5b50a] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-              <div className="relative z-10">
-                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500">
-                  <step.icon size={30} style={{ color: BRAND_COLOR }} />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-[#23b5b5] transition-colors">{step.title}</h3>
-                <p className="text-gray-500 leading-relaxed text-sm mb-10">{step.desc}</p>
-                <div className="text-[10px] font-black px-4 py-1.5 rounded-lg bg-black/40 border border-white/10 w-fit text-gray-400 group-hover:border-[#23b5b544] group-hover:text-[#23b5b5] transition-all">
-                  STEP {step.num}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Feature Row */}
-      <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 mt-32 relative z-10">
-        {[
-          { t: "AI Layer", d: "Smart automation at the core" },
-          { t: "Workflow Engine", d: "Triggers, logic, and routing" },
-          { t: "Output Analytics", d: "Measure what actually matters" },
-        ].map((f, i) => (
-          <div key={i} className="group p-6 rounded-2xl border border-white/5 bg-white/[0.02] flex items-center gap-5 hover:border-[#23b5b533] transition-all">
-            <div className="h-12 w-12 rounded-xl bg-[#23b5b511] flex items-center justify-center group-hover:rotate-[360deg] transition-transform duration-700">
-              <Activity size={20} color={BRAND_COLOR} />
-            </div>
-            <div>
-              <div className="text-sm font-bold text-white uppercase tracking-tight">{f.t}</div>
-              <div className="text-[9px] text-gray-600 font-black uppercase tracking-widest">{f.d}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-10 mt-32">
-        
-         <a href={SCHEDULE_CALL_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-12 py-5 font-black rounded-2xl transition-all hover:scale-105 hover:shadow-[0_0_40px_#23b5b544] inline-block"
-          style={{ backgroundColor: BRAND_COLOR, color: '#000' }}
-        >
-          Schedule a call
-        </a>
-      </div>
-    </section>
-  );
-};
 
 // --- SUB-COMPONENTS ---
 const SystemNode = ({ icon: Icon, label, sub, active }) => (
@@ -251,7 +162,6 @@ export default function ExplifiedLabs() {
   return (
     <div className="bg-black text-white selection:bg-[#23b5b544] selection:text-[#23b5b5]">
       <HeroSection />
-      <ProcessSection />
     </div>
   );
 }

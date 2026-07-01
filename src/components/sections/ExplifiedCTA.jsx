@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Command } from "lucide-react";
-import { Link } from 'react-router'; 
+import { Link } from 'react-router';
 
 const ExplifiedCTA = () => {
   // --- Animations Configuration ---
-const fadeUpVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-};
+  const fadeUpVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
 
   return (
     <section className="relative w-full py-20 px-4 md:px-8 bg-black overflow-hidden font-sans">
@@ -43,14 +43,14 @@ const fadeUpVariants = {
           <div className="relative z-20 flex flex-col items-center justify-center text-center px-6 py-16 md:py-20">
 
             {/* Brand Tag */}
-       
+
 
             {/* Main Headline (Wider container to prevent wrapping, reducing height) */}
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6 drop-shadow-lg leading-tight">
                 To digitally transform{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
-                  your business visit our lab
+                  your business visit our labs
                 </span>
               </h2>
             </div>
@@ -58,17 +58,17 @@ const fadeUpVariants = {
             {/* Sub-headline (Wider container) */}
             <p className="text-base md:text-lg text-gray-400 max-w-3xl mb-10 leading-relaxed">
               We try to make magic happen through technology.
-              Visit our lab to know more.
+              Visit our labs to know more.
             </p>
-        <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-          <Link to="https://explified.com/lab">
-            <button className="relative cursor-pointer overflow-hidden bg-brand text-black font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)]">
-               <span className="relative z-10">Explified Lab</span>
-               <ArrowRight size={18} className="relative z-10" />
-               <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
-            </button>
-          </Link>
-        </motion.div>
+            <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+              <Link to="https://explified.com/labs">
+                <button className="relative cursor-pointer overflow-hidden bg-brand text-black font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)]">
+                  <span className="relative z-10">Explified Labs</span>
+                  <ArrowRight size={18} className="relative z-10" />
+                  <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
+                </button>
+              </Link>
+            </motion.div>
             {/* CTA Button */}
             <div className="relative group/btn">
               {/* Button Glow Behind */}

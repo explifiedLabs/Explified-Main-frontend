@@ -306,23 +306,114 @@ export default function DynamicPage() {
             animation: smoothFade 0.5s ease-out forwards;
           }
 
-          .dynamic-content { color: #d4d4d8; line-height: 1.85; font-size: 1.15rem; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-          .dynamic-content > * + * { margin-top: 1.75em; }
-          .dynamic-content h1 { font-size: 3rem; font-weight: 900; margin-top: 1.5em; color: #ffffff; line-height: 1.15; letter-spacing: -0.03em; }
-          .dynamic-content h2 { font-size: 2.25rem; font-weight: 800; margin-top: 1.75em; color: #ffffff; letter-spacing: -0.02em; }
-          .dynamic-content h3 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5em; color: #f4f4f5; letter-spacing: -0.01em; }
-          .dynamic-content h4 { font-size: 1.25rem; font-weight: 600; margin-top: 1.2em; color: #e4e4e7; }
-          .dynamic-content a { color: #23b5b5; text-decoration: none; border-bottom: 2px solid rgba(35, 181, 181, 0.3); transition: all 0.2s; font-weight: 500; }
+          /* ── BASE ── */
+          .dynamic-content {
+            color: #d4d4d8;
+            line-height: 1.85;
+            font-size: 1.15rem;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          }
+
+          /* ── SPACING: all elements at every nesting level ── */
+
+          /* Paragraphs */
+          .dynamic-content p {
+            margin-top: 1.1em;
+            margin-bottom: 1.1em;
+          }
+          .dynamic-content p:first-child { margin-top: 0; }
+          .dynamic-content p:last-child  { margin-bottom: 0; }
+
+          /* KEY FIX: <li><p>text</p></li> pattern from rich-text editors —
+             strip the <p> margin so the <li> controls spacing, not the inner <p> */
+          .dynamic-content li > p {
+            margin-top: 0;
+            margin-bottom: 0;
+          }
+
+          /* Lists */
+          .dynamic-content ul,
+          .dynamic-content ol {
+            margin-top: 1.1em;
+            margin-bottom: 1.1em;
+          }
+
+          /* Headings */
+          .dynamic-content h1 { margin-top: 1.5em;  margin-bottom: 0.5em; }
+          .dynamic-content h2 { margin-top: 1.75em; margin-bottom: 0.5em; }
+          .dynamic-content h3 { margin-top: 1.5em;  margin-bottom: 0.4em; }
+          .dynamic-content h4 { margin-top: 1.2em;  margin-bottom: 0.4em; }
+
+          /* ── TYPOGRAPHY ── */
+          .dynamic-content h1 { font-size: 3rem;    font-weight: 900; color: #ffffff; line-height: 1.15; letter-spacing: -0.03em; }
+          .dynamic-content h2 { font-size: 2.25rem; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; }
+          .dynamic-content h3 { font-size: 1.5rem;  font-weight: 700; color: #f4f4f5; letter-spacing: -0.01em; }
+          .dynamic-content h4 { font-size: 1.25rem; font-weight: 600; color: #e4e4e7; }
+
+          /* ── LINKS ── */
+          .dynamic-content a {
+            color: #23b5b5;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(35, 181, 181, 0.3);
+            transition: all 0.2s;
+            font-weight: 500;
+          }
           .dynamic-content a:hover { color: #1ca3a3; border-bottom-color: #1ca3a3; }
-          .dynamic-content ul { list-style-type: disc; padding-left: 1.75rem; margin: 1.5rem 0; color: #d4d4d8; }
-          .dynamic-content ol { list-style-type: decimal; padding-left: 1.75rem; margin: 1.5rem 0; color: #d4d4d8; }
-          .dynamic-content li { margin-bottom: 0.6rem; padding-left: 0.25rem; }
+
+          /* ── LISTS ── */
+          .dynamic-content ul { list-style-type: disc;    padding-left: 1.75rem; color: #d4d4d8; }
+          .dynamic-content ol { list-style-type: decimal; padding-left: 1.75rem; color: #d4d4d8; }
+          .dynamic-content li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
           .dynamic-content li::marker { color: #23b5b5; }
-          .dynamic-content blockquote { border-left: 4px solid #23b5b5; margin: 2rem 0; font-style: italic; color: #a1a1aa; background: rgba(255, 255, 255, 0.03); padding: 1.5rem 2rem; border-radius: 0 0.75rem 0.75rem 0; }
-          .dynamic-content img { border-radius: 0.75rem; max-width: 100%; height: auto; margin: 2.5rem 0; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+
+          /* Nested lists */
+          .dynamic-content li > ul,
+          .dynamic-content li > ol {
+            margin-top: 0.4em;
+            margin-bottom: 0.4em;
+          }
+
+          /* ── BLOCKQUOTE ── */
+          .dynamic-content blockquote {
+            border-left: 4px solid #23b5b5;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #a1a1aa;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem 2rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+          }
+
+          /* ── IMAGES ── */
+          .dynamic-content img {
+            border-radius: 0.75rem;
+            max-width: 100%;
+            height: auto;
+            margin: 2.5rem 0;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+          }
+
+          /* ── DIVIDER ── */
           .dynamic-content hr { border-color: rgba(255, 255, 255, 0.1); margin: 3rem 0; }
-          .dynamic-content pre { background: #18181b; padding: 1.25rem; border-radius: 0.75rem; overflow-x: auto; border: 1px solid #27272a; margin: 1.5rem 0; }
-          .dynamic-content code { background: rgba(35, 181, 181, 0.1); padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.875em; color: #23b5b5; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+          /* ── CODE ── */
+          .dynamic-content pre {
+            background: #18181b;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            border: 1px solid #27272a;
+            margin: 1.5rem 0;
+          }
+          .dynamic-content code {
+            background: rgba(35, 181, 181, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875em;
+            color: #23b5b5;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          }
           .dynamic-content pre code { background: transparent; padding: 0; color: #e4e4e7; }
         `,
         }}

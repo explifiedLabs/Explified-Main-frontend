@@ -7,7 +7,7 @@ import logo from "../../assets/logo.png";
 // REDUX IMPORTS
 import { useSelector, useDispatch } from "react-redux";
 // Adjust this import path depending on exactly where your authSlice.js is located
-import { loginUser, registerUser, loginWithGoogle, logoutUser } from "../../redux/authSlice.js"; 
+import { loginUser, registerUser, loginWithGoogle, logoutUser } from "../../redux/authSlice.js";
 
 const SCHEDULE_CALL_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSf3E-9_WpCdMKM38mh5FL0GQq7frinMK4lRJTucASeXTQ55dw/viewform";
@@ -111,14 +111,14 @@ const Navbar = () => {
         if (authForm.password !== authForm.confirmPassword) {
           return alert("Passwords do not match");
         }
-        
+
         // .unwrap() allows us to catch the error natively if the thunk fails
         await dispatch(registerUser({
           name: authForm.name,
           email: authForm.email,
           password: authForm.password,
         })).unwrap();
-        
+
       } else {
         await dispatch(loginUser({
           email: authForm.email,
@@ -182,7 +182,7 @@ const Navbar = () => {
     const aHas = hasContent(a);
     const bHas = hasContent(b);
 
-    if (aHas && !bHas) return 0; 
+    if (aHas && !bHas) return 0;
     if (!aHas && bHas) return -1;
 
     return 0;
@@ -424,9 +424,8 @@ const Navbar = () => {
                 </button>
 
                 <div
-                  className={`absolute right-0 top-14 w-52 rounded-2xl border border-white/10 bg-[#0A0A0C]/95 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
-                    isUserMenuOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2 pointer-events-none"
-                  }`}
+                  className={`absolute right-0 top-14 w-52 rounded-2xl border border-white/10 bg-[#0A0A0C]/95 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-300 ${isUserMenuOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2 pointer-events-none"
+                    }`}
                 >
                   <div className="p-2">
                     <RouterLink
@@ -457,7 +456,7 @@ const Navbar = () => {
               </button>
             )}
 
-            <a
+            {/* <a
               href={SCHEDULE_CALL_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -465,7 +464,7 @@ const Navbar = () => {
             >
               <LucideIcons.CalendarDays size={15} />
               Schedule a Call
-            </a>
+            </a> */}
           </div>
 
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-2 text-white transition-transform active:scale-90">
@@ -536,16 +535,16 @@ const Navbar = () => {
 
           <div className="flex items-center justify-end gap-3">
             {!user ? (
-               <button onClick={() => setIsAuthModalOpen(true)} className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#23b5b5]/40 bg-white/5 hover:bg-[#23b5b5]/10 text-[#23b5b5] text-sm font-bold tracking-wide transition-all duration-300 hover:border-[#23b5b5] hover:shadow-[0_0_20px_rgba(35,181,181,0.15)] active:scale-95 backdrop-blur-md">
-                 <LucideIcons.LogIn size={15} />
-                 Login
-               </button>
+              <button onClick={() => setIsAuthModalOpen(true)} className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#23b5b5]/40 bg-white/5 hover:bg-[#23b5b5]/10 text-[#23b5b5] text-sm font-bold tracking-wide transition-all duration-300 hover:border-[#23b5b5] hover:shadow-[0_0_20px_rgba(35,181,181,0.15)] active:scale-95 backdrop-blur-md">
+                <LucideIcons.LogIn size={15} />
+                Login
+              </button>
             ) : null}
 
-            <a href={SCHEDULE_CALL_URL} target="_blank" rel="noopener noreferrer" className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#23b5b5] hover:bg-[#1da0a0] text-black text-sm font-bold tracking-wide transition-all duration-300 hover:shadow-[0_0_20px_rgba(35,181,181,0.4)] active:scale-95">
+            {/* <a href={SCHEDULE_CALL_URL} target="_blank" rel="noopener noreferrer" className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#23b5b5] hover:bg-[#1da0a0] text-black text-sm font-bold tracking-wide transition-all duration-300 hover:shadow-[0_0_20px_rgba(35,181,181,0.4)] active:scale-95">
               <LucideIcons.CalendarDays size={15} />
               Schedule a Call
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

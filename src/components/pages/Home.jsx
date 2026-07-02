@@ -5,9 +5,9 @@ import Hero from "../sections/Hero";
 import PerformanceSection from "../sections/performanceSection";
 import ProductShowcase from "../sections/Tools";
 import WhyChooseExplified from "../sections/WhyChoose";
+import WhyExplified from "../sections/Whyexplified";
 import ContentLabs from "./ContentLabs";
 import IndustriesPage from "./Industries";
-
 
 export default function Home() {
   return (
@@ -19,8 +19,8 @@ export default function Home() {
       </div>
       <ProductShowcase />
       {/* <ContentLabs /> */}
+      <WhyExplified />
       <ExplifiedCTA />
-
     </>
   );
 }

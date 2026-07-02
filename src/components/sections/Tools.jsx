@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Users, Youtube, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useMemo } from "react";
+import { motion } from "framer-motion";
+import { Users, Youtube } from "lucide-react";
 import * as Lucide from "lucide-react";
 import { useCMS } from "../../hooks/useCMS.jsx";
 
@@ -43,7 +43,7 @@ const CHANNELS = [
     url: "https://www.youtube.com/@historicknowledgebyexplified",
     color: "#eab308",
     logo: HistoricLogo,
-  }
+  },
 ];
 
 const CORE_PRODUCTS = {
@@ -54,29 +54,138 @@ const CORE_PRODUCTS = {
   icon: "Package",
   platformIcon: null, // uses Lucide icon fallback
   items: [
-    { title: "Lurph", desc: "The AI-native engine that connects your tools and automates your entire stack.", icon: "Zap", theme: "yellow", link: "https://lurph.com" },
-    { title: "Slides", desc: "Turn text to slides instantly with AI — no design skills needed.", icon: "Monitor", theme: "cyan", link: "https://slides.explified.com" },
-    { title: "Stream", desc: "Sub-second latency, built-in analytics, and a drop-in SDK. Private beta opening soon.", icon: "Tv2", theme: "cyan", link: "https://stream.explified.com" },
-    { title: "Beacon", desc: "A modern browser designed for builders — fast, minimal, and intelligent.", icon: "Globe", theme: "cyan", link: "https://beacon.explified.com" },
+    {
+      title: "Lurph",
+      desc: "The AI-native engine that connects your tools and automates your entire stack.",
+      icon: "Zap",
+      theme: "yellow",
+      link: "https://lurph.com",
+    },
+    {
+      title: "Slides",
+      desc: "Turn text to slides instantly with AI — no design skills needed.",
+      icon: "Monitor",
+      theme: "cyan",
+      link: "https://slides.explified.com",
+    },
+    {
+      title: "Stream",
+      desc: "Sub-second latency, built-in analytics, and a drop-in SDK. Private beta opening soon.",
+      icon: "Tv2",
+      theme: "cyan",
+      link: "https://stream.explified.com",
+    },
+    {
+      title: "Beacon",
+      desc: "A modern browser designed for builders — fast, minimal, and intelligent.",
+      icon: "Globe",
+      theme: "cyan",
+      link: "https://beacon.explified.com",
+    },
   ],
 };
 
 // All platforms visible in the UI — key must match products[key] from CMS/API
 // platformIcon: URL string from API (item.iconUrl on the platform level), or null to fall back to lucide
 const PLATFORM_CONFIG = [
-  { key: "Figma",        title: "Figma Plugins",        label: "FIGMA",        icon: "Figma",       sub: "Accelerate your creative design workflow" },
-  { key: "Shopify",      title: "Shopify Apps",          label: "SHOPIFY",      icon: "ShoppingBag", sub: "Marketing and store automation utilities" },
-  { key: "Chrome",       title: "Chrome Extensions",     label: "CHROME",       icon: "Chrome",      sub: "Supercharge your browser with AI overlays" },
-  { key: "Atlassian",    title: "Atlassian Tools",       label: "ATLASSIAN",    icon: "Layout",      sub: "Enterprise productivity and workflow solutions" },
-  { key: "Penpot",       title: "Penpot Plugins",        label: "PENPOT",       icon: "PenTool",     sub: "Open-source design and prototyping plugins" },
-  { key: "Strapi",       title: "Strapi Plugins",        label: "STRAPI",       icon: "Database",    sub: "Extend your headless CMS with powerful plugins" },
-  { key: "Framer",       title: "Framer Modules",        label: "FRAMER",       icon: "Box",         sub: "Supercharge Framer sites with ready-made modules" },
-  { key: "ClickUp",      title: "ClickUp Apps",          label: "CLICKUP",      icon: "CheckSquare", sub: "Automate tasks and workflows inside ClickUp" },
-  { key: "MicrosoftEdge",title: "Microsoft Edge",        label: "EDGE",         icon: "Globe2",      sub: "Productivity extensions for Microsoft Edge" },
-  { key: "Opera",        title: "Opera Extensions",      label: "OPERA",        icon: "Globe",       sub: "Browser extensions for Opera users" },
-  { key: "Bubble",       title: "Bubble Plugins",        label: "BUBBLE",       icon: "Layers",      sub: "No-code plugins for Bubble.io apps" },
-  { key: "Odoo",         title: "Odoo Modules",          label: "ODOO",         icon: "Grid",        sub: "Business modules for the Odoo ERP platform" },
-  { key: "Workflows",    title: "Workflows",             label: "WORKFLOWS",    icon: "GitBranch",   sub: "Pre-built automation workflows for any stack" },
+  {
+    key: "Figma",
+    title: "Figma Plugins",
+    label: "FIGMA",
+    icon: "Figma",
+    sub: "AI-powered design utilities for design teams.",
+  },
+  {
+    key: "Shopify",
+    title: "Shopify Apps",
+    label: "SHOPIFY",
+    icon: "ShoppingBag",
+    sub: "Revenue and conversion tools for e-commerce stores.",
+  },
+  {
+    key: "Atlassian",
+    title: "Trello Power-Ups",
+    label: "TRELLO",
+    icon: "Layout",
+    sub: "Workflow automation for project teams.",
+  },
+  {
+    key: "Chrome",
+    title: "Chrome Extensions",
+    label: "CHROME",
+    icon: "Chrome",
+    sub: "Browser-native productivity for everyone.",
+  },
+  {
+    key: "Framer",
+    title: "Framer Plugins",
+    label: "FRAMER",
+    icon: "Box",
+    sub: "Visual tools for no-code builders.",
+  },
+  {
+    key: "Atlassian",
+    title: "Atlassian Tools",
+    label: "ATLASSIAN",
+    icon: "Layout",
+    sub: "Enterprise productivity and workflow solutions.",
+  },
+  {
+    key: "Penpot",
+    title: "Penpot Plugins",
+    label: "PENPOT",
+    icon: "PenTool",
+    sub: "Open-source design and prototyping plugins.",
+  },
+  {
+    key: "Strapi",
+    title: "Strapi Plugins",
+    label: "STRAPI",
+    icon: "Database",
+    sub: "Extend your headless CMS with powerful plugins.",
+  },
+  {
+    key: "ClickUp",
+    title: "ClickUp Apps",
+    label: "CLICKUP",
+    icon: "CheckSquare",
+    sub: "Automate tasks and workflows inside ClickUp.",
+  },
+  {
+    key: "MicrosoftEdge",
+    title: "Microsoft Edge",
+    label: "EDGE",
+    icon: "Globe2",
+    sub: "Productivity extensions for Microsoft Edge.",
+  },
+  {
+    key: "Opera",
+    title: "Opera Extensions",
+    label: "OPERA",
+    icon: "Globe",
+    sub: "Browser extensions for Opera users.",
+  },
+  {
+    key: "Bubble",
+    title: "Bubble Plugins",
+    label: "BUBBLE",
+    icon: "Layers",
+    sub: "No-code plugins for Bubble.io apps.",
+  },
+  {
+    key: "Odoo",
+    title: "Odoo Modules",
+    label: "ODOO",
+    icon: "Grid",
+    sub: "Business modules for the Odoo ERP platform.",
+  },
+  {
+    key: "Workflows",
+    title: "Workflow Automation",
+    label: "WORKFLOWS",
+    icon: "GitBranch",
+    sub: "Cross-platform automation that connects your stack.",
+  },
 ];
 
 const themeColors = {
@@ -87,17 +196,20 @@ const themeColors = {
   orange: "#f97316",
 };
 
-const AUTO_INTERVAL = 4000;
-const PAGE_SIZE = 4;
+// Bento span pattern, repeats every 6 cards: [wide, narrow, narrow, narrow, narrow, wide]
+const SPAN_PATTERN = [
+  "md:col-span-2",
+  "md:col-span-1",
+  "md:col-span-1",
+  "md:col-span-1",
+  "md:col-span-1",
+  "md:col-span-3",
+];
 
-/* ─── Premium Product Card ─── */
-const ProductCard = ({ item, index }) => {
-  const Icon = Lucide[item.icon] || Lucide.Zap;
-  const activeColor = themeColors[item.theme] || "#23b5b5";
-
+/* ─── Tiny floating app icon + label, links straight to the marketplace listing ─── */
+const AppChip = ({ item }) => {
   const isImage = useMemo(() => {
-    if (!item.icon) return false;
-    if (typeof item.icon !== "string") return true;
+    if (!item.icon || typeof item.icon !== "string") return false;
     return (
       item.icon.startsWith("http") ||
       item.icon.startsWith("/") ||
@@ -106,229 +218,110 @@ const ProductCard = ({ item, index }) => {
     );
   }, [item.icon]);
 
+  const LucideIcon = !isImage ? Lucide[item.icon] || Lucide.Boxes : null;
+  const activeColor = themeColors[item.theme] || "#23b5b5";
+
   return (
-    <motion.a
+    <a
       href={item.link}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ delay: index * 0.05, duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="group relative flex flex-col justify-between p-7 rounded-[2rem] bg-white/[0.03] border border-white/[0.06] hover:border-[#23b5b5]/30 transition-all duration-500 overflow-hidden text-decoration-none w-full flex-shrink-0"
-      style={{ minHeight: "260px" }}
+      title={item.title}
+      className="group/chip flex flex-col items-center gap-1.5 w-[52px] no-underline shrink-0"
     >
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
-        style={{ background: `radial-gradient(circle at top, ${activeColor}, transparent 70%)` }}
-      />
-      <div
-        className="absolute bottom-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: "linear-gradient(to right, transparent, #23b5b5, transparent)" }}
-      />
-
-      <div className="relative z-10 flex flex-col justify-between h-full w-full">
-        <div>
-          {isImage ? (
-            <div className="relative mb-5 w-14 h-14 transition-all duration-500 group-hover:scale-105">
-              <div
-                className="absolute inset-[-4px] rounded-[1.25rem] opacity-0 group-hover:opacity-35 blur-md transition-opacity duration-500"
-                style={{ background: activeColor }}
-              />
-              <div
-                className="w-full h-full rounded-2xl overflow-hidden relative"
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.35)",
-                }}
-              >
-                <img src={item.icon} alt={item.title} className="w-full h-full object-cover select-none" />
-              </div>
-            </div>
-          ) : (
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-all duration-500 relative overflow-hidden"
-              style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                boxShadow: `0 4px 12px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255,255,255,0.1)`,
-              }}
-            >
-              <div
-                className="absolute inset-0 opacity-15 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none"
-                style={{ background: `radial-gradient(circle, ${activeColor} 0%, transparent 80%)` }}
-              />
-              <Icon
-                style={{ color: activeColor }}
-                size={24}
-                strokeWidth={1.5}
-                className="relative z-10 transition-transform duration-500 group-hover:scale-110"
-              />
-            </div>
-          )}
-
-          <h3 className="text-white text-base font-bold mb-2 tracking-tight uppercase group-hover:text-[#23b5b5] transition-colors duration-200">
-            {item.title}
-          </h3>
-          <p className="text-neutral-400 text-xs leading-relaxed font-normal line-clamp-3">
-            {item.desc}
-          </p>
-        </div>
-
-        <div className="mt-5 pt-4 border-t border-white/[0.04]">
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-neutral-400 group-hover:text-white transition-colors duration-300">
-            Get started
-            <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform duration-300" style={{ color: activeColor }} />
-          </span>
-        </div>
+      <div className="w-9 h-9 rounded-[10px] overflow-hidden flex items-center justify-center border border-white/10 bg-white/[0.04] transition-all duration-200 group-hover/chip:border-[#23b5b5]/60 group-hover/chip:-translate-y-0.5 group-hover/chip:shadow-[0_4px_14px_rgba(35,181,181,0.25)]">
+        {isImage ? (
+          <img
+            src={item.icon}
+            alt={item.title}
+            className="w-full h-full object-cover select-none"
+          />
+        ) : (
+          <LucideIcon
+            size={15}
+            strokeWidth={1.75}
+            style={{ color: activeColor }}
+          />
+        )}
       </div>
-    </motion.a>
+      <span className="text-[8px] leading-tight font-semibold text-neutral-400 text-center line-clamp-2 group-hover/chip:text-white transition-colors">
+        {item.title}
+      </span>
+    </a>
   );
 };
 
-/* ─── Tab Button with platform icon + item count badge ─── */
-const TabButton = ({ section, isActive, onClick, isPaused }) => {
-  const FallbackIcon = Lucide[section.icon] || Lucide.Box;
+/* ─── Bento Platform Card ─── */
+const BentoPlatformCard = ({ section, span }) => {
+  const PlatformIconCmp = Lucide[section.icon] || Lucide.Box;
   const hasPlatformIcon = !!section.platformIcon;
-  const count = section.items?.length ?? 0;
+  const items = section.items || [];
 
   return (
-    <button
-      onClick={onClick}
-      className="relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300"
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={`group relative flex flex-col rounded-2xl border border-white/[0.07] hover:border-[#23b5b5]/40 transition-all duration-300 overflow-hidden ${span}`}
       style={{
-        background: isActive ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)",
-        border: isActive ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(255,255,255,0.05)",
-        color: isActive ? "#ffffff" : "rgba(255,255,255,0.45)",
+        borderLeft: "2px solid rgba(35,181,181,0.45)",
+        backgroundColor: "rgba(8,20,18,0.55)",
+        backgroundImage:
+          "radial-gradient(circle at 15% -10%, rgba(35,181,181,0.16), transparent 55%), linear-gradient(180deg, rgba(35,181,181,0.05) 0%, rgba(5,10,9,0) 45%)",
+        minHeight: "220px", // Gives the grid a premium, unified baseline height
       }}
     >
-      {/* Platform icon — from API or Lucide fallback */}
-      {hasPlatformIcon ? (
-        <img
-          src={section.platformIcon}
-          alt={section.title}
-          className="w-4 h-4 rounded object-contain flex-shrink-0"
-          style={{ filter: isActive ? "none" : "grayscale(60%) opacity(0.6)" }}
-        />
-      ) : (
-        <FallbackIcon
-          size={13}
-          strokeWidth={2}
-          style={{ color: isActive ? "#23b5b5" : "rgba(255,255,255,0.3)", flexShrink: 0 }}
-        />
-      )}
-
-      <span className="relative z-10 whitespace-nowrap">{section.title.replace(/ Tools| Apps| Extensions| Plugins| Modules/g, "")}</span>
-
-      {/* Item count badge */}
-      <span
-        className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full leading-none"
-        style={{
-          background: isActive ? "rgba(35,181,181,0.15)" : "rgba(255,255,255,0.06)",
-          color: isActive ? "#23b5b5" : "rgba(255,255,255,0.3)",
-        }}
-      >
-        {count}
-      </span>
-
-      {/* Active underline */}
-      {isActive && (
-        <motion.div
-          layoutId="tab-underline"
-          className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full"
-          style={{ background: "#23b5b5" }}
-          transition={{ type: "spring", stiffness: 380, damping: 32 }}
-        />
-      )}
-
-      {/* Progress bar */}
-      {isActive && !isPaused && (
-        <motion.div
-          key={section.id + "-progress"}
-          className="absolute bottom-0 left-0 h-[2px] rounded-full bg-[#23b5b5]/25"
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: AUTO_INTERVAL / 1000, ease: "linear" }}
-        />
-      )}
-    </button>
-  );
-};
-
-/* ─── Horizontal Carousel with Prev/Next ─── */
-const AppCarousel = ({ items, sectionId }) => {
-  const [page, setPage] = useState(0);
-  const totalPages = Math.ceil(items.length / PAGE_SIZE);
-  const hasMultiplePages = items.length > PAGE_SIZE;
-
-  useEffect(() => { setPage(0); }, [sectionId]);
-
-  const visibleItems = items.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
-
-  return (
-    <div className="relative">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={sectionId + "-page-" + page}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.28 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      <div className="p-7 flex flex-col h-full relative grow">
+        {/* Platform Icon: Anchored securely at the top */}
+        <div
+          className="w-11 h-11 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden shrink-0"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(35,181,181,0.14) 0%, rgba(35,181,181,0.03) 100%)",
+            border: "1px solid rgba(35,181,181,0.2)",
+          }}
         >
-          {visibleItems.map((item, idx) => (
-            <ProductCard key={item.title + idx} item={item} index={idx} />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+          {hasPlatformIcon ? (
+            <img
+              src={section.platformIcon}
+              alt={section.title}
+              className="w-6 h-6 object-contain"
+            />
+          ) : (
+            <PlatformIconCmp
+              size={20}
+              strokeWidth={1.75}
+              className="text-[#23b5b5]"
+            />
+          )}
+        </div>
 
-      {hasMultiplePages && (
-        <div className="flex items-center justify-center gap-4 mt-8">
-          <button
-            onClick={() => setPage(p => Math.max(0, p - 1))}
-            disabled={page === 0}
-            className="w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-200"
-            style={{
-              background: page === 0 ? "rgba(255,255,255,0.02)" : "rgba(35,181,181,0.1)",
-              borderColor: page === 0 ? "rgba(255,255,255,0.06)" : "rgba(35,181,181,0.35)",
-              color: page === 0 ? "rgba(255,255,255,0.2)" : "#23b5b5",
-              cursor: page === 0 ? "not-allowed" : "pointer",
-            }}
-          >
-            <ChevronLeft size={16} />
-          </button>
-
-          <div className="flex items-center gap-1.5">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i)}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width: i === page ? "20px" : "6px",
-                  height: "6px",
-                  background: i === page ? "#23b5b5" : "rgba(255,255,255,0.15)",
-                }}
-              />
-            ))}
+        {/* Unified Swap Container */}
+        <div className="relative grow grid grid-cols-1 grid-rows-1 items-start">
+          {/* DEFAULT STATE: Name & Description (Disappears on hover) */}
+          <div className="col-start-1 row-start-1 flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-100 group-hover:opacity-0 group-hover:pointer-events-none group-hover:-translate-y-3">
+            <h3 className="text-white text-xl font-bold tracking-tight mb-1.5">
+              {section.title}
+            </h3>
+            <p className="text-neutral-400 text-sm leading-relaxed">
+              {section.subtitle}
+            </p>
           </div>
 
-          <button
-            onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
-            disabled={page === totalPages - 1}
-            className="w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-200"
-            style={{
-              background: page === totalPages - 1 ? "rgba(255,255,255,0.02)" : "rgba(35,181,181,0.1)",
-              borderColor: page === totalPages - 1 ? "rgba(255,255,255,0.06)" : "rgba(35,181,181,0.35)",
-              color: page === totalPages - 1 ? "rgba(255,255,255,0.2)" : "#23b5b5",
-              cursor: page === totalPages - 1 ? "not-allowed" : "pointer",
-            }}
-          >
-            <ChevronRight size={16} />
-          </button>
+          {/* HOVER STATE: Product Icons (Appears in the exact same spot) */}
+          {items.length > 0 && (
+            <div className="col-start-1 row-start-1 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto translate-y-3 group-hover:translate-y-0">
+              <div className="flex flex-wrap gap-x-3 gap-y-3">
+                {items.map((item, i) => (
+                  <AppChip key={item.title + i} item={item} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -341,17 +334,26 @@ const ChannelCard = ({ channel, index }) => {
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.05, duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{
+        delay: index * 0.05,
+        duration: 0.35,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
       className="group relative flex flex-col justify-between p-7 rounded-[2rem] bg-white/[0.03] border border-white/[0.06] hover:border-[#23b5b5]/30 transition-all duration-500 overflow-hidden w-full"
       style={{ minHeight: "260px" }}
     >
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
-        style={{ background: `radial-gradient(circle at top, ${activeColor}, transparent 70%)` }}
+        style={{
+          background: `radial-gradient(circle at top, ${activeColor}, transparent 70%)`,
+        }}
       />
       <div
         className="absolute bottom-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: "linear-gradient(to right, transparent, #23b5b5, transparent)" }}
+        style={{
+          background:
+            "linear-gradient(to right, transparent, #23b5b5, transparent)",
+        }}
       />
 
       <div className="relative z-10 flex flex-col justify-between h-full w-full">
@@ -368,7 +370,11 @@ const ChannelCard = ({ channel, index }) => {
                 boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
               }}
             >
-              <img src={channel.logo} alt={channel.name} className="w-full h-full object-cover select-none" />
+              <img
+                src={channel.logo}
+                alt={channel.name}
+                className="w-full h-full object-cover select-none"
+              />
             </div>
           </div>
 
@@ -382,7 +388,9 @@ const ChannelCard = ({ channel, index }) => {
 
           <div className="flex items-center gap-1.5 text-neutral-400">
             <Users size={12} style={{ color: activeColor }} />
-            <span className="text-[10px] font-bold uppercase tracking-wider">{channel.subs} Subs</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider">
+              {channel.subs} Subs
+            </span>
           </div>
         </div>
 
@@ -394,7 +402,11 @@ const ChannelCard = ({ channel, index }) => {
             className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-neutral-400 group-hover:text-white transition-colors duration-300 no-underline"
           >
             Subscribe
-            <Youtube size={12} className="group-hover:scale-110 transition-transform duration-300" style={{ color: activeColor }} />
+            <Youtube
+              size={12}
+              className="group-hover:scale-110 transition-transform duration-300"
+              style={{ color: activeColor }}
+            />
           </a>
         </div>
       </div>
@@ -405,18 +417,16 @@ const ChannelCard = ({ channel, index }) => {
 /* ─── Main Component ─── */
 const MarketplaceAndStudio = () => {
   const { data } = useCMS();
+  console.log("data", data);
+
   const products = data?.header?.products || {};
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef(null);
-  const pauseRef = useRef(null);
 
   // Build all dynamic platform sections from PLATFORM_CONFIG + CMS data
   // platformIcon comes from products[key].iconUrl (the marketplace logo from API)
   const dynamicSections = useMemo(() => {
-    return PLATFORM_CONFIG.map(p => {
+    return PLATFORM_CONFIG.map((p) => {
       const platformData = products[p.key];
-      const items = (platformData?.items || []).map(item => ({
+      const items = (platformData?.items || []).map((item) => ({
         title: item.title,
         desc: item.desc,
         icon: item.iconUrl || item.icon,
@@ -433,110 +443,69 @@ const MarketplaceAndStudio = () => {
         platformIcon: platformData?.iconUrl || null,
         items,
       };
-    });
-    // Show ALL platforms — even ones with 0 items (count badge shows 0)
-    // If you only want to show platforms that have items, add: .filter(s => s.items.length > 0)
+    }).filter((section) => section.items.length > 0);
+    // .slice(0, 5);
   }, [products]);
 
   const ALL_SECTIONS = useMemo(() => {
     return [...dynamicSections, CORE_PRODUCTS];
   }, [dynamicSections]);
 
-  const startTimer = () => {
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % ALL_SECTIONS.length);
-    }, AUTO_INTERVAL);
-  };
-
-  useEffect(() => {
-    startTimer();
-    return () => clearInterval(timerRef.current);
-  }, [ALL_SECTIONS.length]);
-
-  const handleUserSelect = (index) => {
-    setActiveIndex(index);
-    setIsPaused(true);
-    clearInterval(timerRef.current);
-    clearTimeout(pauseRef.current);
-    pauseRef.current = setTimeout(() => {
-      setIsPaused(false);
-      startTimer();
-    }, 8000);
-  };
-
-  useEffect(() => () => { clearInterval(timerRef.current); clearTimeout(pauseRef.current); }, []);
-
-  const activeSection = ALL_SECTIONS[activeIndex];
-
   return (
-    <div className="min-h-screen text-white font-sans relative" style={{ backgroundColor: "#050505", isolation: "isolate" }}>
-
+    <div
+      className="min-h-screen text-white font-sans relative"
+      style={{ backgroundColor: "#050505", isolation: "isolate" }}
+    >
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at top, rgba(35,181,181,0.04), transparent 75%)",
-          filter: "blur(80px)"
+          background:
+            "radial-gradient(ellipse at top, rgba(35,181,181,0.04), transparent 75%)",
+          filter: "blur(80px)",
         }}
       />
 
-      {/* SECTION 1: Product Studio */}
+      {/* SECTION 1: Product Studio — Bento Grid */}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-20 relative z-10">
-
-        {/* Header */}
-        <div className="mb-12 flex flex-col items-center text-center">
-          <div className="flex items-center justify-center gap-2.5 mb-2.5">
-            <span className="text-[9px] bg-[#23b5b5]/10 border border-[#23b5b5]/20 text-[#23b5b5] font-extrabold px-1.5 py-0.5 rounded tracking-wider">
-              RECOMMENDED
-            </span>
-            <span className="text-[9px] text-[#23b5b5] font-extrabold tracking-wider uppercase">
-              Filter by platform
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mb-14 text-left max-w-3xl"
+        >
+          <div className="flex items-center gap-2.5 mb-4">
+            <span className="w-4 h-[1px] bg-[#23b5b5]" />
+            <span className="text-[14px] text-[#23b5b5] font-extrabold tracking-[0.2em] uppercase">
+              Our Craft
             </span>
           </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter uppercase">
-            Product Studio
+          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
+            Every tool your
+            <br />
+            team already uses
           </h1>
-          <p className="text-gray-400 text-xs mt-1.5 max-w-2xl font-medium leading-relaxed mx-auto">
-            Users jump directly to what they want. Figma Plugin Store, Shopify App Store and many more.
-          </p>
-        </div>
+          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mt-1 flex items-center gap-4">
+            <span className="w-8 md:w-12 h-[3px] bg-white/70 inline-block" />
+            <span className="text-neutral-500">now smarter.</span>
+          </h1>
+        </motion.div>
 
-        {/* Platform Tabs — wrapping pill buttons with icon + count */}
-        <div className="flex flex-wrap justify-center gap-2 pb-3 border-b border-white/[0.04] mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {ALL_SECTIONS.map((section, idx) => (
-            <TabButton
+            <BentoPlatformCard
               key={section.id}
               section={section}
-              isActive={activeIndex === idx}
-              isPaused={isPaused}
-              onClick={() => handleUserSelect(idx)}
+              span={SPAN_PATTERN[idx % SPAN_PATTERN.length]}
             />
           ))}
-        </div>
-
-        {/* Carousel */}
-        <div className="min-h-[280px]">
-          <AnimatePresence mode="wait">
-            {activeSection && (
-              <motion.div
-                key={activeSection.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3 }}
-              >
-                <AppCarousel items={activeSection.items} sectionId={activeSection.id} />
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </div>
 
       <div className="w-full relative h-[1px] bg-gradient-to-r from-transparent via-white/[0.05] to-transparent my-6" />
 
       {/* SECTION 2: Content Studio */}
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-20 relative z-10">
-
+      {/* <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-20 relative z-10">
         <div className="mb-12 flex flex-col items-center text-center">
           <div className="flex items-center justify-center gap-2.5 mb-2.5">
             <div className="w-5 h-5 rounded bg-[#23b5b5]/10 border border-[#23b5b5]/20 flex items-center justify-center">
@@ -550,7 +519,8 @@ const MarketplaceAndStudio = () => {
             Content Studio
           </h1>
           <p className="text-gray-400 text-xs mt-1.5 max-w-2xl font-medium leading-relaxed mx-auto">
-            The digital media arm of Explified. Exploring automation, history, and global logistics through visual storytelling.
+            The digital media arm of Explified. Exploring automation, history,
+            and global logistics through visual storytelling.
           </p>
         </div>
 
@@ -559,8 +529,7 @@ const MarketplaceAndStudio = () => {
             <ChannelCard key={idx} channel={channel} index={idx} />
           ))}
         </div>
-      </div>
-
+      </div> */}
     </div>
   );
 };

@@ -11,7 +11,7 @@ const FEATURED_PRODUCTS = [
     link: "https://www.figma.com/community/plugin/1643987146382893434/removebg",
   },
   {
-    title: "WIREFRAMERAI",
+    title: "WIREFRAMER AI",
     platform: "FIGMA",
     desc: "Generate production-grade wireframes from a single prompt.",
     link: "https://www.figma.com/community/plugin/1607779209963334185/wireframer-ai",

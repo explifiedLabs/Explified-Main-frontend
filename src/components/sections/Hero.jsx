@@ -720,7 +720,7 @@ const Hero = () => {
             <div className="flex flex-col justify-center md:px-10 py-8 border-l border-teal-400/20 ">
               <div className="flex items-baseline-last gap-3">
                 <h2 className="text-white text-[60px] leading-none font-extrabold tracking-tight">
-                  6
+                  7+
                 </h2>
 
                 <span className="text-[#23b5b5] text-[22px] font-semibold mb-2">
@@ -739,7 +739,7 @@ const Hero = () => {
             <div className="flex flex-col justify-center md:px-10 py-8 border-l border-teal-400/20">
               <div className="flex items-baseline-last gap-3">
                 <h2 className="text-white text-[60px] leading-none font-extrabold tracking-tight">
-                  37K+
+                  3.5K+
                 </h2>
 
                 <span className="text-[#23b5b5] text-[22px] font-semibold mb-2">

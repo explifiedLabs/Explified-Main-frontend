@@ -417,7 +417,6 @@ const ChannelCard = ({ channel, index }) => {
 /* ─── Main Component ─── */
 const MarketplaceAndStudio = () => {
   const { data } = useCMS();
-  console.log("data", data);
 
   const products = data?.header?.products || {};
 

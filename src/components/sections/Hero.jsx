@@ -714,10 +714,10 @@ const Hero = () => {
             </div>
 
             {/* Divider */}
-            <div className="hidden md:block absolute left-1/3 top-24 bottom-24 w-px bg-white/10" />
+            {/* <div className="hidden md:block absolute left-1/3 top-24 bottom-24 w-px bg-white/10" /> */}
 
             {/* Card 2 */}
-            <div className="flex flex-col justify-center md:px-10 py-8 border-l border-white/10">
+            <div className="flex flex-col justify-center md:px-10 py-8 border-l border-teal-400/20 ">
               <div className="flex items-baseline-last gap-3">
                 <h2 className="text-white text-[60px] leading-none font-extrabold tracking-tight">
                   6
@@ -736,7 +736,7 @@ const Hero = () => {
             </div>
 
             {/* Card 3 */}
-            <div className="flex flex-col justify-center md:px-10 py-8 border-l border-white/10">
+            <div className="flex flex-col justify-center md:px-10 py-8 border-l border-teal-400/20">
               <div className="flex items-baseline-last gap-3">
                 <h2 className="text-white text-[60px] leading-none font-extrabold tracking-tight">
                   37K+

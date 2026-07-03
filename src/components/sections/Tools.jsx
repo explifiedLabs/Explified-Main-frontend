@@ -466,13 +466,13 @@ const MarketplaceAndStudio = () => {
       />
 
       {/* SECTION 1: Product Studio — Bento Grid */}
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-20 relative z-10">
+      <div className="max-w-[1340px] mx-auto px-6 lg:px-12 py-20 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="mb-14 text-left max-w-3xl"
+          className="mb-14 text-left "
         >
           <div className="flex items-center gap-2.5 mb-4">
             <span className="w-4 h-[1px] bg-[#23b5b5]" />
@@ -480,10 +480,9 @@ const MarketplaceAndStudio = () => {
               Our Craft
             </span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
-            Every tool your
-            <br />
-            team already uses
+          <h1 className="text-5xl  md:text-6xl font-black tracking-tight leading-[1.1] text-white">
+            Every tool your team already uses
+            {/* <br /> */}
           </h1>
           <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mt-1 flex items-center gap-4">
             <span className="w-8 md:w-12 h-[3px] bg-white/70 inline-block" />

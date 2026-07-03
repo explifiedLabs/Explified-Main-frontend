@@ -69,7 +69,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative w-full bg-[#000000] text-white pt-14 pb-20  md:pt-16 md:pb-40 overflow-hidden font-sans">
+    <footer className="relative w-full bg-[#000000] text-white pt-14 pb-36  md:pt-16 md:pb-56 overflow-hidden font-sans">
       {/* Ambient bottom glow */}
       <div
         className="absolute bottom-0 left-0 w-full h-full opacity-40 pointer-events-none z-0"
@@ -205,10 +205,10 @@ const Footer = () => {
 
         {/* --- Bottom Bar --- */}
         <div className="h-px w-full bg-white/10 mb-2" />
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
+        {/* <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
           <span>&copy; 2026 Explified Technologies. All rights reserved.</span>
           <span>Made with intent in India &middot; Shipping to the world.</span>
-        </div>
+        </div> */}
       </div>
     </footer>
   );

@@ -3,6 +3,7 @@ import ExplifiedSection from "../sections/ExplifiedSection";
 import Hero from "../sections/Hero";
 // import IntegrationScroller from "../sections/IntegrationScroller";
 import PerformanceSection from "../sections/performanceSection";
+import FeaturedProducts from "../sections/ProductCard";
 import ProductShowcase from "../sections/Tools";
 import WhyChooseExplified from "../sections/WhyChoose";
 import WhyExplified from "../sections/Whyexplified";
@@ -19,7 +20,8 @@ export default function Home() {
       </div>
       <ProductShowcase />
       {/* <ContentLabs /> */}
-      <WhyExplified />
+      <FeaturedProducts />
+      {/* <WhyExplified /> */}
       <ExplifiedCTA />
     </>
   );

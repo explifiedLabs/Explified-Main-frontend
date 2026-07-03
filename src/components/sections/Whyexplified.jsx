@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Diamond } from "lucide-react";
+import logo from "../../assets/logo.png";
 
 const accentColor = "#23b5b5";
 
@@ -105,14 +106,12 @@ const PuzzleIcon = () => (
     width="15"
     height="15"
     viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-    <path d="M12 6v4M12 14v4M8 12h8" />
+    <path d="M5 3H19L12 10H5V3Z" />
+    <path d="M5 10H12L19 17H12L5 10Z" />
+    <path d="M5 17H12V24L5 17Z" />
   </svg>
 );
 
@@ -293,7 +292,11 @@ const WhyExplified = () => {
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
               {/* Slightly larger central diamond graphic */}
-              <Diamond size={24} className="text-[#23b5b5] fill-[#23b5b5]" />
+              <img
+                src={logo}
+                alt="Explified"
+                className="w-6 h-6 object-contain"
+              />
             </motion.div>
 
             {/* Larger, floating marketplace icons */}

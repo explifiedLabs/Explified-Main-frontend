@@ -1,27 +1,35 @@
-import React from 'react';
-import { Twitter, Linkedin, Instagram, ArrowRight, Youtube } from "lucide-react";
-import { Link } from "react-router"; 
-import { useCMS } from '../../hooks/useCMS.jsx';
+import React from "react";
+import {
+  Twitter,
+  Linkedin,
+  Instagram,
+  ArrowRight,
+  Youtube,
+  Mail,
+} from "lucide-react";
+import { Link } from "react-router";
+import { useCMS } from "../../hooks/useCMS.jsx";
 import logo from "../../assets/logo.png";
-// 1. Import the startup logo
-import startupLogo from "../images/startup-logo.png"; 
+import startupLogo from "../images/startup-logo.png";
 
 // Helper for case-insensitive lookup
 const getMenu = (data, menuName) => {
   if (!data) return [];
-  const key = Object.keys(data).find(k => k.toLowerCase() === menuName.toLowerCase());
+  const key = Object.keys(data).find(
+    (k) => k.toLowerCase() === menuName.toLowerCase(),
+  );
   return key ? data[key] : [];
 };
 
 const Footer = () => {
   const { data } = useCMS();
-  
+
   const footerData = data?.footer || {};
-  
-  const platformLinks = getMenu(footerData, 'Platform');
-  const productLinks = getMenu(footerData, 'Products');
-  const resourceLinks = getMenu(footerData, 'Resources');
-  const companyLinks = getMenu(footerData, 'Company');
+
+  const platformLinks = getMenu(footerData, "Platform");
+  const productLinks = getMenu(footerData, "Products");
+  const resourceLinks = getMenu(footerData, "Resources");
+  const companyLinks = getMenu(footerData, "Company");
 
   const accentColor = "#23b5b5";
 
@@ -37,32 +45,40 @@ const Footer = () => {
     const isNewTab = link.openInNewTab;
     const target = isNewTab ? "_blank" : "_self";
     const rel = isNewTab ? "noopener noreferrer" : undefined;
-    const className = "text-base font-medium text-gray-400 hover:text-[#23b5b5] bg-transparent transition-colors duration-200";
+    const className =
+      "text-base text-gray-400 hover:text-[#23b5b5] bg-transparent transition-colors duration-200";
 
-    if (link.url && (link.url.startsWith('http') || isNewTab)) {
+    if (link.url && (link.url.startsWith("http") || isNewTab)) {
       return (
-        <a key={index} href={link.url} target={target} rel={rel} className={className}>
+        <a
+          key={index}
+          href={link.url}
+          target={target}
+          rel={rel}
+          className={className}
+        >
           {label}
         </a>
       );
     }
     return (
-      <Link key={index} to={link.url || '#'} className={className}>
+      <Link key={index} to={link.url || "#"} className={className}>
         {label}
       </Link>
     );
   };
 
   return (
-    <footer className="relative w-full bg-[#000000] text-white pt-20 pb-28 md:pt-36 md:pb-52 overflow-hidden font-sans">
-      
+    <footer className="relative w-full bg-[#000000] text-white pt-14 pb-36  md:pt-16 md:pb-56 overflow-hidden font-sans">
+      {/* Ambient bottom glow */}
       <div
-        className="absolute bottom-0 left-0 w-full h-[800px] opacity-40 pointer-events-none z-0"
+        className="absolute bottom-0 left-0 w-full h-full opacity-40 pointer-events-none z-0"
         style={{
           background: `linear-gradient(to top, ${accentColor} 0%, rgba(35, 181, 181, 0.1) 40%, transparent 100%)`,
         }}
       />
 
+      {/* Giant watermark wordmark */}
       <div className="absolute bottom-[-5%] left-0 w-full flex justify-center pointer-events-none select-none z-0">
         <span
           className="text-[20vw] font-bold tracking-tighter leading-none whitespace-nowrap"
@@ -77,85 +93,122 @@ const Footer = () => {
       </div>
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
-          
-          {/* Newsletter + Socials Column */}
-          <div className="sm:col-span-2 lg:col-span-1 lg:pr-6">
-            <h4 className="text-lg font-bold text-white mb-6">Newsletter</h4>
-            
-            <div className="relative w-full max-w-[260px]">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full h-12 pl-5 pr-14 rounded-full bg-transparent border border-white/15 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#23b5b5] transition-all"
-              />
-              <button className="absolute right-1 top-1 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-[#23b5b5] hover:text-white transition-colors duration-300">
-                <ArrowRight size={18} strokeWidth={1.5} />
-              </button>
-            </div>
+        {/* --- Top Bar: Logo + Newsletter --- */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+          <Link to="/" className="flex items-center gap-2.5 shrink-0">
+            <img
+              src={logo}
+              alt="Explified"
+              className="w-6 h-6 object-contain"
+            />
+            <span className="text-lg font-bold text-white tracking-tight">
+              Explified
+            </span>
+          </Link>
 
-            <h4 className="text-lg font-bold text-white mt-10 mb-5">Socials</h4>
-            <div className="flex gap-3 mb-10"> {/* Added margin-bottom to separate from logo */}
-              {socials.map((social, index) => (
-                <a 
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 group hover:border-[#23b5b5] hover:bg-[#23b5b5] hover:shadow-[0_0_15px_rgba(35,181,181,0.4)]"
-                >
-                  <social.Icon size={20} className="group-hover:scale-110 transition-transform" />
-                </a>
-              ))}
-            </div>
-
-            {/* 2. Added Startup Logo Section */}
-<div className="mt-12 transition-opacity duration-300 hover:opacity-80">
-  <img 
-    src={startupLogo} 
-    alt="Startup Logo" 
-    className="w-48 md:w-56 h-auto object-contain brightness-200 contrast-125" 
-  />
-</div>
+          <div className="relative w-full md:w-[420px]">
+            <Mail
+              size={16}
+              className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+            />
+            <input
+              type="email"
+              placeholder="Subscribe to our newsletter"
+              className="w-full h-12 pl-12 pr-14 rounded-full bg-white/[0.03] border border-white/15 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#23b5b5] transition-all"
+            />
+            <button className="absolute right-1 top-1 w-10 h-10 rounded-full bg-[#23b5b5] text-black flex items-center justify-center hover:brightness-110 transition-all duration-300">
+              <ArrowRight size={18} strokeWidth={2} />
+            </button>
           </div>
+        </div>
 
-          <div className="lg:col-span-1">
-            <h4 className="text-xl font-bold text-white mb-8">Platform</h4>
-            <ul className="space-y-4">
+        <div className="h-px w-full bg-white/10 mb-14" />
+
+        {/* --- Link Columns --- */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-12 mb-6 md:mb-8">
+          <div>
+            <h4 className="text-xs font-bold text-[#23b5b5] tracking-[0.15em] uppercase mb-6">
+              Platform
+            </h4>
+            <ul className="space-y-3.5">
               {platformLinks.map((link, i) => (
                 <li key={i}>{renderCmsLink(link, i)}</li>
               ))}
             </ul>
           </div>
 
-          <div className="lg:col-span-1">
-            <h4 className="text-xl font-bold text-white mb-8">Products</h4>
-            <ul className="space-y-4">
+          <div>
+            <h4 className="text-xs font-bold text-[#23b5b5] tracking-[0.15em] uppercase mb-6">
+              Products
+            </h4>
+            <ul className="space-y-3.5">
               {productLinks.map((link, i) => (
                 <li key={i}>{renderCmsLink(link, i)}</li>
               ))}
             </ul>
           </div>
 
-          <div className="lg:col-span-1">
-            <h4 className="text-xl font-bold text-white mb-8">Resources</h4>
-            <ul className="space-y-4">
+          <div>
+            <h4 className="text-xs font-bold text-[#23b5b5] tracking-[0.15em] uppercase mb-6">
+              Resources
+            </h4>
+            <ul className="space-y-3.5">
               {resourceLinks.map((link, i) => (
                 <li key={i}>{renderCmsLink(link, i)}</li>
               ))}
             </ul>
           </div>
 
-          <div className="lg:col-span-1">
-            <h4 className="text-xl font-bold text-white mb-8">Company</h4>
-            <ul className="space-y-4">
+          <div>
+            <h4 className="text-xs font-bold text-[#23b5b5] tracking-[0.15em] uppercase mb-6">
+              Company
+            </h4>
+            <ul className="space-y-3.5">
               {companyLinks.map((link, i) => (
                 <li key={i}>{renderCmsLink(link, i)}</li>
               ))}
             </ul>
           </div>
-          
+
+          {/* Connect Column: Socials + DPIIT badge */}
+          <div className="col-span-2 sm:col-span-1">
+            <h4 className="text-xs font-bold text-[#23b5b5] tracking-[0.15em] uppercase mb-6">
+              Connect
+            </h4>
+            <div className="flex gap-3 mb-6">
+              {socials.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg border border-white/15 flex items-center justify-center text-white transition-all duration-300 group hover:border-[#23b5b5] hover:bg-[#23b5b5] hover:shadow-[0_0_15px_rgba(35,181,181,0.4)]"
+                >
+                  <social.Icon
+                    size={17}
+                    className="group-hover:scale-110 transition-transform"
+                  />
+                </a>
+              ))}
+            </div>
+
+            {/* Logo */}
+            <div className="flex items-center justify-center">
+              <img
+                src={startupLogo}
+                alt="DPIIT Startup India"
+                className="h-46 w-auto object-contain"
+              />
+            </div>
+          </div>
         </div>
+
+        {/* --- Bottom Bar --- */}
+        <div className="h-px w-full bg-white/10 mb-2" />
+        {/* <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
+          <span>&copy; 2026 Explified Technologies. All rights reserved.</span>
+          <span>Made with intent in India &middot; Shipping to the world.</span>
+        </div> */}
       </div>
     </footer>
   );

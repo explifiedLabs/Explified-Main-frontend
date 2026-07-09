@@ -157,241 +157,49 @@ const Logos = {
   ),
 };
 
-// --- 2. Tech Scroller Icons ---
-const ScrollerIcons = {
-  Chrome: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-    >
-      <path
-        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-        fill="#F4B400"
-      />
-      <path d="M12 2L19.4641 14.866H4.5359L12 2Z" fill="#0F9D58" />
-      <path d="M12 22L4.5359 9.13397H19.4641L12 22Z" fill="#DB4437" />
-      <circle
-        cx="12"
-        cy="12"
-        r="4.5"
-        fill="#4285F4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-    </svg>
-  ),
-  Edge: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-    >
-      <path
-        d="M2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C9.7208 2.5 7.63604 3.29824 6 4.63604V9.5C6 11.433 7.567 13 9.5 13H15.5L12 18.5L8.5 15H6.5C6.5 18.0376 8.96243 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5C7.99401 3.5 4.63583 6.27508 3.73244 10H8.5L12 4.5L15.5 10H9.5C8.11929 10 7 8.88071 7 7.5V6.36396C4.29824 7.63604 2.5 9.7208 2.5 12Z"
-        fill="#35C1F1"
-      />
-    </svg>
-  ),
-  Figma: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-      fill="none"
-    >
-      <path
-        d="M8 12C8 10.8954 8.89543 10 10 10H14V14H10C8.89543 14 8 13.1046 8 12Z"
-        fill="#0ACF83"
-      />
-      <path
-        d="M8 8C8 6.89543 8.89543 6 10 6H14V10H10C8.89543 10 8 9.10457 8 8Z"
-        fill="#F24E1E"
-      />
-      <path d="M14 6H10V10H14V6Z" fill="#FF7262" />
-      <path d="M14 10H10V14H14V10Z" fill="#A259FF" />
-      <path
-        d="M8 16C8 14.8954 8.89543 14 10 14V18C8.89543 18 8 17.1046 8 16Z"
-        fill="#1ABCFE"
-      />
-    </svg>
-  ),
-  ClickUp: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-      fill="none"
-    >
-      <path d="M12 3L2 10.5L4.5 14L12 8L19.5 14L22 10.5L12 3Z" fill="#7B68EE" />
-      <path
-        d="M12 11L4.5 16.5L7 20L12 16L17 20L19.5 16.5L12 11Z"
-        fill="#FF007F"
-      />
-    </svg>
-  ),
-  OpenAI: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-      fill="currentColor"
-    >
-      <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-1.5606-3.2503 5.9928 5.9928 0 0 0-3.3246-1.5305 5.9822 5.9822 0 0 0-3.804.5369 5.9912 5.9912 0 0 0-2.3155-2.2217 6.0076 6.0076 0 0 0-4.008-.4305 5.9945 5.9945 0 0 0-3.1558 1.836 5.9839 5.9839 0 0 0-1.4287 3.3276 5.9814 5.9814 0 0 0 .6186 3.864 5.9961 5.9961 0 0 0 1.5606 3.2503 5.9945 5.9945 0 0 0 3.3246 1.5305 5.9839 5.9839 0 0 0 3.804-.5369 5.9945 5.9945 0 0 0 2.3155 2.2217 6.0076 6.0076 0 0 0 4.008.4305 5.9928 5.9928 0 0 0 3.1558-1.836 5.9822 5.9822 0 0 0 1.4287-3.3276 5.9839 5.9839 0 0 0-.6186-3.864Zm-7.149 7.7497a4.4172 4.4172 0 0 1-2.2908.455 4.398 4.398 0 0 1-2.1462-.7723l.116-.067.0988-.058 4.6738-2.7052a.7981.7981 0 0 0 .3944-.6836v-5.238l1.498 .865v4.204a4.414 4.414 0 0 1-2.344 3.9991Zm-7.792-1.936a4.4098 4.4098 0 0 1-.8065-2.21 4.4032 4.4032 0 0 1 1.0506-2.1648l.1177.0664.0987.0583 4.6738 2.7052a.7981.7981 0 0 0 .7872 0l4.538-2.617v1.728a4.414 4.414 0 0 1-2.344 4.001l-3.644 2.103a4.4156 4.4156 0 0 1-4.4714-3.6701Zm-1.3414-7.5855a4.4098 4.4098 0 0 1 1.4842-1.755 4.4064 4.4064 0 0 1 2.2908-.455l-.0017.1334v.115l5.41-3.12a.7981.7981 0 0 0 .7888 0l4.538-2.617-1.498-.865-3.644 2.103a4.4156 4.4156 0 0 1-3.5638-4.911Zm10.134-4.8856a4.4098 4.4098 0 0 1 2.2908-.455 4.398 4.398 0 0 1 2.1462.7723l-.116.067-.0988.058-4.6738 2.7052a.7981.7981 0 0 0-.3944.6836v5.238l-1.498-.865v-4.204a4.414 4.414 0 0 1 2.344-3.9991Zm7.792 1.936a4.4098 4.4098 0 0 1 .8065 2.21 4.4032 4.4032 0 0 1-1.0506 2.1648l-.1177-.0664-.0987-.0583-4.6738-2.7052a.7981.7981 0 0 0-.7872 0l-4.538 2.617v-1.728a4.414 4.414 0 0 1 2.344-4.001l3.644-2.103a4.4156 4.4156 0 0 1 4.4714 3.6701Zm1.3414 7.5855a4.4098 4.4098 0 0 1-1.4842 1.755 4.4064 4.4064 0 0 1-2.2908.455l.0017-.1334v-.115l-5.41-3.12a.7981.7981 0 0 0-.7888 0l-4.538 2.617 1.498.865 3.644-2.103a4.4156 4.4156 0 0 1 3.5638 4.911Z" />
-    </svg>
-  ),
-  Odoo: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-    >
-      <circle cx="12" cy="12" r="10" fill="#714B67" />
-      <path
-        d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
-        fill="white"
-      />
-    </svg>
-  ),
-  Penpot: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-      fill="none"
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 17.5C15.0376 17.5 17.5 15.0376 17.5 12C17.5 8.96243 15.0376 6.5 12 6.5C8.96243 6.5 6.5 8.96243 6.5 12C6.5 15.0376 8.96243 17.5 12 17.5Z"
-        fill="#FFFFFF"
-      />
-      <circle cx="12" cy="12" r="5.5" fill="#3DCC8E" />
-    </svg>
-  ),
-  HubSpot: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-    >
-      <path
-        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.5 14L13 11.5L14.5 10L17 12.5L15.5 14ZM12 15C10.34 15 9 13.66 9 12C9 10.34 10.34 9 12 9C13.66 9 15 10.34 15 12C15 13.66 13.66 15 12 15ZM10.5 10L8 12.5L9.5 14L12 11.5L10.5 10Z"
-        fill="#FF7A59"
-      />
-    </svg>
-  ),
-  Canva: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-    >
-      <circle cx="12" cy="12" r="10" fill="#00C4CC" />
-      <path
-        d="M15 9C15 9 13.5 8 12 8C10.5 8 9 9.5 9 12C9 14.5 10.5 16 12 16C13.5 16 15 15 15 15"
-        stroke="white"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
-  ),
-  Webex: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" stroke="#00BCEB" strokeWidth="2.5" />
-      <path
-        d="M8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16"
-        stroke="#98D600"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  Trello: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-      fill="none"
-    >
-      <rect x="3" y="3" width="18" height="18" rx="2" fill="#0079BF" />
-      <rect x="6" y="6" width="5" height="10" rx="1" fill="#FFFFFF" />
-      <rect x="13" y="6" width="5" height="6" rx="1" fill="#FFFFFF" />
-    </svg>
-  ),
-  Shopify: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-    >
-      <path
-        d="M17.5 7H15.5C15.5 5.07 13.93 3.5 12 3.5C10.07 3.5 8.5 5.07 8.5 7H6.5C5.67 7 5 7.67 5 8.5V19.5C5 20.33 5.67 21 6.5 21H17.5C18.33 21 19 20.33 19 19.5V8.5C19 7.67 18.33 7 17.5 7ZM12 5.5C12.83 5.5 13.5 6.17 13.5 7H10.5C10.5 6.17 11.17 5.5 12 5.5Z"
-        fill="#95BF47"
-      />
-    </svg>
-  ),
-  Bubble: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-8 h-8 md:w-10 md:h-10 shrink-0 drop-shadow-md"
-    >
-      <circle cx="12" cy="12" r="10" fill="#1A49E5" />
-      <path
-        d="M11.5 7V17M11.5 12C11.5 14.2091 13.2909 16 15.5 16C17.7091 16 19.5 14.2091 19.5 12C19.5 9.79086 17.7091 8 15.5 8C13.2909 8 11.5 9.79086 11.5 12Z"
-        stroke="white"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
-  ),
-};
-
+// --- 2. Tech Scroller Logos (PNG-based) ---
 const ALL_LOGOS = [
-  { name: "Chrome", Icon: ScrollerIcons.Chrome },
-  { name: "Edge", Icon: ScrollerIcons.Edge },
-  { name: "Figma", Icon: ScrollerIcons.Figma },
-  { name: "ClickUp", Icon: ScrollerIcons.ClickUp },
-  { name: "OpenAI", Icon: ScrollerIcons.OpenAI },
-  { name: "Odoo", Icon: ScrollerIcons.Odoo },
-  { name: "Penpot", Icon: ScrollerIcons.Penpot },
-  { name: "HubSpot", Icon: ScrollerIcons.HubSpot },
-  { name: "Canva", Icon: ScrollerIcons.Canva },
-  { name: "Webex", Icon: ScrollerIcons.Webex },
-  { name: "Trello", Icon: ScrollerIcons.Trello },
-  { name: "Shopify", Icon: ScrollerIcons.Shopify },
-  { name: "Bubble", Icon: ScrollerIcons.Bubble },
+  { name: "Chrome", src: "/logos/chrome.png" },
+  { name: "Edge", src: "/logos/edge.png" },
+  { name: "Figma", src: "/logos/figma.png" },
+  { name: "ClickUp", src: "/logos/clickup.png" },
+  { name: "OpenAI", src: "/logos/chatgpt.png" },
+  { name: "Odoo", src: "/logos/odoo.png" },
+  { name: "Penpot", src: "/logos/penpot.png" },
+  { name: "HubSpot", src: "/logos/hubspot.png" },
+  { name: "Canva", src: "/logos/canva.png" },
+  { name: "Webex", src: "/logos/webex.png" },
+  { name: "Trello", src: "/logos/trello.png" },
+  { name: "Shopify", src: "/logos/shopify.png" },
+  { name: "Bubble", src: "/logos/bubble.png" },
 ];
 
 // Small floating marketplace tags scattered around the hero — purely decorative,
 // keeps the "trusted brand" texture visible even before the scroller loads.
 const FLOATING_TAGS = [
   {
-    name: "Framer",
-    Icon: Logos.Figma,
-    className: "top-16 left-1/2 -translate-x-1/2",
+    name: "Shopify",
+    className: "top-[12%] left-2 sm:left-6 lg:left-[2%]",
     delay: 0.5,
   },
   {
-    name: "Shopify",
-    Icon: Logos.Github,
-    className: "top-48 left-2 sm:left-8 lg:left-[6%]",
+    name: "Figma",
+    className: "top-[16%] right-2 sm:right-6 lg:right-[3%]",
     delay: 0.65,
   },
   {
-    name: "Figma",
-    Icon: Logos.Figma,
-    className: "top-40 right-2 sm:right-8 lg:right-[6%]",
+    name: "Chrome",
+    className: "top-[40%] right-2 sm:right-8 lg:right-[10%]",
     delay: 0.8,
   },
   {
-    name: "Chrome",
-    Icon: Logos.Google,
-    className: "top-120 right-2 sm:right-10 lg:right-[10%]",
+    name: "Framer",
+    className: "top-[48%] right-4 sm:right-12 lg:right-[24%]",
     delay: 0.95,
   },
   {
     name: "Trello",
-    Icon: Logos.Trello,
-    className: "top-152 left-2 sm:left-10 lg:left-[10%]",
+    className: "top-[50%] left-2 sm:left-8 lg:left-[8%]",
     delay: 1.1,
   },
 ];
@@ -446,10 +254,10 @@ const drawLine = {
 const TaskCard = ({ title, tag1, tag2, tools = [], comments, attachments }) => (
   <motion.div
     variants={cardVariants}
-    className="bg-[#121214]/80 border border-white/5 rounded-2xl p-3 md:p-4 flex flex-col gap-3 shadow-lg hover:border-brand/30 transition-all duration-300 group hover:shadow-[0_0_20px_rgba(35,181,181,0.05)] w-full"
+    className="bg-[#121214]/80 border border-white/5 rounded-2xl p-3 md:p-4 flex flex-col gap-3 shadow-lg hover:border-[#23b5b5]/30 transition-all duration-300 group hover:shadow-[0_0_20px_rgba(35,181,181,0.05)] w-full"
   >
     <div className="flex gap-2 mb-1">
-      <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-[#2D2D3A] text-gray-400 uppercase tracking-wide border border-white/5 group-hover:bg-brand/10 group-hover:text-brand transition-colors">
+      <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-[#2D2D3A] text-gray-400 uppercase tracking-wide border border-white/5 group-hover:bg-[#23b5b5]/10 group-hover:text-[#23b5b5] transition-colors">
         {tag1}
       </span>
       {tag2 && (
@@ -525,7 +333,6 @@ const ToolNode = ({ LogoComponent, side, top, delay }) => (
 // Two-stage animation: fades/scales in once, then drifts up and down forever.
 const FloatingTag = ({
   name,
-  Icon,
   className,
   delay,
   floatDuration = 4,
@@ -548,31 +355,105 @@ const FloatingTag = ({
         ease: "easeInOut",
       },
     }}
-    className={`hidden sm:flex absolute z-10 items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/10 bg-white/[0.02] backdrop-blur-sm ${className}`}
+    className={`hidden sm:flex absolute z-10 items-center px-5 py-2 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-sm ${className}`}
   >
-    {Icon && (
-      <span className="w-4 h-4 opacity-60">
-        <Icon />
-      </span>
-    )}
-    <span className="text-xs font-medium text-gray-500">{name}</span>
+    <span className="text-xs md:text-sm font-medium text-gray-500">{name}</span>
   </motion.div>
+);
+
+// Tiny ambient teal dots scattered through the hero, echoing a starfield / node-graph feel.
+const FLOATING_DOTS = [
+  { className: "top-[11%] left-[15%]", size: "w-1.5 h-1.5", delay: 0.3 },
+  { className: "top-[3%] left-[58%]", size: "w-1 h-1", delay: 0.5 },
+  { className: "top-[8%] left-[61%]", size: "w-1.5 h-1.5", delay: 0.7 },
+  { className: "top-[19%] left-[12%]", size: "w-1 h-1", delay: 0.9 },
+  { className: "top-[65%] right-[20%]", size: "w-1.5 h-1.5", delay: 1.1 },
+  { className: "top-[72%] right-[16%]", size: "w-1 h-1", delay: 1.3 },
+  { className: "top-[79%] right-[13%]", size: "w-1 h-1", delay: 1.5 },
+];
+
+const FloatingDot = ({ className, size, delay }) => (
+  <motion.span
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{ opacity: [0.4, 1, 0.4], scale: 1 }}
+    transition={{
+      opacity: { duration: 3, delay, repeat: Infinity, ease: "easeInOut" },
+      scale: { duration: 0.5, delay },
+    }}
+    className={`hidden sm:block absolute rounded-full bg-[#23b5b5] shadow-[0_0_8px_rgba(35,181,181,0.8)] pointer-events-none z-10 ${size} ${className}`}
+  />
 );
 
 // --- MAIN HERO COMPONENT ---
 const Hero = () => {
   return (
     <section className="relative pt-42 pb-10 overflow-hidden min-h-screen flex flex-col items-center bg-[#050505]">
+      {/* Faint background grid, echoing a blueprint / node-graph texture */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[700px] pointer-events-none z-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)",
+          backgroundSize: "250px 100%, 100% 150px",
+          maskImage:
+            "linear-gradient(to bottom, transparent, black 10%, black 70%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent, black 10%, black 70%, transparent 100%)",
+        }}
+      />
+
+      {/* Two large atmospheric glow circles, top-right and bottom-left */}
+      <motion.div
+        className="absolute top-[-20px] right-[-20px] w-[300px] h-[300px] bg-[#23b5b5]/10 rounded-full pointer-events-none"
+        animate={{ x: [-20, 20] }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute top-[220px] left-[-20px] w-[450px] h-[450px] bg-[#23b5b5]/10 rounded-full pointer-events-none"
+        animate={{ x: [30, -30] }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
+      />
       {/* Massive Atmospheric Glow */}
-      <div className="absolute top-[-250px] left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[800px] bg-brand/20 blur-[150px] rounded-full pointer-events-none opacity-80 mix-blend-screen" />
-      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full h-[600px] bg-brand/5 blur-[100px] pointer-events-none" />
+      <div className="absolute top-[-250px] left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[800px] bg-[#23b5b5]/15 blur-[150px] rounded-full pointer-events-none opacity-70" />
+      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full h-[600px] bg-[#23b5b5]/10 blur-[100px] pointer-events-none" />
+
+      {/* Gentle wavy line drifting across the lower half of the hero */}
+      <svg
+        className="absolute bottom-[8%] left-0 w-full h-[220px] pointer-events-none z-0"
+        viewBox="0 0 1920 220"
+        preserveAspectRatio="none"
+        fill="none"
+      >
+        <motion.path
+          d="M0,140 C320,60 640,200 960,110 S1600,40 1920,130"
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth="1.5"
+          variants={drawLine}
+          initial="hidden"
+          animate="visible"
+        />
+      </svg>
+
+      {/* Scattered ambient teal dots */}
+      {FLOATING_DOTS.map((dot, i) => (
+        <FloatingDot key={i} {...dot} />
+      ))}
 
       {/* Scattered marketplace tags floating behind the headline */}
       {FLOATING_TAGS.map((tag) => (
         <FloatingTag
           key={tag.name}
           name={tag.name}
-          Icon={tag.Icon}
           className={tag.className}
           delay={tag.delay}
         />
@@ -589,27 +470,29 @@ const Hero = () => {
           variants={fadeUpVariants}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-xs md:text-sm text-gray-300 mb-6"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#23b5b5] animate-pulse" />
           Building the platform layer for AI-native teams
         </motion.div>
 
         <motion.h1
           variants={fadeUpVariants}
-          className="text-4xl md:text-5xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]"
         >
-          <span className="text-white">The Platform Layer</span>
+          <span className="text-white">
+            We Digitally Transform Your Enterprise,
+          </span>
           <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-gray-600 to-gray-800">
-            For Every Tool You Ship On
+          <span className="text-transparent text-4xl md:text-5xl lg:text-7xl bg-clip-text bg-gradient-to-b from-gray-600 to-gray-700">
+            Piece by Piece
           </span>
         </motion.h1>
 
         <motion.p
           variants={fadeUpVariants}
-          className="text-base md:text-lg text-gray-400 max-w-2xl mb-10 mt-5 leading-relaxed px-6"
+          className="text-base md:text-lg text-gray-400 max-w-2xl mb-10 mt-12 leading-relaxed px-6"
         >
-          Explified unifies powerful apps, automation, and workflows to
-          seamlessly support enterprises, teams and individuals.
+          AI-powered products and automation that modernize how your business
+          runs.
         </motion.p>
 
         <motion.div
@@ -617,18 +500,12 @@ const Hero = () => {
           className="flex flex-col sm:flex-row items-center justify-start gap-4 sm:gap-5"
         >
           <Link to="https://explified.com/labs">
-            <button className="relative cursor-pointer overflow-hidden bg-brand text-black font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)]">
+            <button className="relative cursor-pointer overflow-hidden bg-[#23b5b5] text-black font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)]">
               <span className="relative z-10">Explore Labs</span>
               <ArrowRight size={18} className="relative z-10" />
               <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
             </button>
           </Link>
-
-          {/* <Link to="/products">
-            <button className="cursor-pointer bg-transparent border border-white/15 text-white font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto hover:bg-white/5 hover:border-white/25 transition-colors">
-              See Our Products
-            </button>
-          </Link> */}
         </motion.div>
       </motion.div>
 
@@ -637,7 +514,7 @@ const Hero = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="relative w-full overflow-hidden mt-16 pt-10 border-t border-white/5 z-20 flex flex-col items-center"
+        className="relative w-full overflow-hidden mt-16 pt-10 z-20 flex flex-col items-center"
       >
         <p className="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-[0.2em] mb-8 text-center px-4">
           Trusted across major platforms
@@ -659,7 +536,11 @@ const Hero = () => {
                 className="flex items-center gap-3 w-[180px] md:w-[240px] shrink-0 group cursor-pointer text-neutral-600 transition-transform duration-300 hover:scale-105"
               >
                 <div className="flex items-center justify-center grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
-                  <item.Icon />
+                  <img
+                    src={item.src}
+                    alt={item.name}
+                    className="w-8 h-8 md:w-8 md:h-8 shrink-0 object-contain drop-shadow-md"
+                  />
                 </div>
                 <span className="text-xl md:text-2xl font-bold tracking-tight group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 whitespace-nowrap">
                   {item.name}
@@ -693,7 +574,7 @@ const Hero = () => {
       </motion.div>
 
       {/* ===================== Stats Section ===================== */}
-      <section className="relative w-full bg-[#050505] border-t border-white/5">
+      <section className="relative w-full bg-[#050505]">
         <div className="max-w-7xl mx-auto px-8 py-24">
           <div className="grid grid-cols-1 md:grid-cols-3">
             {/* Card 1 */}

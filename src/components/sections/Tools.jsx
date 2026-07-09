@@ -93,6 +93,7 @@ const PLATFORM_CONFIG = [
     title: "Figma Plugins",
     label: "FIGMA",
     icon: "Figma",
+    localIcon: "/logos/figma.png",
     sub: "AI-powered design utilities for design teams.",
   },
   {
@@ -100,6 +101,7 @@ const PLATFORM_CONFIG = [
     title: "Shopify Apps",
     label: "SHOPIFY",
     icon: "ShoppingBag",
+    localIcon: "/logos/shopify.png",
     sub: "Revenue and conversion tools for e-commerce stores.",
   },
   {
@@ -107,6 +109,7 @@ const PLATFORM_CONFIG = [
     title: "Trello Power-Ups",
     label: "TRELLO",
     icon: "Layout",
+    localIcon: "/logos/trello.png",
     sub: "Workflow automation for project teams.",
   },
   {
@@ -114,6 +117,7 @@ const PLATFORM_CONFIG = [
     title: "Chrome Extensions",
     label: "CHROME",
     icon: "Chrome",
+    localIcon: "/logos/chrome.png",
     sub: "Browser-native productivity for everyone.",
   },
   {
@@ -121,6 +125,7 @@ const PLATFORM_CONFIG = [
     title: "Framer Plugins",
     label: "FRAMER",
     icon: "Box",
+    localIcon: "/logos/framer.png",
     sub: "Visual tools for no-code builders.",
   },
   {
@@ -128,6 +133,7 @@ const PLATFORM_CONFIG = [
     title: "Atlassian Tools",
     label: "ATLASSIAN",
     icon: "Layout",
+    localIcon: "/logos/atlassian.png",
     sub: "Enterprise productivity and workflow solutions.",
   },
   {
@@ -135,6 +141,7 @@ const PLATFORM_CONFIG = [
     title: "Penpot Plugins",
     label: "PENPOT",
     icon: "PenTool",
+    localIcon: "/logos/penpot.png",
     sub: "Open-source design and prototyping plugins.",
   },
   {
@@ -142,6 +149,7 @@ const PLATFORM_CONFIG = [
     title: "Strapi Plugins",
     label: "STRAPI",
     icon: "Database",
+    localIcon: "/logos/strapi.png",
     sub: "Extend your headless CMS with powerful plugins.",
   },
   {
@@ -149,6 +157,7 @@ const PLATFORM_CONFIG = [
     title: "ClickUp Apps",
     label: "CLICKUP",
     icon: "CheckSquare",
+    localIcon: "/logos/clickup.png",
     sub: "Automate tasks and workflows inside ClickUp.",
   },
   {
@@ -156,6 +165,7 @@ const PLATFORM_CONFIG = [
     title: "Microsoft Edge",
     label: "EDGE",
     icon: "Globe2",
+    localIcon: "/logos/edge.png",
     sub: "Productivity extensions for Microsoft Edge.",
   },
   {
@@ -170,6 +180,7 @@ const PLATFORM_CONFIG = [
     title: "Bubble Plugins",
     label: "BUBBLE",
     icon: "Layers",
+    localIcon: "/logos/bubble.png",
     sub: "No-code plugins for Bubble.io apps.",
   },
   {
@@ -177,6 +188,7 @@ const PLATFORM_CONFIG = [
     title: "Odoo Modules",
     label: "ODOO",
     icon: "Grid",
+    localIcon: "/logos/odoo.png",
     sub: "Business modules for the Odoo ERP platform.",
   },
   {
@@ -227,9 +239,9 @@ const AppChip = ({ item }) => {
       target="_blank"
       rel="noopener noreferrer"
       title={item.title}
-      className="group/chip flex flex-col items-center gap-1.5 w-[52px] no-underline shrink-0"
+      className="group/chip flex flex-col items-center gap-1.5 w-[58px] no-underline shrink-0"
     >
-      <div className="w-9 h-9 rounded-[10px] overflow-hidden flex items-center justify-center border border-white/10 bg-white/[0.04] transition-all duration-200 group-hover/chip:border-[#23b5b5]/60 group-hover/chip:-translate-y-0.5 group-hover/chip:shadow-[0_4px_14px_rgba(35,181,181,0.25)]">
+      <div className="w-11 h-11 rounded-[10px] overflow-hidden flex items-center justify-center border border-white/10 bg-white/[0.04] transition-all duration-200 group-hover/chip:border-[#23b5b5]/60 group-hover/chip:-translate-y-0.5 group-hover/chip:shadow-[0_4px_14px_rgba(35,181,181,0.25)]">
         {isImage ? (
           <img
             src={item.icon}
@@ -238,7 +250,7 @@ const AppChip = ({ item }) => {
           />
         ) : (
           <LucideIcon
-            size={15}
+            size={19}
             strokeWidth={1.75}
             style={{ color: activeColor }}
           />
@@ -254,7 +266,9 @@ const AppChip = ({ item }) => {
 /* ─── Bento Platform Card ─── */
 const BentoPlatformCard = ({ section, span }) => {
   const PlatformIconCmp = Lucide[section.icon] || Lucide.Box;
-  const hasPlatformIcon = !!section.platformIcon;
+  // Prefer a live icon URL from the CMS, then fall back to the local PNG in /public/logos
+  const iconSrc = section.platformIcon || section.localIcon || null;
+  const hasPlatformIcon = !!iconSrc;
   const items = section.items || [];
 
   return (
@@ -273,9 +287,9 @@ const BentoPlatformCard = ({ section, span }) => {
       }}
     >
       <div className="p-7 flex flex-col h-full relative grow">
-        {/* Platform Icon: Anchored securely at the top */}
+        {/* Platform Icon: Fades out on hover, just like the title/subtitle */}
         <div
-          className="w-11 h-11 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden shrink-0"
+          className="w-11 h-11 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden shrink-0 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-100 group-hover:opacity-0 group-hover:-translate-y-3"
           style={{
             background:
               "linear-gradient(135deg, rgba(35,181,181,0.14) 0%, rgba(35,181,181,0.03) 100%)",
@@ -284,7 +298,7 @@ const BentoPlatformCard = ({ section, span }) => {
         >
           {hasPlatformIcon ? (
             <img
-              src={section.platformIcon}
+              src={iconSrc}
               alt={section.title}
               className="w-6 h-6 object-contain"
             />
@@ -440,6 +454,8 @@ const MarketplaceAndStudio = () => {
         icon: p.icon,
         // The platform-level icon URL from the API result (e.g. platformData?.iconUrl)
         platformIcon: platformData?.iconUrl || null,
+        // Local PNG fallback from /public/logos (used when the CMS has no iconUrl)
+        localIcon: p.localIcon || null,
         items,
       };
     }).filter((section) => section.items.length > 0);
@@ -500,7 +516,7 @@ const MarketplaceAndStudio = () => {
         </div>
       </div>
 
-      <div className="w-full relative h-[1px] bg-gradient-to-r from-transparent via-white/[0.05] to-transparent my-6" />
+      {/* <div className="w-full relative h-[1px] bg-gradient-to-r from-transparent via-white/[0.05] to-transparent my-6" /> */}
 
       {/* SECTION 2: Content Studio */}
       {/* <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-20 relative z-10">

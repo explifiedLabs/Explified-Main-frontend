@@ -1,69 +1,108 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 /* ─── Product Mock Data ─── */
 const FEATURED_PRODUCTS = [
   {
-    title: "BG REMOVER",
+    title: "REMOVE BG",
     platform: "FIGMA",
     desc: "Ship pixel-perfect components straight from canvas.",
-    link: "https://www.figma.com/community/plugin/1643987146382893434/removebg",
+    image: "/products/Remove BG.png",
+    link: "...",
   },
   {
     title: "WIREFRAMER AI",
     platform: "FIGMA",
     desc: "Generate production-grade wireframes from a single prompt.",
-    link: "https://www.figma.com/community/plugin/1607779209963334185/wireframer-ai",
+    image: "/products/Wireframe Ai.png",
+    link: "...",
   },
   {
     title: "JUDGE ME",
     platform: "SHOPIFY",
     desc: "AI-augmented product previews that lift conversion.",
-    link: "https://apps.shopify.com/judgeme-1?st_source=autocomplete&surface_detail=autocomplete_apps",
+    image: "/products/Judge me.jpg",
+    link: "...",
   },
   {
     title: "SUMMIFY",
     platform: "TRELLO",
     desc: "Summarize anything on the web with one keystroke.",
-    link: "https://trello.com/power-ups/69b424a01952fa85643762dd",
+    image: "/products/Summmify.png",
+    link: "...",
   },
   {
     title: "CARDLYTICS",
     platform: "TRELLO",
     desc: "Triage, resolve and route design feedback automatically.",
-    link: "https://trello.com/power-ups/69345803ec5875c4f362fa5e",
-    highlighted: false, // Renders with the premium glow border by default
+    image: "/products/Cardlytics.jpg",
+    link: "...",
   },
-
   {
     title: "PROGRESS",
     platform: "TRELLO",
     desc: "Visualize velocity and unblock teams in real-time.",
-    link: "https://trello.com/power-ups/697e0da3633afc7009edebc2",
+    image: "/products/Progress.jpg",
+    link: "...",
   },
 ];
 
+/* ─── Framer Motion Variants ─── */
+const gridVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08, // Creates the clean cascading wave effect
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    scale: 0.96,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 80,
+      damping: 15,
+    },
+  },
+};
+
 /* ─── Individual Card Component ─── */
-const ProductCard = ({ product, index }) => {
+const ProductCard = ({ product }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      className={`group relative flex flex-col justify-between p-8 rounded-xl border bg-gradient-to-b from-[#07221e] to-[#031210] transition-all duration-300 min-h-[250px]
+      variants={cardVariants}
+      whileHover={{
+        y: -8,
+        scale: 1.015,
+        transition: { type: "spring", stiffness: 400, damping: 25 },
+      }}
+      className={`group relative flex flex-col justify-between p-8 rounded-xl border bg-gradient-to-b from-[#07221e] to-[#031210] min-h-[250px] transition-shadow duration-300
         ${
           product.highlighted
             ? "border-[#23b5b5]/60 shadow-[0_0_25px_rgba(35,181,181,0.15)]"
-            : "border-[#23b5b5]/10 hover:border-[#23b5b5]/50 hover:shadow-[0_0_20px_rgba(35,181,181,0.1)]"
+            : "border-[#23b5b5]/10 hover:border-[#23b5b5]/50 hover:shadow-[0_15px_30px_rgba(35,181,181,0.08)]"
         }`}
     >
       {/* Card Header Layer */}
       <div className="flex items-center justify-between mb-8">
-        {/* Custom Icon Wrapper - Increased green tint behind the icon */}
-        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#23b5b5]/5 border border-[#23b5b5]/20 text-[#23b5b5]">
-          <Sparkles size={18} strokeWidth={1.5} />
+        <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#23b5b5]/5 border border-[#23b5b5]/20 flex items-center justify-center">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Platform Badge */}
@@ -108,10 +147,10 @@ const FeaturedProducts = () => {
       <div className="max-w-[1340px] mx-auto px-6 lg:px-12 relative z-10">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ type: "spring", stiffness: 60, damping: 15 }}
           className="mb-14 text-left"
         >
           <div className="flex items-center gap-2.5 mb-4">
@@ -129,11 +168,17 @@ const FeaturedProducts = () => {
         </motion.div>
 
         {/* Dynamic Products Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FEATURED_PRODUCTS.map((product, idx) => (
-            <ProductCard key={product.title} product={product} index={idx} />
+        <motion.div
+          variants={gridVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }} // Triggers reliably when 15% of the grid is visible
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {FEATURED_PRODUCTS.map((product) => (
+            <ProductCard key={product.title} product={product} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

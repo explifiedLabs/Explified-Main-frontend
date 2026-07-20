@@ -16,13 +16,15 @@ import MarketplaceDashboard from "./components/pages/Dashboard.jsx";
 import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 import SummifyLanding from "./components/pages/SummifyLanding.jsx";
 import LoginPage from "./components/pages/LoginPage.jsx";
-import { restoreSession } from "./redux/authSlice"; 
+import { restoreSession } from "./redux/authSlice";
 import ContactPage from "./components/pages/contactUs.jsx";
 import PricingPage from "./components/pages/PaymentPage.jsx";
 import CheckoutPage from "./components/pages/Checkout.jsx";
 import NeonDrift from "./components/pages/NenDrift.jsx";
 import PalmReader from "./components/pages/PalmReader.jsx";
 import GamesApp from "./components/pages/gamesApp.jsx";
+import OrbitDash from "./components/pages/Orbitdash.jsx";
+import PulseSync from "./components/pages/Pulsesync.jsx";
 
 const ExplifiedBlog = lazy(() => import("./components/pages/BlogPage"));
 const BlogPostDetail = lazy(() => import("./components/pages/BlogPostDetail"));
@@ -59,9 +61,11 @@ function AppRoutes() {
             <Route path="labs" element={<ExplifiedLabs />} />
             <Route path="pricing" element={<PricingPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
-<Route path="apps" element={<GamesApp />} />
-+            <Route path="apps/neon-drift" element={<NeonDrift />} />
-+            <Route path="apps/palm-reader" element={<PalmReader />} />
+            <Route path="apps" element={<GamesApp />} />{" "}
+            <Route path="apps/neon-drift" element={<NeonDrift />} />
+            <Route path="apps/palm-reader" element={<PalmReader />} />
+            <Route path="apps/orbit-dash" element={<OrbitDash />} />
+            <Route path="apps/pulse-sync" element={<PulseSync />} />
             <Route
               path="/trello/power-ups/summify"
               element={<SummifyLanding />}
@@ -109,5 +113,3 @@ function App() {
 }
 
 export default App;
-
-

@@ -1,5 +1,12 @@
 import { useNavigate } from "react-router";
-import { Gamepad2, Hand, ArrowUpRight, Sparkles } from "lucide-react";
+import {
+  Gamepad2,
+  Hand,
+  ArrowUpRight,
+  Sparkles,
+  Orbit,
+  HeartPulse,
+} from "lucide-react";
 
 /**
  * GamesApp — Explified / Apps hub
@@ -25,7 +32,8 @@ const APPS = [
     path: "/apps/neon-drift",
     eyebrow: "Arcade · Racer",
     name: "Neon Drift",
-    tagline: "Drag to steer. Dodge the traffic — it comes faster the further you get.",
+    tagline:
+      "Drag to steer. Dodge the traffic — it comes faster the further you get.",
     meta: "60s reflex run",
     icon: Gamepad2,
     accent: "#37f0a0",
@@ -37,12 +45,38 @@ const APPS = [
     path: "/apps/palm-reader",
     eyebrow: "Oracle · Vision",
     name: "Palm Reader",
-    tagline: "Upload your palm. A star-chart reading of your lines, mounts and marks.",
+    tagline:
+      "Upload your palm. A star-chart reading of your lines, mounts and marks.",
     meta: "BYOK · vision reading",
     icon: Hand,
     accent: "#E6B667",
     accentSoft: "rgba(230,182,103,.14)",
     ring: "rgba(230,182,103,.35)",
+  },
+  {
+    id: "orbit-dash",
+    path: "/apps/orbit-dash",
+    eyebrow: "Arcade · Reflex",
+    name: "Orbit Dash",
+    tagline:
+      "Tap to swap rings. Blocks sweep in from below — land on the one they're not hitting.",
+    meta: "Endless · one-tap",
+    icon: Orbit,
+    accent: "#b98bff",
+    accentSoft: "rgba(185,139,255,.14)",
+    ring: "rgba(185,139,255,.35)",
+  },
+  {
+    id: "pulse-sync",
+    path: "/apps/pulse-sync",
+    eyebrow: "Arcade · Reflex",
+    name: "Pulse Sync",
+    tagline: "Tap (or Space) the instant the pulse lands on the target.",
+    meta: "Endless · one-tap",
+    icon: HeartPulse,
+    accent: "#ff6fae",
+    accentSoft: "rgba(255,111,174,.25)",
+    ring: "rgba(255,111,174,.7)",
   },
 ];
 
@@ -65,8 +99,8 @@ export default function GamesApp() {
           Pick something to <span className="text-amber-300">play</span>
         </h1>
         <p className="mx-auto mt-4 max-w-md text-center text-base leading-relaxed text-slate-400">
-          Small, self-contained experiments — a game, a reading, whatever's next.
-          Tap a cartridge to launch it.
+          Small, self-contained experiments — a game, a reading, whatever's
+          next. Tap a cartridge to launch it.
         </p>
 
         {/* Grid */}
@@ -78,13 +112,17 @@ export default function GamesApp() {
                 key={app.id}
                 onClick={() => navigate(app.path)}
                 className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] text-left transition-all duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = app.ring)}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.borderColor = app.ring)
+                }
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = "")}
               >
                 {/* Marquee */}
                 <div
                   className="relative flex h-32 items-center justify-center overflow-hidden"
-                  style={{ background: `linear-gradient(135deg, ${app.accentSoft}, rgba(0,0,0,0) 70%)` }}
+                  style={{
+                    background: `linear-gradient(135deg, ${app.accentSoft}, rgba(0,0,0,0) 70%)`,
+                  }}
                 >
                   <div className="absolute inset-0 bg-black/40" />
                   <Icon
@@ -103,8 +141,12 @@ export default function GamesApp() {
                   >
                     {app.eyebrow}
                   </span>
-                  <h2 className="text-xl font-bold tracking-tight text-white">{app.name}</h2>
-                  <p className="flex-1 text-sm leading-relaxed text-slate-400">{app.tagline}</p>
+                  <h2 className="text-xl font-bold tracking-tight text-white">
+                    {app.name}
+                  </h2>
+                  <p className="flex-1 text-sm leading-relaxed text-slate-400">
+                    {app.tagline}
+                  </p>
 
                   <div className="mt-2 flex items-center justify-between">
                     <span className="font-mono text-[11px] tracking-wide text-slate-500">
@@ -126,7 +168,9 @@ export default function GamesApp() {
           {/* Coming soon */}
           <div className="flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-white/15 bg-white/[0.015] px-5 py-8 text-center text-slate-500">
             <Sparkles size={22} className="opacity-50" />
-            <b className="text-sm font-semibold text-slate-400">More on the way</b>
+            <b className="text-sm font-semibold text-slate-400">
+              More on the way
+            </b>
             <span className="max-w-[26ch] text-xs leading-relaxed">
               New apps land here as they ship — no need to hunt for a link.
             </span>

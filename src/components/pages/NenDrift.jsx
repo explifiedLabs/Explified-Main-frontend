@@ -472,8 +472,35 @@ export default function NeonDrift() {
       rafId.current = requestAnimationFrame(loop);
     }
 
-    resize();
+    // Initial size: on mobile, 100vh / first-paint layout is unreliable
+    // (address bar collapsing, iframe host still settling, web fonts
+    // swapping in and nudging flex sizes). Instead of trusting a single
+    // synchronous resize() call, run it after layout has actually
+    // committed, and keep watching the container's real box size with
+    // a ResizeObserver so we self-heal even if no 'resize' event ever
+    // fires. This is what was causing the occasional blank/stuck load.
+    let cancelled = false;
+    function safeResize() {
+      if (cancelled) return;
+      resize();
+      // If we still got a zero-sized canvas, try again next frame
+      // instead of silently staying blank.
+      if (dims.current.W === 0 || dims.current.H === 0) {
+        requestAnimationFrame(safeResize);
+      }
+    }
+    requestAnimationFrame(() => requestAnimationFrame(safeResize));
+
+    let ro = null;
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(() => resize());
+      ro.observe(canvas.parentElement);
+    }
+
     window.addEventListener("resize", resize);
+    window.addEventListener("orientationchange", resize);
+    if (window.visualViewport) window.visualViewport.addEventListener("resize", resize);
+
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
@@ -487,8 +514,12 @@ export default function NeonDrift() {
     rafId.current = requestAnimationFrame(loop);
 
     return () => {
+      cancelled = true;
       cancelAnimationFrame(rafId.current);
+      if (ro) ro.disconnect();
       window.removeEventListener("resize", resize);
+      window.removeEventListener("orientationchange", resize);
+      if (window.visualViewport) window.visualViewport.removeEventListener("resize", resize);
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
@@ -598,11 +629,12 @@ export default function NeonDrift() {
 
   return (
     <div
-      className="h-screen w-full flex items-center justify-center overflow-hidden select-none touch-none"
+      className="nd-root w-full flex items-center justify-center overflow-hidden select-none touch-none"
       style={{ background: "#05070a", color: C.text, fontFamily: SANS }}
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+        .nd-root{ height: 100vh; height: 100dvh; min-height: 320px; }
       `}</style>
 
       <div
@@ -891,3 +923,5 @@ export default function NeonDrift() {
     </div>
   );
 }
+
+

@@ -20,6 +20,9 @@ import { restoreSession } from "./redux/authSlice";
 import ContactPage from "./components/pages/contactUs.jsx";
 import PricingPage from "./components/pages/PaymentPage.jsx";
 import CheckoutPage from "./components/pages/Checkout.jsx";
+import NeonDrift from "./components/pages/NenDrift.jsx";
+import PalmReader from "./components/pages/PalmReader.jsx";
+import GamesApp from "./components/pages/gamesApp.jsx";
 
 const ExplifiedBlog = lazy(() => import("./components/pages/BlogPage"));
 const BlogPostDetail = lazy(() => import("./components/pages/BlogPostDetail"));
@@ -56,6 +59,9 @@ function AppRoutes() {
             <Route path="labs" element={<ExplifiedLabs />} />
             <Route path="pricing" element={<PricingPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
+<Route path="apps" element={<GamesApp />} />
++            <Route path="apps/neon-drift" element={<NeonDrift />} />
++            <Route path="apps/palm-reader" element={<PalmReader />} />
             <Route
               path="/trello/power-ups/summify"
               element={<SummifyLanding />}

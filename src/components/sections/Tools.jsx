@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
-import { motion } from "framer-motion";
-import { Users, Youtube } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Users, Youtube, ChevronLeft, ChevronRight } from "lucide-react";
 import * as Lucide from "lucide-react";
 import { useCMS } from "../../hooks/useCMS.jsx";
 
@@ -52,7 +52,7 @@ const CORE_PRODUCTS = {
   subtitle: "Powerful utilities that work beyond any single platform",
   label: "PRODUCTS",
   icon: "Package",
-  platformIcon: null, // uses Lucide icon fallback
+  platformIcon: null,
   items: [
     {
       title: "Lurph",
@@ -85,8 +85,6 @@ const CORE_PRODUCTS = {
   ],
 };
 
-// All platforms visible in the UI — key must match products[key] from CMS/API
-// platformIcon: URL string from API (item.iconUrl on the platform level), or null to fall back to lucide
 const PLATFORM_CONFIG = [
   {
     key: "Figma",
@@ -208,17 +206,16 @@ const themeColors = {
   orange: "#f97316",
 };
 
-// Bento span pattern, repeats every 6 cards: [wide, narrow, narrow, narrow, narrow, wide]
 const SPAN_PATTERN = [
   "md:col-span-2",
   "md:col-span-1",
   "md:col-span-1",
   "md:col-span-1",
   "md:col-span-1",
-  "md:col-span-3",
+  // "md:col-span-3",
 ];
 
-/* ─── Tiny floating app icon + label, links straight to the marketplace listing ─── */
+/* ─── Tiny floating app icon + label ─── */
 const AppChip = ({ item }) => {
   const isImage = useMemo(() => {
     if (!item.icon || typeof item.icon !== "string") return false;
@@ -239,7 +236,7 @@ const AppChip = ({ item }) => {
       target="_blank"
       rel="noopener noreferrer"
       title={item.title}
-      className="group/chip flex flex-col items-center gap-1.5 w-[58px] no-underline shrink-0"
+      className="group/chip flex flex-col items-center gap-1.5 w-[72px] no-underline shrink-0"
     >
       <div className="w-11 h-11 rounded-[10px] overflow-hidden flex items-center justify-center border border-white/10 bg-white/[0.04] transition-all duration-200 group-hover/chip:border-[#23b5b5]/60 group-hover/chip:-translate-y-0.5 group-hover/chip:shadow-[0_4px_14px_rgba(35,181,181,0.25)]">
         {isImage ? (
@@ -256,7 +253,7 @@ const AppChip = ({ item }) => {
           />
         )}
       </div>
-      <span className="text-[8px] leading-tight font-semibold text-neutral-400 text-center line-clamp-2 group-hover/chip:text-white transition-colors">
+      <span className="text-xs leading-tight font-medium text-neutral-400 text-center line-clamp-2 group-hover/chip:text-white transition-colors">
         {item.title}
       </span>
     </a>
@@ -266,10 +263,35 @@ const AppChip = ({ item }) => {
 /* ─── Bento Platform Card ─── */
 const BentoPlatformCard = ({ section, span }) => {
   const PlatformIconCmp = Lucide[section.icon] || Lucide.Box;
-  // Prefer a live icon URL from the CMS, then fall back to the local PNG in /public/logos
   const iconSrc = section.platformIcon || section.localIcon || null;
   const hasPlatformIcon = !!iconSrc;
   const items = section.items || [];
+
+  // Determine layout structure configurations based on whether card is multi-column width
+  const isLargeCard =
+    span.includes("md:col-span-2") || span.includes("md:col-span-3");
+
+  // Large cards: 8 columns x 2 rows = 16 items. Small cards: 4 columns x 2 rows = 8 items.
+  const ITEMS_PER_PAGE = isLargeCard ? 16 : 8;
+
+  const [page, setPage] = useState(0);
+
+  const paginatedItems = useMemo(() => {
+    const start = page * ITEMS_PER_PAGE;
+    return items.slice(start, start + ITEMS_PER_PAGE);
+  }, [items, page, ITEMS_PER_PAGE]);
+
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    if (page < totalPages - 1) setPage((prev) => prev + 1);
+  };
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    if (page > 0) setPage((prev) => prev - 1);
+  };
 
   return (
     <motion.div
@@ -283,38 +305,38 @@ const BentoPlatformCard = ({ section, span }) => {
         backgroundColor: "rgba(8,20,18,0.55)",
         backgroundImage:
           "radial-gradient(circle at 15% -10%, rgba(35,181,181,0.16), transparent 55%), linear-gradient(180deg, rgba(35,181,181,0.05) 0%, rgba(5,10,9,0) 45%)",
-        minHeight: "220px", // Gives the grid a premium, unified baseline height
+        height: "240px",
       }}
     >
-      <div className="p-7 flex flex-col h-full relative grow">
-        {/* Platform Icon: Fades out on hover, just like the title/subtitle */}
-        <div
-          className="w-11 h-11 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden shrink-0 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-100 group-hover:opacity-0 group-hover:-translate-y-3"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(35,181,181,0.14) 0%, rgba(35,181,181,0.03) 100%)",
-            border: "1px solid rgba(35,181,181,0.2)",
-          }}
-        >
-          {hasPlatformIcon ? (
-            <img
-              src={iconSrc}
-              alt={section.title}
-              className="w-6 h-6 object-contain"
-            />
-          ) : (
-            <PlatformIconCmp
-              size={20}
-              strokeWidth={1.75}
-              className="text-[#23b5b5]"
-            />
-          )}
-        </div>
+      <div className="p-7 w-full h-full relative flex flex-col justify-center">
+        {/* DEFAULT VIEW LAYOUT STACK */}
+        <div className="flex flex-col justify-between h-full w-full transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-100 group-hover:opacity-0 group-hover:pointer-events-none group-hover:-translate-y-3">
+          {/* Top Row: Icon */}
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(35,181,181,0.14) 0%, rgba(35,181,181,0.03) 100%)",
+              border: "1px solid rgba(35,181,181,0.2)",
+            }}
+          >
+            {hasPlatformIcon ? (
+              <img
+                src={iconSrc}
+                alt={section.title}
+                className="w-6 h-6 object-contain"
+              />
+            ) : (
+              <PlatformIconCmp
+                size={20}
+                strokeWidth={1.75}
+                className="text-[#23b5b5]"
+              />
+            )}
+          </div>
 
-        {/* Unified Swap Container */}
-        <div className="relative grow grid grid-cols-1 grid-rows-1 items-start">
-          {/* DEFAULT STATE: Name & Description (Disappears on hover) */}
-          <div className="col-start-1 row-start-1 flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-100 group-hover:opacity-0 group-hover:pointer-events-none group-hover:-translate-y-3">
+          {/* Bottom Row: Headings */}
+          <div className="flex flex-col mt-auto">
             <h3 className="text-white text-xl font-bold tracking-tight mb-1.5">
               {section.title}
             </h3>
@@ -322,18 +344,56 @@ const BentoPlatformCard = ({ section, span }) => {
               {section.subtitle}
             </p>
           </div>
-
-          {/* HOVER STATE: Product Icons (Appears in the exact same spot) */}
-          {items.length > 0 && (
-            <div className="col-start-1 row-start-1 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto translate-y-3 group-hover:translate-y-0">
-              <div className="flex flex-wrap gap-x-3 gap-y-3">
-                {items.map((item, i) => (
-                  <AppChip key={item.title + i} item={item} />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* HOVER SLIDER STATE */}
+        {items.length > 0 && (
+          <div className="absolute inset-0 flex items-center justify-between px-3 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto translate-y-3 group-hover:translate-y-0">
+            {/* Left Controller Arrow */}
+            <div className="w-8 h-full flex items-center justify-center">
+              {totalPages > 1 && page > 0 && (
+                <button
+                  onClick={handlePrev}
+                  className="w-6 h-6 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-all pointer-events-auto z-20"
+                >
+                  <ChevronLeft size={14} />
+                </button>
+              )}
+            </div>
+
+            {/* Slide Grid Content Area */}
+            <div className="flex items-center justify-center overflow-hidden grow h-full px-2">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={page}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className={`grid gap-x-4 gap-y-4 justify-items-center items-center w-full grid-rows-2 ${
+                    isLargeCard ? "grid-cols-8" : "grid-cols-4"
+                  }`}
+                >
+                  {paginatedItems.map((item, i) => (
+                    <AppChip key={item.title + i} item={item} />
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Right Controller Arrow */}
+            <div className="w-8 h-full flex items-center justify-center">
+              {totalPages > 1 && page < totalPages - 1 && (
+                <button
+                  onClick={handleNext}
+                  className="w-6 h-6 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-all pointer-events-auto z-20"
+                >
+                  <ChevronRight size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -434,8 +494,6 @@ const MarketplaceAndStudio = () => {
 
   const products = data?.header?.products || {};
 
-  // Build all dynamic platform sections from PLATFORM_CONFIG + CMS data
-  // platformIcon comes from products[key].iconUrl (the marketplace logo from API)
   const dynamicSections = useMemo(() => {
     return PLATFORM_CONFIG.map((p) => {
       const platformData = products[p.key];
@@ -452,14 +510,11 @@ const MarketplaceAndStudio = () => {
         subtitle: p.sub,
         label: p.label,
         icon: p.icon,
-        // The platform-level icon URL from the API result (e.g. platformData?.iconUrl)
         platformIcon: platformData?.iconUrl || null,
-        // Local PNG fallback from /public/logos (used when the CMS has no iconUrl)
         localIcon: p.localIcon || null,
         items,
       };
     }).filter((section) => section.items.length > 0);
-    // .slice(0, 5);
   }, [products]);
 
   const ALL_SECTIONS = useMemo(() => {
@@ -495,9 +550,8 @@ const MarketplaceAndStudio = () => {
               Our Craft
             </span>
           </div>
-          <h1 className="text-5xl  md:text-6xl font-black tracking-tight leading-[1.1] text-white">
+          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
             Every tool your team already uses
-            {/* <br /> */}
           </h1>
           <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mt-1 flex items-center gap-4">
             <span className="w-8 md:w-12 h-[3px] bg-white/70 inline-block" />
@@ -515,35 +569,6 @@ const MarketplaceAndStudio = () => {
           ))}
         </div>
       </div>
-
-      {/* <div className="w-full relative h-[1px] bg-gradient-to-r from-transparent via-white/[0.05] to-transparent my-6" /> */}
-
-      {/* SECTION 2: Content Studio */}
-      {/* <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-20 relative z-10">
-        <div className="mb-12 flex flex-col items-center text-center">
-          <div className="flex items-center justify-center gap-2.5 mb-2.5">
-            <div className="w-5 h-5 rounded bg-[#23b5b5]/10 border border-[#23b5b5]/20 flex items-center justify-center">
-              <Youtube className="text-[#23b5b5]" size={11} />
-            </div>
-            <span className="text-[9px] text-[#23b5b5] font-extrabold tracking-wider uppercase">
-              Our Channels
-            </span>
-          </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter uppercase">
-            Content Studio
-          </h1>
-          <p className="text-gray-400 text-xs mt-1.5 max-w-2xl font-medium leading-relaxed mx-auto">
-            The digital media arm of Explified. Exploring automation, history,
-            and global logistics through visual storytelling.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {CHANNELS.map((channel, idx) => (
-            <ChannelCard key={idx} channel={channel} index={idx} />
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };

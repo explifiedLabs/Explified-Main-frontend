@@ -25,6 +25,10 @@ import PalmReader from "./components/pages/PalmReader.jsx";
 import GamesApp from "./components/pages/gamesApp.jsx";
 import OrbitDash from "./components/pages/Orbitdash.jsx";
 import PulseSync from "./components/pages/Pulsesync.jsx";
+import CardlyticsLanding from "./components/pages/CardlyticsLanding.jsx";
+import ZeroBGLanding from "./components/pages/ZeroBGLanding.jsx";
+import WireframerAILanding from "./components/pages/WireframerAILanding.jsx";
+import VerdictLanding from "./components/pages/VerdictLanding.jsx";
 
 const ExplifiedBlog = lazy(() => import("./components/pages/BlogPage"));
 const BlogPostDetail = lazy(() => import("./components/pages/BlogPostDetail"));
@@ -51,6 +55,10 @@ function AppRoutes() {
         <Routes>
           <Route path="/" element={<LandingLayout />}>
             <Route index element={<Home />} />
+            <Route path="cardlytics" element={<CardlyticsLanding />} />
+            <Route path="zerobg" element={<ZeroBGLanding />} />
+            <Route path="wireframerai" element={<WireframerAILanding />} />
+            <Route path="verdict" element={<VerdictLanding />} />
             <Route path="blog" element={<ExplifiedBlog />} />
             <Route path="blog/:slug" element={<BlogPostDetail />} />
             <Route path="about" element={<AboutUs />} />

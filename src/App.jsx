@@ -61,6 +61,7 @@ function AppRoutes() {
             <Route path="labs" element={<ExplifiedLabs />} />
             <Route path="pricing" element={<PricingPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
+             <Route path="cardlytics/checkout" element={<CheckoutPage />} />
             <Route path="apps" element={<GamesApp />} />{" "}
             <Route path="apps/neon-drift" element={<NeonDrift />} />
             <Route path="apps/palm-reader" element={<PalmReader />} />

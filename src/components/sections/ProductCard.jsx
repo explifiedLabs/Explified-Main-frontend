@@ -5,25 +5,25 @@ import { ArrowRight } from "lucide-react";
 /* ─── Product Mock Data ─── */
 const FEATURED_PRODUCTS = [
   {
-    title: "REMOVE BG",
+    title: "ZERO BG",
     platform: "FIGMA",
     desc: "Ship pixel-perfect components straight from canvas.",
     image: "/products/Remove BG.png",
-    link: "...",
+    link: "/zerobg",
   },
   {
     title: "WIREFRAMER AI",
     platform: "FIGMA",
     desc: "Generate production-grade wireframes from a single prompt.",
     image: "/products/Wireframe Ai.png",
-    link: "...",
+    link: "/wireframerai",
   },
   {
-    title: "JUDGE ME",
+    title: "VERDICT",
     platform: "SHOPIFY",
     desc: "AI-augmented product previews that lift conversion.",
     image: "/products/Judge me.jpg",
-    link: "...",
+    link: "/verdict",
   },
   {
     title: "SUMMIFY",
@@ -37,7 +37,7 @@ const FEATURED_PRODUCTS = [
     platform: "TRELLO",
     desc: "Triage, resolve and route design feedback automatically.",
     image: "/products/Cardlytics.jpg",
-    link: "...",
+    link: "/cardlytics",
   },
   {
     title: "PROGRESS",
@@ -125,8 +125,6 @@ const ProductCard = ({ product }) => {
       <div className="mt-auto">
         <a
           href={product.link}
-          target="_blank"
-          rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 text-md font-bold text-[#23b5b5] transition-colors group-hover:text-white no-underline"
         >
           Get Started

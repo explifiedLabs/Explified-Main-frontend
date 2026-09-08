@@ -11,7 +11,10 @@ export default function LandingLayout() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen selection:bg-primary selection:text-black" style={{ background: 'none' }}>
+    <div
+      className="min-h-screen overflow-x-hidden selection:bg-primary selection:text-black"
+      style={{ background: "none" }}
+    >
       <div className="relative">
         <Navbar />
         <main>

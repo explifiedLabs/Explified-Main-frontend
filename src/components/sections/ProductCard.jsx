@@ -30,7 +30,7 @@ const FEATURED_PRODUCTS = [
     platform: "TRELLO",
     desc: "Summarize anything on the web with one keystroke.",
     image: "/products/Summmify.png",
-    link: "...",
+    link: "/summify",
   },
   {
     title: "CARDLYTICS",
@@ -44,7 +44,7 @@ const FEATURED_PRODUCTS = [
     platform: "TRELLO",
     desc: "Visualize velocity and unblock teams in real-time.",
     image: "/products/Progress.jpg",
-    link: "...",
+    link: "/progress",
   },
 ];
 

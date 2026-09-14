@@ -29,6 +29,8 @@ import CardlyticsLanding from "./components/pages/CardlyticsLanding.jsx";
 import ZeroBGLanding from "./components/pages/ZeroBGLanding.jsx";
 import WireframerAILanding from "./components/pages/WireframerAILanding.jsx";
 import VerdictLanding from "./components/pages/VerdictLanding.jsx";
+import ProgrssLanding from "./components/pages/ProgrssLanding.jsx";
+import SummifyLandingNew from "./components/pages/SummifyLandingNew.jsx";
 
 const ExplifiedBlog = lazy(() => import("./components/pages/BlogPage"));
 const BlogPostDetail = lazy(() => import("./components/pages/BlogPostDetail"));
@@ -59,6 +61,8 @@ function AppRoutes() {
             <Route path="zerobg" element={<ZeroBGLanding />} />
             <Route path="wireframerai" element={<WireframerAILanding />} />
             <Route path="verdict" element={<VerdictLanding />} />
+            <Route path="summify" element={<SummifyLandingNew />} />
+            <Route path="progress" element={<ProgrssLanding />} />
             <Route path="blog" element={<ExplifiedBlog />} />
             <Route path="blog/:slug" element={<BlogPostDetail />} />
             <Route path="about" element={<AboutUs />} />

@@ -163,7 +163,7 @@ const Navbar = () => {
   const headerKeys = Object.keys(headerData).sort((a, b) => {
     const keyA = a.toLowerCase();
     const keyB = b.toLowerCase();
-    const orderMap = { lab: 1, labs: 1, products: 2, product: 2, explore: 3 };
+    const orderMap = { lab: 1, labs: 1, products: 2, product: 2, blog: 3, explore: 4 };
 
     if (orderMap[keyA] !== undefined && orderMap[keyB] !== undefined) {
       return orderMap[keyA] - orderMap[keyB];

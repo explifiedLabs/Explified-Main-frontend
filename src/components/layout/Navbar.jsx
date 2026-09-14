@@ -38,24 +38,9 @@ const BrandIcon = ({ name, className = "w-7 h-7" }) => {
     ),
     Snowflake: (
       <svg viewBox="0 0 24 24" fill="none" className={className}>
-        <path
-          d="M12 2V6M12 18V22"
-          stroke="#29B5E8"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <path
-          d="M3.34 7L6.8 9M17.2 15L20.66 17"
-          stroke="#29B5E8"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <path
-          d="M3.34 17L6.8 15M17.2 9L20.66 7"
-          stroke="#29B5E8"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+        <path d="M12 2V6M12 18V22" stroke="#29B5E8" strokeWidth="2" strokeLinecap="round" />
+        <path d="M3.34 7L6.8 9M17.2 15L20.66 17" stroke="#29B5E8" strokeWidth="2" strokeLinecap="round" />
+        <path d="M3.34 17L6.8 15M17.2 9L20.66 7" stroke="#29B5E8" strokeWidth="2" strokeLinecap="round" />
         <path d="M12 10L10 9L12 6L14 9L12 10Z" fill="#29B5E8" />
       </svg>
     ),
@@ -76,12 +61,7 @@ const BrandIcon = ({ name, className = "w-7 h-7" }) => {
     HubSpot: (
       <svg viewBox="0 0 24 24" fill="none" className={className}>
         <circle cx="12" cy="12" r="10" fill="#FF7A59" />
-        <path
-          d="M12 6V10M12 14V18M8 12H16"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+        <path d="M12 6V10M12 14V18M8 12H16" stroke="white" strokeWidth="2" strokeLinecap="round" />
       </svg>
     ),
   };
@@ -115,7 +95,7 @@ const ItemIcon = ({ item }) => {
 
   return (
     <IconComponent
-      size={24}
+      size={22}
       className="text-[#23b5b5] group-hover:text-white transition-colors duration-300 relative z-10"
     />
   );
@@ -151,6 +131,15 @@ const Navbar = () => {
 
   const [authLoading, setAuthLoading] = useState(false);
 
+  // Scroll state — nav gets a soft blur/border once you scroll past 20px
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const handleInputChange = (e) => {
     setAuthForm({
       ...authForm,
@@ -167,7 +156,6 @@ const Navbar = () => {
           return alert("Passwords do not match");
         }
 
-        // .unwrap() allows us to catch the error natively if the thunk fails
         await dispatch(
           registerUser({
             name: authForm.name,
@@ -184,7 +172,6 @@ const Navbar = () => {
         ).unwrap();
       }
 
-      // Reset form and close modal upon success
       setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
       setIsAuthModalOpen(false);
       setIsUserMenuOpen(false);
@@ -201,7 +188,6 @@ const Navbar = () => {
     try {
       setAuthLoading(true);
       await dispatch(loginWithGoogle()).unwrap();
-      // Auto close modal on success
       setIsAuthModalOpen(false);
       setIsUserMenuOpen(false);
     } catch (error) {
@@ -308,35 +294,41 @@ const Navbar = () => {
 
   const scrollbarStyles = `
     .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #050505; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #333333; border-radius: 10px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #444444; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(35,181,181,0.20); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(35,181,181,0.35); }
   `;
 
   return (
     <nav
       onMouseLeave={() => setHoveredMenu(null)}
-      className={`absolute top-0 inset-x-0 z-[100] py-5 pointer-events-none transition-colors duration-300 ${isMobileMenuOpen ? "bg-[#05070A]" : ""}`}
+      className={`fixed top-0 inset-x-0 z-[100] pointer-events-none transition-colors duration-300 ${
+        isMobileMenuOpen
+          ? "bg-[#050607]"
+          : scrolled
+            ? "bg-[#050607]/85 backdrop-blur-xl"
+            : "bg-transparent"
+      }`}
     >
       <style>{scrollbarStyles}</style>
 
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-3 items-center relative z-50 pointer-events-auto">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-10 h-[72px] grid grid-cols-2 lg:grid-cols-3 items-center relative z-50 pointer-events-auto">
         {/* LOGO */}
         <div className="flex justify-start">
           <RouterLink
             to="/"
-            className="flex items-center gap-3 group shrink-0"
+            className="flex items-center gap-2.5 group shrink-0"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <img src={logo} className="w-11 h-11 lg:w-12 lg:h-12" alt="Logo" />
-            <span className="text-2xl font-bold text-white tracking-tight group-hover:text-[#23b5b5] transition-colors duration-300">
+            <img src={logo} className="w-8 h-8 lg:w-9 lg:h-9" alt="Logo" />
+            <span className="text-[19px] lg:text-[20px] font-bold text-white tracking-tight group-hover:text-[#4fdede] transition-colors duration-300">
               Explified
             </span>
           </RouterLink>
         </div>
 
         {/* MENU - Desktop */}
-        <div className="hidden lg:flex items-center justify-center gap-4 relative z-50">
+        <div className="hidden lg:flex items-center justify-center gap-1 relative z-50">
           {headerKeys.map((menuKey) => {
             const groups = getGroupsFromMenu(menuKey);
             const flatItems = getFlatItemsFromMenu(menuKey);
@@ -366,44 +358,58 @@ const Navbar = () => {
               >
                 <button
                   onClick={() => handleCategoryClick(menuKey)}
-                  className={`px-4 py-2 text-base font-semibold flex items-center gap-1.5 transition-colors ${isHovered ? "text-white" : "text-gray-300 hover:text-white"} ${hasUrl ? "cursor-pointer" : "cursor-default"}`}
+                  className={`px-4 py-2 text-[15px] font-semibold flex items-center gap-1.5 rounded-full transition-all ${
+                    isHovered
+                      ? "text-white bg-white/[0.06]"
+                      : "text-white/90 hover:text-white hover:bg-white/[0.05]"
+                  } ${hasUrl ? "cursor-pointer" : "cursor-default"}`}
                 >
-                  {menuTitle}{" "}
+                  {menuTitle}
                   {hasContent && (
                     <LucideIcons.ChevronDown
-                      size={16}
-                      className={`transition-transform duration-300 ${isHovered ? "rotate-180 text-[#23b5b5]" : ""}`}
+                      size={15}
+                      className={`transition-transform duration-300 ${
+                        isHovered ? "rotate-180 text-[#4fdede]" : "text-white/70"
+                      }`}
                     />
                   )}
                 </button>
 
                 {useSideTabUI ? (
                   <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[92vw] max-w-6xl transition-all duration-300 origin-top z-50 ${isHovered ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-4 invisible pointer-events-none"}`}
+                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[92vw] max-w-6xl transition-all duration-300 origin-top z-50 ${
+                      isHovered
+                        ? "opacity-100 translate-y-0 visible"
+                        : "opacity-0 -translate-y-3 invisible pointer-events-none"
+                    }`}
                   >
-                    <div className="bg-[#0A0A0C]/98 backdrop-blur-3xl rounded-xl border border-white/10 shadow-2xl flex overflow-hidden h-[600px] max-h-[75vh]">
-                      <div className="w-72 bg-[#050507]/50 border-r border-white/5 p-4 flex flex-col gap-1 overflow-y-auto custom-scrollbar">
+                    <div className="bg-[#080D0E]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.55)] flex overflow-hidden h-[600px] max-h-[75vh]">
+                      <div className="w-72 bg-black/25 border-r border-white/[0.05] p-3 flex flex-col gap-1 overflow-y-auto custom-scrollbar">
                         {resolvedGroups.map((group) => (
                           <button
                             key={group.title}
                             onMouseEnter={() =>
                               setActiveProductTab(group.title)
                             }
-                            className={`flex items-center gap-3 text-left px-4 py-3 text-[15px] font-semibold rounded-lg transition-all duration-300 ${activeProductTab === group.title ? "text-[#23b5b5] bg-[#23b5b5]/10 shadow-[inset_0_0_20px_rgba(35,181,181,0.05)]" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
+                            className={`flex items-center gap-3 text-left px-3.5 py-3 text-[14px] font-semibold rounded-xl transition-all duration-200 ${
+                              activeProductTab === group.title
+                                ? "text-white bg-gradient-to-r from-[#23b5b5]/15 to-transparent border-l-2 border-[#23b5b5]"
+                                : "text-neutral-400 hover:text-white hover:bg-white/[0.04] border-l-2 border-transparent"
+                            }`}
                           >
                             {group.imageUrl ? (
                               <img
                                 src={group.imageUrl}
                                 alt=""
-                                className={`w-6 h-6 object-contain rounded transition-opacity ${activeProductTab === group.title ? "opacity-100" : "opacity-50 group-hover:opacity-100"}`}
+                                className="w-5 h-5 object-contain rounded"
                               />
                             ) : (
                               <LucideIcons.Layers
-                                size={18}
+                                size={16}
                                 className={
                                   activeProductTab === group.title
-                                    ? "text-[#23b5b5]"
-                                    : "text-gray-600"
+                                    ? "text-[#4fdede]"
+                                    : "text-neutral-600"
                                 }
                               />
                             )}
@@ -413,9 +419,15 @@ const Navbar = () => {
                           </button>
                         ))}
                       </div>
-                      <div className="flex-1 p-8 overflow-y-auto relative bg-[#0F141A]/30 custom-scrollbar">
-                        <div className="flex items-center justify-between mb-8">
-                          <h3 className="text-xl font-bold text-white uppercase tracking-widest">
+                      <div
+                        className="flex-1 p-8 overflow-y-auto relative custom-scrollbar"
+                        style={{
+                          background:
+                            "radial-gradient(circle at 10% 0%, rgba(35,181,181,0.08), transparent 55%)",
+                        }}
+                      >
+                        <div className="flex items-center justify-between mb-7">
+                          <h3 className="text-[12px] font-bold text-[#23b5b5] uppercase tracking-[0.22em]">
                             {activeProductTab}
                           </h3>
                           <Badge
@@ -426,7 +438,7 @@ const Navbar = () => {
                             }
                           />
                         </div>
-                        <div className="grid grid-cols-2 gap-5">
+                        <div className="grid grid-cols-2 gap-3">
                           {(
                             resolvedGroups.find(
                               (g) => g.title === activeProductTab,
@@ -437,16 +449,16 @@ const Navbar = () => {
                               href={item.url || "#"}
                               target={item.openInNewTab ? "_blank" : "_self"}
                               rel="noopener noreferrer"
-                              className="group flex items-start gap-4 p-4 rounded-xl hover:bg-[#23b5b5]/5 border border-transparent hover:border-[#23b5b5]/20 transition-all duration-300"
+                              className="group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/[0.02] hover:bg-[#23b5b5]/[0.06] border border-white/[0.04] hover:border-[#23b5b5]/25 transition-all duration-300"
                             >
-                              <div className="w-12 h-12 shrink-0 rounded-xl bg-[#121214] border border-white/10 flex items-center justify-center group-hover:border-[#23b5b5]/50 overflow-hidden transition-colors">
+                              <div className="w-11 h-11 shrink-0 rounded-xl bg-[#0F1516] border border-white/[0.08] flex items-center justify-center group-hover:border-[#23b5b5]/50 overflow-hidden transition-colors">
                                 <ItemIcon item={item} />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <div className="text-[15px] font-bold text-gray-200 group-hover:text-[#23b5b5] transition-colors leading-snug flex items-center">
+                                <div className="text-[14px] font-semibold text-white group-hover:text-[#4fdede] transition-colors leading-snug flex items-center">
                                   {item.title} <Badge text={item.tag} />
                                 </div>
-                                <div className="text-[13px] text-gray-500 mt-1 line-clamp-2 group-hover:text-gray-400">
+                                <div className="text-[12.5px] text-neutral-500 mt-1 line-clamp-2 group-hover:text-neutral-400">
                                   {item.desc}
                                 </div>
                               </div>
@@ -458,22 +470,26 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 origin-top z-50 ${isHovered ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-4 invisible pointer-events-none"}`}
+                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 origin-top z-50 ${
+                      isHovered
+                        ? "opacity-100 translate-y-0 visible"
+                        : "opacity-0 -translate-y-3 invisible pointer-events-none"
+                    }`}
                     style={{
                       width: resolvedGroups.length <= 2 ? "700px" : "1000px",
                     }}
                   >
                     <div
-                      className="bg-[#0A0A0C]/98 backdrop-blur-3xl rounded-xl border border-white/10 shadow-2xl p-8 grid gap-10 max-h-[75vh] overflow-y-auto custom-scrollbar"
+                      className="bg-[#080D0E]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.55)] p-8 grid gap-10 max-h-[75vh] overflow-y-auto custom-scrollbar"
                       style={{
                         gridTemplateColumns: `repeat(${resolvedGroups.length}, minmax(0, 1fr))`,
                       }}
                     >
                       {resolvedGroups.map((group) => (
                         <div key={group.title}>
-                          <div className="flex items-center gap-3 mb-5 border-b border-white/5 pb-3">
+                          <div className="flex items-center gap-3 mb-5 border-b border-white/[0.06] pb-3">
                             {group.imageUrl && (
-                              <div className="w-7 h-7 rounded bg-white/5 flex items-center justify-center p-1">
+                              <div className="w-6 h-6 rounded bg-white/[0.05] flex items-center justify-center p-1">
                                 <img
                                   src={group.imageUrl}
                                   alt=""
@@ -481,28 +497,28 @@ const Navbar = () => {
                                 />
                               </div>
                             )}
-                            <span className="text-[11px] font-bold uppercase tracking-widest text-[#23b5b5] opacity-80">
+                            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#23b5b5]">
                               {group.title}
                             </span>
                             <Badge text={group.tag} />
                           </div>
-                          <div className="space-y-2">
+                          <div className="space-y-1">
                             {group.items.map((item, idx) => (
                               <a
                                 key={idx}
                                 href={item.url || "#"}
                                 target={item.openInNewTab ? "_blank" : "_self"}
                                 rel="noopener noreferrer"
-                                className="group flex items-center gap-4 p-2.5 rounded-xl hover:bg-[#23b5b5]/5 transition-all"
+                                className="group flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-[#23b5b5]/[0.06] transition-all"
                               >
-                                <div className="w-11 h-11 rounded-full bg-[#121417] border border-white/10 flex items-center justify-center shrink-0 overflow-hidden group-hover:border-[#23b5b5]/50 transition-colors">
+                                <div className="w-10 h-10 rounded-xl bg-[#0F1516] border border-white/[0.08] flex items-center justify-center shrink-0 overflow-hidden group-hover:border-[#23b5b5]/50 transition-colors">
                                   <ItemIcon item={item} />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                  <div className="text-[15px] font-bold text-gray-200 group-hover:text-white transition-colors truncate">
+                                  <div className="text-[14px] font-semibold text-white group-hover:text-[#4fdede] transition-colors truncate">
                                     {item.title} <Badge text={item.tag} />
                                   </div>
-                                  <div className="text-[12.5px] text-gray-500 mt-0.5 line-clamp-1 group-hover:text-gray-400">
+                                  <div className="text-[12px] text-neutral-500 mt-0.5 line-clamp-1 group-hover:text-neutral-400">
                                     {item.desc}
                                   </div>
                                 </div>
@@ -590,14 +606,18 @@ const Navbar = () => {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden p-2 text-white transition-transform active:scale-90"
           >
-            <LucideIcons.Menu size={32} />
+            <LucideIcons.Menu size={28} />
           </button>
         </div>
       </div>
 
       {/* --- MOBILE --- */}
       <div
-        className={`lg:hidden w-full bg-[#05070A] border-t border-white/10 overflow-y-auto transition-all duration-300 custom-scrollbar pointer-events-auto ${isMobileMenuOpen ? "opacity-100 visible max-h-[100vh]" : "opacity-0 invisible max-h-0"}`}
+        className={`lg:hidden w-full bg-[#050607] border-t border-white/[0.06] overflow-y-auto transition-all duration-300 custom-scrollbar pointer-events-auto ${
+          isMobileMenuOpen
+            ? "opacity-100 visible max-h-[100vh]"
+            : "opacity-0 invisible max-h-0"
+        }`}
       >
         <div className="px-6 py-8 flex flex-col gap-5 pb-24">
           {headerKeys.map((menuKey) => {
@@ -623,11 +643,11 @@ const Navbar = () => {
             const hasUrl = !!headerData[menuKey]?.url;
 
             return (
-              <div key={menuKey} className="border-b border-white/5 pb-3">
+              <div key={menuKey} className="border-b border-white/[0.05] pb-3">
                 <div className="w-full flex items-center justify-between py-4">
                   <span
                     onClick={() => handleCategoryClick(menuKey)}
-                    className={`text-2xl font-bold text-white ${hasUrl ? "cursor-pointer hover:text-[#23b5b5]" : ""}`}
+                    className={`text-2xl font-bold text-white ${hasUrl ? "cursor-pointer hover:text-[#4fdede]" : ""}`}
                   >
                     {menuKey.charAt(0).toUpperCase() + menuKey.slice(1)}
                   </span>
@@ -638,8 +658,8 @@ const Navbar = () => {
                       }
                     >
                       <LucideIcons.ChevronDown
-                        size={24}
-                        className={`transition-transform ${isExpanded ? "rotate-180 text-[#23b5b5]" : "text-gray-500"}`}
+                        size={22}
+                        className={`transition-transform ${isExpanded ? "rotate-180 text-[#4fdede]" : "text-neutral-500"}`}
                       />
                     </button>
                   )}
@@ -647,7 +667,7 @@ const Navbar = () => {
                 <div
                   className={`overflow-hidden transition-all duration-300 ${isExpanded ? "max-h-[5000px] opacity-100 mt-4" : "max-h-0 opacity-0"}`}
                 >
-                  <div className="bg-[#0A0C10]/60 rounded-2xl border border-white/5 p-6 space-y-12 mb-6">
+                  <div className="bg-white/[0.02] rounded-2xl border border-white/[0.05] p-6 space-y-12 mb-6">
                     {resolvedGroups.map((group) => (
                       <div key={group.title}>
                         <div className="flex items-center gap-2.5 mb-8">
@@ -659,11 +679,11 @@ const Navbar = () => {
                             />
                           ) : (
                             <LucideIcons.Layers
-                              size={16}
+                              size={15}
                               className="text-[#23b5b5]"
                             />
                           )}
-                          <h4 className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#23b5b5]">
+                          <h4 className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#23b5b5]">
                             {group.title}
                           </h4>
                           <Badge text={group.tag} />
@@ -678,14 +698,14 @@ const Navbar = () => {
                               onClick={() => setIsMobileMenuOpen(false)}
                               className="flex items-center gap-5 group active:opacity-70 transition-opacity"
                             >
-                              <div className="w-12 h-12 rounded-full bg-[#121417] border border-white/10 flex items-center justify-center shrink-0 overflow-hidden transition-colors">
+                              <div className="w-11 h-11 rounded-xl bg-[#0F1516] border border-white/[0.08] flex items-center justify-center shrink-0 overflow-hidden transition-colors">
                                 <ItemIcon item={item} />
                               </div>
                               <div className="flex flex-col min-w-0">
-                                <div className="text-lg font-bold text-white leading-tight flex items-center truncate">
+                                <div className="text-[17px] font-bold text-white leading-tight flex items-center truncate">
                                   {item.title}
                                 </div>
-                                <div className="text-[14px] text-gray-500 mt-1.5 line-clamp-1">
+                                <div className="text-[13.5px] text-neutral-500 mt-1 line-clamp-1">
                                   {item.desc}
                                 </div>
                               </div>
@@ -729,28 +749,28 @@ const Navbar = () => {
         />
 
         <div
-          className={`relative w-full max-w-xl rounded-[32px] border border-white/10 bg-[#080B12]/95 backdrop-blur-3xl shadow-[0_0_80px_rgba(35,181,181,0.08)] overflow-hidden transition-all duration-300 ${isAuthModalOpen ? "scale-100 translate-y-0" : "scale-95 translate-y-6"}`}
+          className={`relative w-full max-w-xl rounded-[28px] border border-white/[0.08] bg-[#080D0E]/95 backdrop-blur-3xl shadow-[0_0_80px_rgba(35,181,181,0.10)] overflow-hidden transition-all duration-300 ${isAuthModalOpen ? "scale-100 translate-y-0" : "scale-95 translate-y-6"}`}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(35,181,181,0.12),transparent_55%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(35,181,181,0.14),transparent_55%)] pointer-events-none" />
 
           <button
             onClick={() => setIsAuthModalOpen(false)}
-            className="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all"
+            className="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] flex items-center justify-center text-neutral-400 hover:text-white transition-all"
           >
             <LucideIcons.X size={18} />
           </button>
 
           <div className="relative p-7 md:p-8">
-            <div className="flex items-center rounded-2xl border border-white/10 bg-white/[0.03] p-1 mb-8">
+            <div className="flex items-center rounded-2xl border border-white/[0.08] bg-white/[0.03] p-1 mb-8">
               <button
                 onClick={() => setAuthMode("signin")}
-                className={`flex-1 h-11 rounded-xl text-xs font-black tracking-[0.15em] transition-all duration-300 ${authMode === "signin" ? "bg-[#23b5b5] text-black shadow-lg" : "text-gray-500 hover:text-white"}`}
+                className={`flex-1 h-11 rounded-xl text-xs font-black tracking-[0.15em] transition-all duration-300 ${authMode === "signin" ? "bg-[#23b5b5] text-black shadow-[0_4px_18px_rgba(35,181,181,0.35)]" : "text-neutral-500 hover:text-white"}`}
               >
                 SIGN IN
               </button>
               <button
                 onClick={() => setAuthMode("signup")}
-                className={`flex-1 h-11 rounded-xl text-xs font-black tracking-[0.15em] transition-all duration-300 ${authMode === "signup" ? "bg-[#23b5b5] text-black shadow-lg" : "text-gray-500 hover:text-white"}`}
+                className={`flex-1 h-11 rounded-xl text-xs font-black tracking-[0.15em] transition-all duration-300 ${authMode === "signup" ? "bg-[#23b5b5] text-black shadow-[0_4px_18px_rgba(35,181,181,0.35)]" : "text-neutral-500 hover:text-white"}`}
               >
                 SIGN UP
               </button>
@@ -760,7 +780,7 @@ const Navbar = () => {
               <h2 className="text-3xl font-black text-white tracking-tight">
                 {authMode === "signin" ? "Welcome back" : "Create your account"}
               </h2>
-              <p className="text-gray-500 mt-2 text-sm">
+              <p className="text-neutral-500 mt-2 text-sm">
                 {authMode === "signin"
                   ? "Sign in to your automation workspace"
                   : "Start automating in minutes — it's free"}
@@ -770,25 +790,13 @@ const Navbar = () => {
             <button
               onClick={handleGoogleLogin}
               disabled={authLoading}
-              className={`w-full h-14 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-[#23b5b5]/10 hover:border-[#23b5b5]/30 transition-all duration-300 flex items-center justify-center gap-4 text-white font-semibold text-base ${authLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+              className={`w-full h-14 rounded-2xl border border-white/[0.08] bg-white/[0.03] hover:bg-[#23b5b5]/10 hover:border-[#23b5b5]/30 transition-all duration-300 flex items-center justify-center gap-4 text-white font-semibold text-base ${authLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
             >
               <svg width="20" height="20" viewBox="0 0 48 48">
-                <path
-                  fill="#FFC107"
-                  d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12S17.4 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"
-                />
-                <path
-                  fill="#FF3D00"
-                  d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4c-7.7 0-14.3 4.3-17.7 10.7z"
-                />
-                <path
-                  fill="#4CAF50"
-                  d="M24 44c5.2 0 10-2 13.5-5.3l-6.2-5.2C29.3 35 26.8 36 24 36c-5.2 0-9.6-3.3-11.2-7.9l-6.5 5C9.5 39.5 16.2 44 24 44z"
-                />
-                <path
-                  fill="#1976D2"
-                  d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.5-6.2 7.1l6.2 5.2C39.1 36.7 44 31 44 24c0-1.3-.1-2.3-.4-3.5z"
-                />
+                <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12S17.4 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/>
+                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4c-7.7 0-14.3 4.3-17.7 10.7z"/>
+                <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.5-5.3l-6.2-5.2C29.3 35 26.8 36 24 36c-5.2 0-9.6-3.3-11.2-7.9l-6.5 5C9.5 39.5 16.2 44 24 44z"/>
+                <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.5-6.2 7.1l6.2 5.2C39.1 36.7 44 31 44 24c0-1.3-.1-2.3-.4-3.5z"/>
               </svg>
               {authMode === "signin"
                 ? "Continue with Google"
@@ -796,62 +804,62 @@ const Navbar = () => {
             </button>
 
             <div className="flex items-center gap-4 my-7">
-              <div className="flex-1 h-px bg-white/10" />
-              <span className="text-[10px] font-bold tracking-[0.3em] text-gray-600">
+              <div className="flex-1 h-px bg-white/[0.08]" />
+              <span className="text-[10px] font-bold tracking-[0.3em] text-neutral-600">
                 OR
               </span>
-              <div className="flex-1 h-px bg-white/10" />
+              <div className="flex-1 h-px bg-white/[0.08]" />
             </div>
 
             <div className="space-y-3">
               {authMode === "signup" && (
-                <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
-                  <LucideIcons.User size={17} className="text-gray-500" />
+                <div className="h-14 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-5 flex items-center gap-4 focus-within:border-[#23b5b5]/40 transition-colors">
+                  <LucideIcons.User size={17} className="text-neutral-500" />
                   <input
                     type="text"
                     name="name"
                     value={authForm.name}
                     onChange={handleInputChange}
                     placeholder="Full name"
-                    className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                    className="bg-transparent outline-none w-full text-sm text-white placeholder:text-neutral-500"
                   />
                 </div>
               )}
 
-              <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
-                <LucideIcons.Mail size={17} className="text-gray-500" />
+              <div className="h-14 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-5 flex items-center gap-4 focus-within:border-[#23b5b5]/40 transition-colors">
+                <LucideIcons.Mail size={17} className="text-neutral-500" />
                 <input
                   type="email"
                   name="email"
                   value={authForm.email}
                   onChange={handleInputChange}
                   placeholder="you@company.com"
-                  className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                  className="bg-transparent outline-none w-full text-sm text-white placeholder:text-neutral-500"
                 />
               </div>
 
-              <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
-                <LucideIcons.Lock size={17} className="text-gray-500" />
+              <div className="h-14 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-5 flex items-center gap-4 focus-within:border-[#23b5b5]/40 transition-colors">
+                <LucideIcons.Lock size={17} className="text-neutral-500" />
                 <input
                   type="password"
                   name="password"
                   value={authForm.password}
                   onChange={handleInputChange}
                   placeholder="Password"
-                  className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                  className="bg-transparent outline-none w-full text-sm text-white placeholder:text-neutral-500"
                 />
               </div>
 
               {authMode === "signup" && (
-                <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.03] px-5 flex items-center gap-4">
-                  <LucideIcons.Lock size={17} className="text-gray-500" />
+                <div className="h-14 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-5 flex items-center gap-4 focus-within:border-[#23b5b5]/40 transition-colors">
+                  <LucideIcons.Lock size={17} className="text-neutral-500" />
                   <input
                     type="password"
                     name="confirmPassword"
                     value={authForm.confirmPassword}
                     onChange={handleInputChange}
                     placeholder="Confirm password"
-                    className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-500"
+                    className="bg-transparent outline-none w-full text-sm text-white placeholder:text-neutral-500"
                   />
                 </div>
               )}
@@ -860,7 +868,7 @@ const Navbar = () => {
             <button
               onClick={handleAuthSubmit}
               disabled={authLoading}
-              className={`w-full h-14 rounded-2xl bg-[#23b5b5] hover:bg-[#1da0a0] disabled:opacity-50 text-black text-base font-black mt-7 transition-all duration-300 hover:shadow-[0_0_30px_rgba(35,181,181,0.35)] ${authLoading ? "cursor-not-allowed" : "cursor-pointer"}`}
+              className={`w-full h-14 rounded-2xl bg-[#23b5b5] hover:bg-[#4fdede] disabled:opacity-50 text-black text-base font-black mt-7 transition-all duration-300 hover:shadow-[0_0_30px_rgba(35,181,181,0.4)] ${authLoading ? "cursor-not-allowed" : "cursor-pointer"}`}
             >
               {authLoading
                 ? "Please wait..."
@@ -872,25 +880,25 @@ const Navbar = () => {
             <div className="flex items-center justify-between mt-6 text-xs">
               {authMode === "signin" ? (
                 <>
-                  <div className="text-gray-500">
+                  <div className="text-neutral-500">
                     No account?{" "}
                     <button
                       onClick={() => setAuthMode("signup")}
-                      className="text-[#23b5b5] font-bold hover:text-white transition-colors"
+                      className="text-[#4fdede] font-bold hover:text-white transition-colors"
                     >
                       Create one →
                     </button>
                   </div>
-                  <button className="text-gray-600 hover:text-gray-400 transition-colors">
+                  <button className="text-neutral-600 hover:text-neutral-400 transition-colors">
                     Forgot?
                   </button>
                 </>
               ) : (
-                <div className="text-gray-500">
+                <div className="text-neutral-500">
                   Already have an account?{" "}
                   <button
                     onClick={() => setAuthMode("signin")}
-                    className="text-[#23b5b5] font-bold hover:text-white transition-colors"
+                    className="text-[#4fdede] font-bold hover:text-white transition-colors"
                   >
                     Sign in →
                   </button>

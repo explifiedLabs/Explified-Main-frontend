@@ -329,7 +329,7 @@ export default function BlogMainPage() {
               </motion.div>
 
               {/* CATEGORY FILTERS */}
-              <motion.div
+              {/* <motion.div
                 variants={fadeUpVariant}
                 className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 py-6 mb-6 overflow-x-auto no-scrollbar"
               >
@@ -351,7 +351,7 @@ export default function BlogMainPage() {
                     );
                   })}
                 </div>
-              </motion.div>
+              </motion.div> */}
 
               {/* SEARCH BAR WITH DROPDOWN */}
               <motion.div variants={fadeUpVariant} className="mb-12">

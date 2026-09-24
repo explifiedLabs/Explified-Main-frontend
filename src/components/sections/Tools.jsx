@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Youtube, ChevronLeft, ChevronRight } from "lucide-react";
+import { Users, Youtube, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import * as Lucide from "lucide-react";
 import { useCMS } from "../../hooks/useCMS.jsx";
 
@@ -86,116 +86,20 @@ const CORE_PRODUCTS = {
 };
 
 const PLATFORM_CONFIG = [
-  {
-    key: "Figma",
-    title: "Figma Plugins",
-    label: "FIGMA",
-    icon: "Figma",
-    localIcon: "/logos/figma.png",
-    sub: "AI-powered design utilities for design teams.",
-  },
-  {
-    key: "Shopify",
-    title: "Shopify Apps",
-    label: "SHOPIFY",
-    icon: "ShoppingBag",
-    localIcon: "/logos/shopify.png",
-    sub: "Revenue and conversion tools for e-commerce stores.",
-  },
-  {
-    key: "Atlassian",
-    title: "Trello Power-Ups",
-    label: "TRELLO",
-    icon: "Layout",
-    localIcon: "/logos/trello.png",
-    sub: "Workflow automation for project teams.",
-  },
-  {
-    key: "Chrome",
-    title: "Chrome Extensions",
-    label: "CHROME",
-    icon: "Chrome",
-    localIcon: "/logos/chrome.png",
-    sub: "Browser-native productivity for everyone.",
-  },
-  {
-    key: "Framer",
-    title: "Framer Plugins",
-    label: "FRAMER",
-    icon: "Box",
-    localIcon: "/logos/framer.png",
-    sub: "Visual tools for no-code builders.",
-  },
-  {
-    key: "Atlassian",
-    title: "Atlassian Tools",
-    label: "ATLASSIAN",
-    icon: "Layout",
-    localIcon: "/logos/atlassian.png",
-    sub: "Enterprise productivity and workflow solutions.",
-  },
-  {
-    key: "Penpot",
-    title: "Penpot Plugins",
-    label: "PENPOT",
-    icon: "PenTool",
-    localIcon: "/logos/penpot.png",
-    sub: "Open-source design and prototyping plugins.",
-  },
-  {
-    key: "Strapi",
-    title: "Strapi Plugins",
-    label: "STRAPI",
-    icon: "Database",
-    localIcon: "/logos/strapi.png",
-    sub: "Extend your headless CMS with powerful plugins.",
-  },
-  {
-    key: "ClickUp",
-    title: "ClickUp Apps",
-    label: "CLICKUP",
-    icon: "CheckSquare",
-    localIcon: "/logos/clickup.png",
-    sub: "Automate tasks and workflows inside ClickUp.",
-  },
-  {
-    key: "MicrosoftEdge",
-    title: "Microsoft Edge",
-    label: "EDGE",
-    icon: "Globe2",
-    localIcon: "/logos/edge.png",
-    sub: "Productivity extensions for Microsoft Edge.",
-  },
-  {
-    key: "Opera",
-    title: "Opera Extensions",
-    label: "OPERA",
-    icon: "Globe",
-    sub: "Browser extensions for Opera users.",
-  },
-  {
-    key: "Bubble",
-    title: "Bubble Plugins",
-    label: "BUBBLE",
-    icon: "Layers",
-    localIcon: "/logos/bubble.png",
-    sub: "No-code plugins for Bubble.io apps.",
-  },
-  {
-    key: "Odoo",
-    title: "Odoo Modules",
-    label: "ODOO",
-    icon: "Grid",
-    localIcon: "/logos/odoo.png",
-    sub: "Business modules for the Odoo ERP platform.",
-  },
-  {
-    key: "Workflows",
-    title: "Workflow Automation",
-    label: "WORKFLOWS",
-    icon: "GitBranch",
-    sub: "Cross-platform automation that connects your stack.",
-  },
+  { key: "Figma", title: "Figma Plugins", label: "FIGMA", icon: "Figma", localIcon: "/logos/figma.png", sub: "AI-powered design utilities for design teams." },
+  { key: "Shopify", title: "Shopify Apps", label: "SHOPIFY", icon: "ShoppingBag", localIcon: "/logos/shopify.png", sub: "Revenue and conversion tools for e-commerce stores." },
+  { key: "Atlassian", title: "Trello Power-Ups", label: "TRELLO", icon: "Layout", localIcon: "/logos/trello.png", sub: "Workflow automation for project teams." },
+  { key: "Chrome", title: "Chrome Extensions", label: "CHROME", icon: "Chrome", localIcon: "/logos/chrome.png", sub: "Browser-native productivity for everyone." },
+  { key: "Framer", title: "Framer Plugins", label: "FRAMER", icon: "Box", localIcon: "/logos/framer.png", sub: "Visual tools for no-code builders." },
+  { key: "Atlassian", title: "Atlassian Tools", label: "ATLASSIAN", icon: "Layout", localIcon: "/logos/atlassian.png", sub: "Enterprise productivity and workflow solutions." },
+  { key: "Penpot", title: "Penpot Plugins", label: "PENPOT", icon: "PenTool", localIcon: "/logos/penpot.png", sub: "Open-source design and prototyping plugins." },
+  { key: "Strapi", title: "Strapi Plugins", label: "STRAPI", icon: "Database", localIcon: "/logos/strapi.png", sub: "Extend your headless CMS with powerful plugins." },
+  { key: "ClickUp", title: "ClickUp Apps", label: "CLICKUP", icon: "CheckSquare", localIcon: "/logos/clickup.png", sub: "Automate tasks and workflows inside ClickUp." },
+  { key: "MicrosoftEdge", title: "Microsoft Edge", label: "EDGE", icon: "Globe2", localIcon: "/logos/edge.png", sub: "Productivity extensions for Microsoft Edge." },
+  { key: "Opera", title: "Opera Extensions", label: "OPERA", icon: "Globe", sub: "Browser extensions for Opera users." },
+  { key: "Bubble", title: "Bubble Plugins", label: "BUBBLE", icon: "Layers", localIcon: "/logos/bubble.png", sub: "No-code plugins for Bubble.io apps." },
+  { key: "Odoo", title: "Odoo Modules", label: "ODOO", icon: "Grid", localIcon: "/logos/odoo.png", sub: "Business modules for the Odoo ERP platform." },
+  { key: "Workflows", title: "Workflow Automation", label: "WORKFLOWS", icon: "GitBranch", sub: "Cross-platform automation that connects your stack." },
 ];
 
 const themeColors = {
@@ -212,7 +116,6 @@ const SPAN_PATTERN = [
   "md:col-span-1",
   "md:col-span-1",
   "md:col-span-1",
-  // "md:col-span-3",
 ];
 
 /* ─── Tiny floating app icon + label ─── */
@@ -238,42 +141,42 @@ const AppChip = ({ item }) => {
       title={item.title}
       className="group/chip flex flex-col items-center gap-1.5 w-[72px] no-underline shrink-0"
     >
-      <div className="w-11 h-11 rounded-[10px] overflow-hidden flex items-center justify-center border border-white/10 bg-white/[0.04] transition-all duration-200 group-hover/chip:border-[#23b5b5]/60 group-hover/chip:-translate-y-0.5 group-hover/chip:shadow-[0_4px_14px_rgba(35,181,181,0.25)]">
+      <div className="relative w-12 h-12 rounded-[12px] overflow-hidden flex items-center justify-center border border-white/[0.08] bg-gradient-to-br from-white/[0.06] to-white/[0.02] transition-all duration-300 ease-out group-hover/chip:border-[#23b5b5]/70 group-hover/chip:-translate-y-1 group-hover/chip:shadow-[0_8px_24px_rgba(35,181,181,0.35)] group-hover/chip:scale-105">
+        {/* inner sheen */}
+        <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/[0.10] to-transparent" />
         {isImage ? (
           <img
             src={item.icon}
             alt={item.title}
-            className="w-full h-full object-cover select-none"
+            className="w-full h-full object-cover select-none relative z-10"
           />
         ) : (
           <LucideIcon
-            size={19}
+            size={20}
             strokeWidth={1.75}
             style={{ color: activeColor }}
+            className="relative z-10"
           />
         )}
       </div>
-      <span className="text-xs leading-tight font-medium text-neutral-400 text-center line-clamp-2 group-hover/chip:text-white transition-colors">
+      <span className="text-[11px] leading-tight font-medium text-neutral-400 text-center line-clamp-2 group-hover/chip:text-white transition-colors">
         {item.title}
       </span>
     </a>
   );
 };
 
-/* ─── Bento Platform Card ─── */
+/* ─── Bento Platform Card — polished ─── */
 const BentoPlatformCard = ({ section, span }) => {
   const PlatformIconCmp = Lucide[section.icon] || Lucide.Box;
   const iconSrc = section.platformIcon || section.localIcon || null;
   const hasPlatformIcon = !!iconSrc;
   const items = section.items || [];
 
-  // Determine layout structure configurations based on whether card is multi-column width
   const isLargeCard =
     span.includes("md:col-span-2") || span.includes("md:col-span-3");
 
-  // Large cards: 8 columns x 2 rows = 16 items. Small cards: 4 columns x 2 rows = 8 items.
   const ITEMS_PER_PAGE = isLargeCard ? 16 : 8;
-
   const [page, setPage] = useState(0);
 
   const paginatedItems = useMemo(() => {
@@ -287,7 +190,6 @@ const BentoPlatformCard = ({ section, span }) => {
     e.stopPropagation();
     if (page < totalPages - 1) setPage((prev) => prev + 1);
   };
-
   const handlePrev = (e) => {
     e.stopPropagation();
     if (page > 0) setPage((prev) => prev - 1);
@@ -295,81 +197,152 @@ const BentoPlatformCard = ({ section, span }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`group relative flex flex-col rounded-2xl border border-white/[0.07] hover:border-[#23b5b5]/40 transition-all duration-300 overflow-hidden ${span}`}
-      style={{
-        borderLeft: "2px solid rgba(35,181,181,0.45)",
-        backgroundColor: "rgba(8,20,18,0.55)",
-        backgroundImage:
-          "radial-gradient(circle at 15% -10%, rgba(35,181,181,0.16), transparent 55%), linear-gradient(180deg, rgba(35,181,181,0.05) 0%, rgba(5,10,9,0) 45%)",
-        height: "240px",
-      }}
+      transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={`group relative flex flex-col rounded-[22px] overflow-hidden transition-all duration-500 ${span}`}
+      style={{ height: "244px" }}
     >
-      <div className="p-7 w-full h-full relative flex flex-col justify-center">
-        {/* DEFAULT VIEW LAYOUT STACK */}
+      {/* ---------- Layered background system ---------- */}
+      {/* 1. Base fill */}
+      <div className="absolute inset-0 rounded-[22px] bg-[#08110F]" />
+
+      {/* 2. Radial teal glow (top-left) */}
+      <div
+        className="absolute inset-0 rounded-[22px] opacity-90 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 12% -20%, rgba(35,181,181,0.22), transparent 55%), radial-gradient(circle at 100% 120%, rgba(35,181,181,0.10), transparent 60%)",
+        }}
+      />
+
+      {/* 3. Fine grid texture, very faint */}
+      <div
+        className="absolute inset-0 rounded-[22px] opacity-[0.06] mix-blend-screen pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.35) 1px, transparent 1px)",
+          backgroundSize: "44px 44px",
+          maskImage:
+            "radial-gradient(ellipse 90% 70% at 50% 50%, black, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 90% 70% at 50% 50%, black, transparent 80%)",
+        }}
+      />
+
+      {/* 4. Animated gradient border */}
+      <div
+        className="absolute inset-0 rounded-[22px] pointer-events-none transition-opacity duration-500"
+        style={{
+          padding: "1px",
+          background:
+            "linear-gradient(140deg, rgba(35,181,181,0.55) 0%, rgba(35,181,181,0.15) 25%, rgba(255,255,255,0.05) 55%, rgba(35,181,181,0.35) 100%)",
+          WebkitMask:
+            "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+          opacity: 0.55,
+        }}
+      />
+      <div
+        className="absolute inset-0 rounded-[22px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          padding: "1px",
+          background:
+            "linear-gradient(140deg, rgba(35,181,181,0.9) 0%, rgba(35,181,181,0.4) 30%, rgba(35,181,181,0.15) 60%, rgba(35,181,181,0.75) 100%)",
+          WebkitMask:
+            "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+
+      {/* 5. Hover ambient underlay */}
+      <div className="absolute inset-x-6 -bottom-6 h-16 rounded-full bg-[#23b5b5]/25 blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none" />
+
+      {/* ---------- Content ---------- */}
+      <div className="relative z-10 p-7 w-full h-full flex flex-col justify-center">
+        {/* DEFAULT VIEW */}
         <div className="flex flex-col justify-between h-full w-full transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-100 group-hover:opacity-0 group-hover:pointer-events-none group-hover:-translate-y-3">
-          {/* Top Row: Icon */}
-          <div
-            className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(35,181,181,0.14) 0%, rgba(35,181,181,0.03) 100%)",
-              border: "1px solid rgba(35,181,181,0.2)",
-            }}
-          >
-            {hasPlatformIcon ? (
-              <img
-                src={iconSrc}
-                alt={section.title}
-                className="w-6 h-6 object-contain"
-              />
-            ) : (
-              <PlatformIconCmp
-                size={20}
-                strokeWidth={1.75}
-                className="text-[#23b5b5]"
-              />
+          {/* Icon row with tiny arrow accent */}
+          <div className="flex items-start justify-between">
+            <div
+              className="relative w-12 h-12 rounded-[14px] flex items-center justify-center shrink-0"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(35,181,181,0.20) 0%, rgba(35,181,181,0.04) 100%)",
+                border: "1px solid rgba(35,181,181,0.28)",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 18px rgba(35,181,181,0.14)",
+              }}
+            >
+              {hasPlatformIcon ? (
+                <img
+                  src={iconSrc}
+                  alt={section.title}
+                  className="w-6 h-6 object-contain"
+                />
+              ) : (
+                <PlatformIconCmp
+                  size={22}
+                  strokeWidth={1.75}
+                  className="text-[#23b5b5]"
+                />
+              )}
+            </div>
+
+            {items.length > 0 && (
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider text-[#23b5b5]/80 uppercase px-2.5 py-1 rounded-full border border-[#23b5b5]/25 bg-[#23b5b5]/10">
+                {items.length} {items.length === 1 ? "app" : "apps"}
+              </span>
             )}
           </div>
 
-          {/* Bottom Row: Headings */}
+          {/* Title + subtitle */}
           <div className="flex flex-col mt-auto">
-            <h3 className="text-white text-xl font-bold tracking-tight mb-1.5">
+            <h3 className="text-white text-[22px] font-bold tracking-tight leading-tight mb-1.5">
               {section.title}
             </h3>
-            <p className="text-neutral-400 text-sm leading-relaxed">
+            <p className="text-neutral-400 text-[13.5px] leading-relaxed max-w-md">
               {section.subtitle}
             </p>
+            {items.length > 0 && (
+              <span className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-neutral-500 group-hover:text-[#23b5b5] transition-colors">
+                Hover to explore
+                <ArrowUpRight
+                  size={12}
+                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </span>
+            )}
           </div>
         </div>
 
-        {/* HOVER SLIDER STATE */}
+        {/* HOVER LAUNCHPAD */}
         {items.length > 0 && (
           <div className="absolute inset-0 flex items-center justify-between px-3 transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto translate-y-3 group-hover:translate-y-0">
-            {/* Left Controller Arrow */}
-            <div className="w-8 h-full flex items-center justify-center">
+            {/* Left arrow */}
+            <div className="w-9 h-full flex items-center justify-center">
               {totalPages > 1 && page > 0 && (
                 <button
                   onClick={handlePrev}
-                  className="w-6 h-6 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-all pointer-events-auto z-20"
+                  className="w-7 h-7 rounded-full border border-white/10 bg-black/40 backdrop-blur-sm hover:bg-[#23b5b5]/15 hover:border-[#23b5b5]/40 text-neutral-300 hover:text-white flex items-center justify-center transition-all pointer-events-auto z-20"
                 >
                   <ChevronLeft size={14} />
                 </button>
               )}
             </div>
 
-            {/* Slide Grid Content Area */}
-            <div className="flex items-center justify-center overflow-hidden grow h-full px-2">
+            {/* Launchpad grid */}
+            <div className="flex flex-col items-center justify-center grow h-full px-2">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={page}
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.22 }}
                   className={`grid gap-x-4 gap-y-4 justify-items-center items-center w-full grid-rows-2 ${
                     isLargeCard ? "grid-cols-8" : "grid-cols-4"
                   }`}
@@ -379,14 +352,30 @@ const BentoPlatformCard = ({ section, span }) => {
                   ))}
                 </motion.div>
               </AnimatePresence>
+
+              {/* Page dots */}
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1.5 mt-4">
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <span
+                      key={i}
+                      className={`h-1 rounded-full transition-all duration-300 ${
+                        i === page
+                          ? "w-6 bg-[#23b5b5]"
+                          : "w-1.5 bg-white/20"
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Right Controller Arrow */}
-            <div className="w-8 h-full flex items-center justify-center">
+            {/* Right arrow */}
+            <div className="w-9 h-full flex items-center justify-center">
               {totalPages > 1 && page < totalPages - 1 && (
                 <button
                   onClick={handleNext}
-                  className="w-6 h-6 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-all pointer-events-auto z-20"
+                  className="w-7 h-7 rounded-full border border-white/10 bg-black/40 backdrop-blur-sm hover:bg-[#23b5b5]/15 hover:border-[#23b5b5]/40 text-neutral-300 hover:text-white flex items-center justify-center transition-all pointer-events-auto z-20"
                 >
                   <ChevronRight size={14} />
                 </button>
@@ -523,46 +512,62 @@ const MarketplaceAndStudio = () => {
 
   return (
     <div
-      className="min-h-screen text-white font-sans relative"
+      className="min-h-screen text-white font-sans relative overflow-hidden"
       style={{ backgroundColor: "#050505", isolation: "isolate" }}
     >
+      {/* Background scenography */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at top, rgba(35,181,181,0.04), transparent 75%)",
-          filter: "blur(80px)",
+            "radial-gradient(ellipse at top, rgba(35,181,181,0.08), transparent 75%)",
+          filter: "blur(90px)",
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          maskImage:
+            "radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 80%)",
         }}
       />
 
-      {/* SECTION 1: Product Studio — Bento Grid */}
-      <div className="max-w-[1340px] mx-auto px-6 lg:px-12 py-20 relative z-10">
+      {/* SECTION: Product Studio — Bento Grid */}
+      <div className="max-w-[1340px] mx-auto px-6 lg:px-12 py-24 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="mb-14 text-left "
+          className="mb-14 text-left"
         >
           <div className="flex items-center gap-2.5 mb-4">
-            <span className="w-4 h-[1px] bg-[#23b5b5]" />
-            <span className="text-[14px] text-[#23b5b5] font-extrabold tracking-[0.2em] uppercase">
+            <span className="w-6 h-[1px] bg-[#23b5b5]" />
+            <span className="text-[12px] text-[#23b5b5] font-extrabold tracking-[0.24em] uppercase">
               Our Craft
             </span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
+          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.05] text-white">
             Every tool your team already uses
           </h1>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mt-1 flex items-center gap-4">
+          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.05] mt-2 flex items-center gap-4">
             <span className="w-8 md:w-12 h-[3px] bg-white/70 inline-block" />
             <span className="text-neutral-500">now smarter.</span>
           </h1>
+          <p className="mt-6 text-neutral-400 text-[15px] max-w-xl leading-relaxed">
+            From design canvases to project boards to browser tabs — Explified meets your team inside the tools they already live in.
+          </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {ALL_SECTIONS.map((section, idx) => (
             <BentoPlatformCard
-              key={section.id}
+              key={section.id + idx}
               section={section}
               span={SPAN_PATTERN[idx % SPAN_PATTERN.length]}
             />

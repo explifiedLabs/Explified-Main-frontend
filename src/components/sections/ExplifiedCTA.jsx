@@ -3,7 +3,6 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 
 const ExplifiedCTA = () => {
-  // --- Animations Configuration ---
   const fadeUpVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -14,58 +13,93 @@ const ExplifiedCTA = () => {
   };
 
   return (
-    /* Changed background from pure black to the dark teal color to match the rest of your page */
-    <section className="relative w-full py-24 md:py-32 bg-[#000] overflow-hidden font-sans">
-      {/* 1. Subtle Grid Pattern Overlay extending seamlessly across the section */}
-      {/* <div
-        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+    <section className="relative w-full py-32 md:py-40 bg-[#050607] overflow-hidden font-sans text-center">
+      {/* Ambient teal floor glow — matches the big-cta glow-floor from the redesign */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+        style={{
+          bottom: "-46%",
+          width: "1000px",
+          height: "640px",
+          background:
+            "radial-gradient(ellipse at center, rgba(35,181,181,0.28), transparent 62%)",
+        }}
+      />
+
+      {/* Faint blueprint grid — very subtle, fades at the edges */}
+      <div
+        className="absolute inset-0 opacity-[0.05] pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+            "linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          maskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%)",
         }}
-      /> */}
+      />
 
-      {/* 2. Intense, Brightened "Aurora" Bottom Glow */}
-      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[140%] md:w-[110%] h-[350px] bg-gradient-to-t from-[#23b5b5]/60  to-black pointer-events-none mix-blend-screen" />
+      {/* Shimmering gradient keyframes — scoped to this section */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+          @keyframes cta-shine {
+            to { background-position: 200% center; }
+          }
+          .cta-shine-text {
+            background: linear-gradient(115deg, #4fdede, #23b5b5, #178f8f, #23b5b5, #4fdede);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: cta-shine 5s linear infinite;
+          }
+        `,
+        }}
+      />
 
-      {/* --- Content Layout --- */}
-      <div className="relative z-10 max-w-[1300px] mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+      {/* Content */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6">
+        <motion.h2
+          initial={{ opacity: 0, y: 26 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative w-full flex flex-col items-center justify-center text-center"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.2, 0.9, 0.3, 1] }}
+          className="font-bold tracking-tight leading-[1.05] max-w-[780px] mx-auto"
+          style={{ fontSize: "clamp(34px, 5.6vw, 66px)", letterSpacing: "-1.6px" }}
         >
-          {/* Main Headline */}
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 drop-shadow-lg leading-tight">
-              <span className="text-white">Ready to transform how</span>
-              <br />
-              <span className="text-[#23b5b5]">your team works?</span>
-            </h2>
-          </div>
+          <span className="text-white">Ready to transform how</span>
+          <br />
+          <span className="cta-shine-text">your team works?</span>
+        </motion.h2>
 
-          {/* Sub-headline */}
-          <p className="text-base md:text-lg text-gray-400 max-w-3xl mb-12 leading-relaxed">
-            We try to make magic happen through technology. Visit our labs to
-            know more.
-          </p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          className="text-[16px] text-neutral-400 max-w-[480px] mx-auto mt-6 mb-9 leading-relaxed"
+        >
+          We try to make magic happen through technology. Visit our labs to
+          know more.
+        </motion.p>
 
-          {/* CTA Button */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5"
-          >
-            <Link to="https://explified.com/labs">
-              <button className="relative cursor-pointer overflow-hidden bg-[#23b5b5] text-black font-bold text-lg px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_50px_rgba(35,181,181,0.65)]">
-                <span className="relative z-10">Visit Explified Labs</span>
-                <ArrowUpRight size={20} className="relative z-10" />
-                <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300" />
-              </button>
-            </Link>
-          </motion.div>
+        <motion.div
+          variants={fadeUpVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5"
+        >
+          <Link to="https://explified.com/labs">
+            <button className="relative cursor-pointer overflow-hidden bg-[#23b5b5] text-black font-bold text-[15px] px-7 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2.5 hover:scale-105 transition-transform shadow-[0_8px_30px_rgba(35,181,181,0.4)] group">
+              <span className="relative z-10">Visit Explified Labs</span>
+              <ArrowUpRight size={18} className="relative z-10" />
+              <div className="absolute inset-0 bg-white/25 -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
+            </button>
+          </Link>
         </motion.div>
       </div>
     </section>

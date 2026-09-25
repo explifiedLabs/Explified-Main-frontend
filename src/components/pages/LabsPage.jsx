@@ -160,7 +160,7 @@ const GetAdvisoryModal = ({ isOpen, onClose }) => {
 
             <div className="mb-6">
               <h2 className="text-3xl font-bold tracking-tight text-white mb-1">
-                Get advisory
+                Advisory
               </h2>
               <p className="text-sm text-gray-400">
                 {done
@@ -287,7 +287,7 @@ const GetAdvisoryModal = ({ isOpen, onClose }) => {
                     className="w-full py-3.5 font-bold rounded-2xl text-black transition-all hover:opacity-90 active:scale-[0.99] shadow-[0_10px_25px_-5px_#23b5b566] disabled:opacity-60"
                     style={{ backgroundColor: BRAND_COLOR }}
                   >
-                    {loading ? "Sending…" : "Get advisory"}
+                    {loading ? "Sending…" : "Advisory"}
                   </button>
                 </div>
               </form>
@@ -348,7 +348,7 @@ const HeroSection = ({ onOpenModal }) => {
               className="relative group px-10 py-5 font-black rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_-10px_#23b5b566] inline-block cursor-pointer"
               style={{ backgroundColor: BRAND_COLOR, color: "#000" }}
             >
-              <span className="relative z-10">Get advisory</span>
+              <span className="relative z-10">Advisory</span>
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </button>
           </motion.div>

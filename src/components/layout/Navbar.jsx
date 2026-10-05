@@ -202,38 +202,20 @@ const Navbar = () => {
     setIsUserMenuOpen(false);
   };
 
-  // UPDATED LOGIC: Lab first, Products center, Explore end
+  // ORDER: Labs → Products → Brands → Blog → Explore → any new menus (in backend order)
   const headerKeys = Object.keys(headerData).sort((a, b) => {
-    const keyA = a.toLowerCase();
-    const keyB = b.toLowerCase();
-    const orderMap = { lab: 1, labs: 1, products: 2, product: 2, blog: 3, explore: 4 };
-
-    if (orderMap[keyA] !== undefined && orderMap[keyB] !== undefined) {
-      return orderMap[keyA] - orderMap[keyB];
-    }
-
-    const hasContent = (key) => {
-      const val = headerData[key];
-      if (!val || typeof val !== "object") return false;
-      return (
-        Object.entries(val).some(
-          ([k, v]) =>
-            k !== "url" &&
-            k !== "openInNewTab" &&
-            v &&
-            typeof v === "object" &&
-            !Array.isArray(v),
-        ) || Array.isArray(val.items)
-      );
+    const orderMap = {
+      lab: 1,
+      labs: 1,
+      product: 2,
+      products: 2,
+      brand: 3,
+      brands: 3,
+      blog: 4,
+      explore: 5,
     };
-
-    const aHas = hasContent(a);
-    const bHas = hasContent(b);
-
-    if (aHas && !bHas) return 0;
-    if (!aHas && bHas) return -1;
-
-    return 0;
+    const rank = (key) => orderMap[key.toLowerCase()] ?? 99;
+    return rank(a) - rank(b);
   });
 
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -266,9 +248,26 @@ const Navbar = () => {
     return menuObj.items;
   };
 
+  // Groups for any menu (nested groups, or flat items wrapped as one group)
+  const getResolvedGroups = (menuKey) => {
+    const groups = getGroupsFromMenu(menuKey);
+    if (groups.length > 0) return groups;
+    const flatItems = getFlatItemsFromMenu(menuKey);
+    if (flatItems.length > 0) {
+      return [
+        {
+          groupKey: menuKey,
+          title: menuKey.charAt(0).toUpperCase() + menuKey.slice(1),
+          items: flatItems,
+        },
+      ];
+    }
+    return [];
+  };
+
   useEffect(() => {
     if (hoveredMenu) {
-      const groups = getGroupsFromMenu(hoveredMenu);
+      const groups = getResolvedGroups(hoveredMenu);
       if (groups.length > 0) {
         if (
           !activeProductTab ||
@@ -302,13 +301,12 @@ const Navbar = () => {
   return (
     <nav
       onMouseLeave={() => setHoveredMenu(null)}
-      className={`fixed top-0 inset-x-0 z-[100] pointer-events-none transition-colors duration-300 ${
-        isMobileMenuOpen
+      className={`fixed top-0 inset-x-0 z-[100] pointer-events-none transition-colors duration-300 ${isMobileMenuOpen
           ? "bg-[#050607]"
           : scrolled
             ? "bg-[#050607]/85 backdrop-blur-xl"
             : "bg-transparent"
-      }`}
+        }`}
     >
       <style>{scrollbarStyles}</style>
 
@@ -330,23 +328,13 @@ const Navbar = () => {
         {/* MENU - Desktop */}
         <div className="hidden lg:flex items-center justify-center gap-1 relative z-50">
           {headerKeys.map((menuKey) => {
-            const groups = getGroupsFromMenu(menuKey);
-            const flatItems = getFlatItemsFromMenu(menuKey);
-            const hasContent = groups.length > 0 || flatItems.length > 0;
+            const resolvedGroups = getResolvedGroups(menuKey);
+            const hasContent = resolvedGroups.length > 0;
 
             const menuTitle =
               menuKey.charAt(0).toUpperCase() + menuKey.slice(1);
             const isHovered = hoveredMenu === menuKey;
-            const useSideTabUI =
-              menuKey.toLowerCase() === "products" || groups.length > 4;
             const hasUrl = !!headerData[menuKey]?.url;
-
-            const resolvedGroups =
-              groups.length > 0
-                ? groups
-                : flatItems.length > 0
-                  ? [{ groupKey: menuKey, title: menuTitle, items: flatItems }]
-                  : [];
 
             return (
               <div
@@ -358,32 +346,33 @@ const Navbar = () => {
               >
                 <button
                   onClick={() => handleCategoryClick(menuKey)}
-                  className={`px-4 py-2 text-[15px] font-semibold flex items-center gap-1.5 rounded-full transition-all ${
-                    isHovered
+                  className={`px-4 py-2 text-[15px] font-semibold flex items-center gap-1.5 rounded-full transition-all ${isHovered
                       ? "text-white bg-white/[0.06]"
                       : "text-white/90 hover:text-white hover:bg-white/[0.05]"
-                  } ${hasUrl ? "cursor-pointer" : "cursor-default"}`}
+                    } ${hasUrl ? "cursor-pointer" : "cursor-default"}`}
                 >
                   {menuTitle}
                   {hasContent && (
                     <LucideIcons.ChevronDown
                       size={15}
-                      className={`transition-transform duration-300 ${
-                        isHovered ? "rotate-180 text-[#4fdede]" : "text-white/70"
-                      }`}
+                      className={`transition-transform duration-300 ${isHovered ? "rotate-180 text-[#4fdede]" : "text-white/70"
+                        }`}
                     />
                   )}
                 </button>
 
-                {useSideTabUI ? (
+                {/* Same side-tab dropdown for every menu that has data (Products, Brands, future menus) */}
+                {hasContent && (
                   <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[92vw] max-w-6xl transition-all duration-300 origin-top z-50 ${
-                      isHovered
+                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[92vw] max-w-6xl transition-all duration-300 origin-top z-50 ${isHovered
                         ? "opacity-100 translate-y-0 visible"
                         : "opacity-0 -translate-y-3 invisible pointer-events-none"
-                    }`}
+                      }`}
                   >
-                    <div className="bg-[#080D0E]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.55)] flex overflow-hidden h-[600px] max-h-[75vh]">
+                    <div className={`bg-[#080D0E]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.55)] flex overflow-hidden max-h-[75vh] ${["product", "products"].includes(menuKey.toLowerCase())
+                        ? "h-[600px]"
+                        : ""
+                      }`}>
                       <div className="w-72 bg-black/25 border-r border-white/[0.05] p-3 flex flex-col gap-1 overflow-y-auto custom-scrollbar">
                         {resolvedGroups.map((group) => (
                           <button
@@ -391,11 +380,10 @@ const Navbar = () => {
                             onMouseEnter={() =>
                               setActiveProductTab(group.title)
                             }
-                            className={`flex items-center gap-3 text-left px-3.5 py-3 text-[14px] font-semibold rounded-xl transition-all duration-200 ${
-                              activeProductTab === group.title
+                            className={`flex items-center gap-3 text-left px-3.5 py-3 text-[14px] font-semibold rounded-xl transition-all duration-200 ${activeProductTab === group.title
                                 ? "text-white bg-gradient-to-r from-[#23b5b5]/15 to-transparent border-l-2 border-[#23b5b5]"
                                 : "text-neutral-400 hover:text-white hover:bg-white/[0.04] border-l-2 border-transparent"
-                            }`}
+                              }`}
                           >
                             {group.imageUrl ? (
                               <img
@@ -466,67 +454,6 @@ const Navbar = () => {
                           ))}
                         </div>
                       </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 origin-top z-50 ${
-                      isHovered
-                        ? "opacity-100 translate-y-0 visible"
-                        : "opacity-0 -translate-y-3 invisible pointer-events-none"
-                    }`}
-                    style={{
-                      width: resolvedGroups.length <= 2 ? "700px" : "1000px",
-                    }}
-                  >
-                    <div
-                      className="bg-[#080D0E]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.55)] p-8 grid gap-10 max-h-[75vh] overflow-y-auto custom-scrollbar"
-                      style={{
-                        gridTemplateColumns: `repeat(${resolvedGroups.length}, minmax(0, 1fr))`,
-                      }}
-                    >
-                      {resolvedGroups.map((group) => (
-                        <div key={group.title}>
-                          <div className="flex items-center gap-3 mb-5 border-b border-white/[0.06] pb-3">
-                            {group.imageUrl && (
-                              <div className="w-6 h-6 rounded bg-white/[0.05] flex items-center justify-center p-1">
-                                <img
-                                  src={group.imageUrl}
-                                  alt=""
-                                  className="w-full h-full object-contain"
-                                />
-                              </div>
-                            )}
-                            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#23b5b5]">
-                              {group.title}
-                            </span>
-                            <Badge text={group.tag} />
-                          </div>
-                          <div className="space-y-1">
-                            {group.items.map((item, idx) => (
-                              <a
-                                key={idx}
-                                href={item.url || "#"}
-                                target={item.openInNewTab ? "_blank" : "_self"}
-                                rel="noopener noreferrer"
-                                className="group flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-[#23b5b5]/[0.06] transition-all"
-                              >
-                                <div className="w-10 h-10 rounded-xl bg-[#0F1516] border border-white/[0.08] flex items-center justify-center shrink-0 overflow-hidden group-hover:border-[#23b5b5]/50 transition-colors">
-                                  <ItemIcon item={item} />
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  <div className="text-[14px] font-semibold text-white group-hover:text-[#4fdede] transition-colors truncate">
-                                    {item.title} <Badge text={item.tag} />
-                                  </div>
-                                  <div className="text-[12px] text-neutral-500 mt-0.5 line-clamp-1 group-hover:text-neutral-400">
-                                    {item.desc}
-                                  </div>
-                                </div>
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
                     </div>
                   </div>
                 )}
@@ -613,31 +540,15 @@ const Navbar = () => {
 
       {/* --- MOBILE --- */}
       <div
-        className={`lg:hidden w-full bg-[#050607] border-t border-white/[0.06] overflow-y-auto transition-all duration-300 custom-scrollbar pointer-events-auto ${
-          isMobileMenuOpen
+        className={`lg:hidden w-full bg-[#050607] border-t border-white/[0.06] overflow-y-auto transition-all duration-300 custom-scrollbar pointer-events-auto ${isMobileMenuOpen
             ? "opacity-100 visible max-h-[100vh]"
             : "opacity-0 invisible max-h-0"
-        }`}
+          }`}
       >
         <div className="px-6 py-8 flex flex-col gap-5 pb-24">
           {headerKeys.map((menuKey) => {
-            const groups = getGroupsFromMenu(menuKey);
-            const flatItems = getFlatItemsFromMenu(menuKey);
-            const hasContent = groups.length > 0 || flatItems.length > 0;
-
-            const resolvedGroups =
-              groups.length > 0
-                ? groups
-                : flatItems.length > 0
-                  ? [
-                      {
-                        groupKey: menuKey,
-                        title:
-                          menuKey.charAt(0).toUpperCase() + menuKey.slice(1),
-                        items: flatItems,
-                      },
-                    ]
-                  : [];
+            const resolvedGroups = getResolvedGroups(menuKey);
+            const hasContent = resolvedGroups.length > 0;
 
             const isExpanded = mobileExpandedMenu === menuKey;
             const hasUrl = !!headerData[menuKey]?.url;
@@ -793,10 +704,10 @@ const Navbar = () => {
               className={`w-full h-14 rounded-2xl border border-white/[0.08] bg-white/[0.03] hover:bg-[#23b5b5]/10 hover:border-[#23b5b5]/30 transition-all duration-300 flex items-center justify-center gap-4 text-white font-semibold text-base ${authLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
             >
               <svg width="20" height="20" viewBox="0 0 48 48">
-                <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12S17.4 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/>
-                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4c-7.7 0-14.3 4.3-17.7 10.7z"/>
-                <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.5-5.3l-6.2-5.2C29.3 35 26.8 36 24 36c-5.2 0-9.6-3.3-11.2-7.9l-6.5 5C9.5 39.5 16.2 44 24 44z"/>
-                <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.5-6.2 7.1l6.2 5.2C39.1 36.7 44 31 44 24c0-1.3-.1-2.3-.4-3.5z"/>
+                <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12S17.4 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z" />
+                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.3 4 24 4c-7.7 0-14.3 4.3-17.7 10.7z" />
+                <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.5-5.3l-6.2-5.2C29.3 35 26.8 36 24 36c-5.2 0-9.6-3.3-11.2-7.9l-6.5 5C9.5 39.5 16.2 44 24 44z" />
+                <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.5-6.2 7.1l6.2 5.2C39.1 36.7 44 31 44 24c0-1.3-.1-2.3-.4-3.5z" />
               </svg>
               {authMode === "signin"
                 ? "Continue with Google"

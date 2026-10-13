@@ -203,6 +203,7 @@ const Navbar = () => {
   };
 
   // ORDER: Labs → Products → Brands → Blog → Explore → any new menus (in backend order)
+  // ORDER: Labs → Products → Brands → Games → Blog → Explore → any new menus (in backend order)
   const headerKeys = Object.keys(headerData).sort((a, b) => {
     const orderMap = {
       lab: 1,
@@ -211,8 +212,10 @@ const Navbar = () => {
       products: 2,
       brand: 3,
       brands: 3,
-      blog: 4,
-      explore: 5,
+      game: 4,
+      games: 4,
+      blog: 5,
+      explore: 6,
     };
     const rank = (key) => orderMap[key.toLowerCase()] ?? 99;
     return rank(a) - rank(b);
@@ -302,10 +305,10 @@ const Navbar = () => {
     <nav
       onMouseLeave={() => setHoveredMenu(null)}
       className={`fixed top-0 inset-x-0 z-[100] pointer-events-none transition-colors duration-300 ${isMobileMenuOpen
-          ? "bg-[#050607]"
-          : scrolled
-            ? "bg-[#050607]/85 backdrop-blur-xl"
-            : "bg-transparent"
+        ? "bg-[#050607]"
+        : scrolled
+          ? "bg-[#050607]/85 backdrop-blur-xl"
+          : "bg-transparent"
         }`}
     >
       <style>{scrollbarStyles}</style>
@@ -347,8 +350,8 @@ const Navbar = () => {
                 <button
                   onClick={() => handleCategoryClick(menuKey)}
                   className={`px-4 py-2 text-[15px] font-semibold flex items-center gap-1.5 rounded-full transition-all ${isHovered
-                      ? "text-white bg-white/[0.06]"
-                      : "text-white/90 hover:text-white hover:bg-white/[0.05]"
+                    ? "text-white bg-white/[0.06]"
+                    : "text-white/90 hover:text-white hover:bg-white/[0.05]"
                     } ${hasUrl ? "cursor-pointer" : "cursor-default"}`}
                 >
                   {menuTitle}
@@ -365,13 +368,13 @@ const Navbar = () => {
                 {hasContent && (
                   <div
                     className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[92vw] max-w-6xl transition-all duration-300 origin-top z-50 ${isHovered
-                        ? "opacity-100 translate-y-0 visible"
-                        : "opacity-0 -translate-y-3 invisible pointer-events-none"
+                      ? "opacity-100 translate-y-0 visible"
+                      : "opacity-0 -translate-y-3 invisible pointer-events-none"
                       }`}
                   >
                     <div className={`bg-[#080D0E]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.55)] flex overflow-hidden max-h-[75vh] ${["product", "products"].includes(menuKey.toLowerCase())
-                        ? "h-[600px]"
-                        : ""
+                      ? "h-[600px]"
+                      : ""
                       }`}>
                       <div className="w-72 bg-black/25 border-r border-white/[0.05] p-3 flex flex-col gap-1 overflow-y-auto custom-scrollbar">
                         {resolvedGroups.map((group) => (
@@ -381,8 +384,8 @@ const Navbar = () => {
                               setActiveProductTab(group.title)
                             }
                             className={`flex items-center gap-3 text-left px-3.5 py-3 text-[14px] font-semibold rounded-xl transition-all duration-200 ${activeProductTab === group.title
-                                ? "text-white bg-gradient-to-r from-[#23b5b5]/15 to-transparent border-l-2 border-[#23b5b5]"
-                                : "text-neutral-400 hover:text-white hover:bg-white/[0.04] border-l-2 border-transparent"
+                              ? "text-white bg-gradient-to-r from-[#23b5b5]/15 to-transparent border-l-2 border-[#23b5b5]"
+                              : "text-neutral-400 hover:text-white hover:bg-white/[0.04] border-l-2 border-transparent"
                               }`}
                           >
                             {group.imageUrl ? (
@@ -541,8 +544,8 @@ const Navbar = () => {
       {/* --- MOBILE --- */}
       <div
         className={`lg:hidden w-full bg-[#050607] border-t border-white/[0.06] overflow-y-auto transition-all duration-300 custom-scrollbar pointer-events-auto ${isMobileMenuOpen
-            ? "opacity-100 visible max-h-[100vh]"
-            : "opacity-0 invisible max-h-0"
+          ? "opacity-100 visible max-h-[100vh]"
+          : "opacity-0 invisible max-h-0"
           }`}
       >
         <div className="px-6 py-8 flex flex-col gap-5 pb-24">

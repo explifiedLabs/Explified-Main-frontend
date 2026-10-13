@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import ExplifiedCTA from "../sections/ExplifiedCTA";
 import ExplifiedSection from "../sections/ExplifiedSection";
 import Hero from "../sections/Hero";
@@ -9,11 +10,15 @@ import WhyChooseExplified from "../sections/WhyChoose";
 import WhyExplified from "../sections/Whyexplified";
 import ContentLabs from "./ContentLabs";
 import IndustriesPage from "./Industries";
+import GetAdvisoryModal from "../common/GetAdvisoryModal";
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+
   return (
     <>
-      <Hero />
+      <Hero onOpenModal={openModal} />
       {/* <IndustriesPage/> */}
       {/* <div className="relative h-px w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[100px] bg-primary/20 blur-[60px]" />
@@ -23,6 +28,11 @@ export default function Home() {
       <FeaturedProducts />
       {/* <WhyExplified /> */}
       <ExplifiedCTA />
+      <GetAdvisoryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }
+

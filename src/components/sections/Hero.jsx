@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
@@ -8,6 +8,17 @@ import { Link } from "react-router";
    ===================================================================== */
 const TEAL = "#23b5b5";
 const TEAL_LIGHT = "#4fdede";
+
+/* ---------------------------------------------------------------------
+   Hero message (EDIT HERE)
+   - ROTATING_WORDS cycle every ROTATE_MS in the headline
+   ------------------------------------------------------------------- */
+const ROTATING_WORDS = ["apps", "games", "videos", "brands", "campaigns", "AI answers"];
+const ROTATE_MS = 2200;
+const HEADLINE_LINE_1 = "We make";
+const HEADLINE_LINE_2 = "people actually use.";
+const SUBTEXT =
+  "Apps, games, videos and campaigns. We make them for ourselves, and we'll make them for you.";
 
 /* ---------------------------------------------------------------------
    Tech Scroller Logos (PNG-based)
@@ -91,6 +102,42 @@ const FloatingDot = ({ className, size, delay }) => (
 );
 
 /* =====================================================================
+   Rotating word — fades out/in every ROTATE_MS.
+   Respects prefers-reduced-motion (stays on the first word).
+   ===================================================================== */
+const RotatingWord = () => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % ROTATING_WORDS.length), ROTATE_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <span
+      className="inline-block whitespace-nowrap border-b-[3px] border-[#23b5b5] pb-0.5 md:pb-1"
+      style={{ color: TEAL_LIGHT }}
+      aria-live="off"
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={ROTATING_WORDS[index]}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="inline-block"
+        >
+          {ROTATING_WORDS[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+};
+
+/* =====================================================================
    Count-up number — animates 0 → target when it scrolls into view.
    White colored, keeps the original "+" / "K+" suffix.
    ===================================================================== */
@@ -132,7 +179,7 @@ const CountUp = ({ to, suffix = "", decimals = 0, duration = 1600 }) => {
 /* =====================================================================
    MAIN HERO
    ===================================================================== */
-const Hero = () => {
+const Hero = ({ onOpenModal }) => {
   return (
     <section className="relative pt-40 pb-10 overflow-hidden min-h-screen flex flex-col items-center bg-[#050607]">
       {/* Blueprint grid */}
@@ -179,12 +226,13 @@ const Hero = () => {
       >
         <motion.h1
           variants={fadeUpVariants}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]"
+          className="text-[2.125rem] sm:text-[3.25rem] lg:text-[4rem] font-bold tracking-tight leading-[1.15] sm:leading-[1.1]"
         >
-          <span className="text-white">We Digitally Transform Your Enterprise,</span>
+          <span className="text-white">{HEADLINE_LINE_1} </span>
+          <RotatingWord />
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-b from-gray-500 to-gray-700">
-            Piece by Piece
+            {HEADLINE_LINE_2}
           </span>
         </motion.h1>
 
@@ -192,16 +240,35 @@ const Hero = () => {
           variants={fadeUpVariants}
           className="text-base md:text-lg text-gray-400 max-w-xl mt-6 mb-9 leading-relaxed"
         >
-          AI-powered products and automation that modernize how your business runs —
-          across every tool your team already uses.
+          {SUBTEXT}
         </motion.p>
 
-        <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-center gap-4">
-          <Link to="https://explified.com/labs">
-            <button className="relative cursor-pointer overflow-hidden bg-[#23b5b5] text-black font-bold text-base px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)] group">
-              <span className="relative z-10">Explore Labs</span>
+        <motion.div
+          variants={fadeUpVariants}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto"
+        >
+          {onOpenModal ? (
+            <button
+              onClick={onOpenModal}
+              className="relative cursor-pointer overflow-hidden bg-[#23b5b5] text-black font-bold text-base px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)] group"
+            >
+              <span className="relative z-10">Work with us</span>
               <ArrowRight size={18} className="relative z-10" />
               <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
+            </button>
+          ) : (
+            <Link to="/contact" className="w-full sm:w-auto">
+              <button className="relative cursor-pointer overflow-hidden bg-[#23b5b5] text-black font-bold text-base px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(35,181,181,0.4)] group">
+                <span className="relative z-10">Work with us</span>
+                <ArrowRight size={18} className="relative z-10" />
+                <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
+              </button>
+            </Link>
+          )}
+
+          <Link to="https://explified.com/labs" className="w-full sm:w-auto">
+            <button className="cursor-pointer text-white font-bold text-base px-8 py-3.5 rounded-full flex items-center justify-center w-full sm:w-auto border border-white/20 hover:border-white/40 hover:bg-white/5 transition-colors">
+              Explore Labs
             </button>
           </Link>
         </motion.div>
